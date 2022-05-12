@@ -1,0 +1,107 @@
+options(stringsAsFactors=FALSE)
+options(scipen=9999)
+options(help_type="html")
+#options(install.packages.check.source = "no")
+options(Ncpus = 4)
+options("rgdal_show_exportToProj4_warnings"="none")
+
+# assign("set.terra", function(...) {
+#   terra::terraOptions(memfrac=0.7, tempdir = "C:/temp/terra")
+#  }, envir = globalenv())
+#   set.terra()
+# 
+# assign("set.raster", function(...) {
+#   raster::rasterOptions(memfrac=0.7, tmpdir = "C:/temp/raster")
+#  }, envir = globalenv())
+#   set.raster()
+
+# set site library
+.Library.site <- file.path(chartr("\\", "/", R.home()), "library")
+.libPaths(file.path(chartr("\\", "/", R.home()), "library"))
+
+# set a CRAN mirror
+# "https://cloud.r-project.org/"
+local({r <- getOption("repos")
+       r["CRAN"] <- "https://ftp.osuosl.org/pub/cran/"
+       options(repos=r)})
+
+assign("data.na", function(x, margin = 1) {
+  if(margin == 1) {
+    cat("Column NA's", "\n")
+      print( x |> is.na() |> colSums() )
+  } else {
+    cat("Row NA's", "\n")
+      print(x |> is.na() |> rowSums())
+  }	
+}, envir = globalenv())
+
+assign("is.defined", function(x) {
+   x <- deparse(substitute(x))
+   env <- parent.frame()
+   exists(x, env)
+ }, envir = globalenv())
+ 
+assign("ls.package", function(package, all.names = FALSE, arguments = FALSE, pattern) { 
+   if(arguments) {
+      package <- deparse(substitute(package))
+     lsf.str( paste("package", package, sep=":"), all = TRUE)
+   } else {
+     package <- deparse(substitute(package))
+     ls(pos = paste("package", package, sep = ":"),
+        all.names = all.names, pattern = pattern)
+     }
+   }, envir = globalenv())
+ 
+# data.frame class methods for is.nan and is.infinite generics
+assign("is.nan.data.frame", function(x) { 
+  do.call(cbind, lapply(x, is.nan)) 
+}, envir = globalenv())   
+assign("is.infinite.data.frame", function(x) {
+  do.call(cbind, lapply(x, is.infinite)) 
+}, envir = globalenv())      
+   
+# De-factor a data.frame
+assign("unfactor", function(df) {  
+     id <- sapply(df, is.factor)
+     df[id] <- lapply(df[id], as.character)
+     df
+}, envir = globalenv())  
+ 
+# Factor columns in a data.frame
+assign("setFactors", function(x, idx) {  
+  for(i in idx) { x[,i] <- as.factor(x[,i]) }
+  return(x)
+}, envir = globalenv()) 
+ 
+# Boolean for evaluating whole numbers 
+assign("is.whole", function(a, tol = 1e-7) {   
+   is.eq <- function(x,y) { 
+	 r <- all.equal(x,y, tol=tol)
+	 is.logical(r) && r 
+   }
+   (is.numeric(a) && is.eq(a, floor(a))) ||
+   (is.complex(a) && {ri <- c(Re(a),Im(a)); is.eq(ri, floor(ri))})
+}, envir = globalenv())   
+
+assign(".First", function(){
+  Sys.setenv(HOME="C:/temp", R_USER="C:/temp")
+    cat("\nStarting R session ", date(), "\n")
+  cat("Rprofile start up for R >= 4.1.0", "\n")
+  cat("Version:", "Wed May 12 2022", "\n") 
+  cat("Author: Jeffrey S. Evans <jeffrey_evans@tnc.org>", "\n")
+    cat("\n")
+  cat("Added methods:", "is.defined, is.whole, is.nan.data.frame and,
+    is.infinite.data.frame", "\n")     	
+  cat("Added functions:", "ls.package, data.na, unfactor and, setFactors", "\n")
+    cat("\n")
+  cat("Using libraries at paths:\n", 
+    paste("-", .libPaths(), collapse = "\n"), "\n")  
+  cat("Set default CRAN mirror to:", "https://cloud.r-project.org/", "\n") 
+  cat("Set rgdal_show_exportToProj4_warnings to none", "\n") 
+  message("Global temp directory: ", tempdir())
+  message("User home environment: ", Sys.getenv('R_USER'))
+}, envir = globalenv())
+
+#assign(".Last", function(){
+#  cat("\nEnding R session ", date(), "\n") 
+#}, envir = globalenv()) 

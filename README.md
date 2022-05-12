@@ -1,249 +1,97 @@
-[![Website](https://github.com/carpentries/workshop-template/actions/workflows/website.yml/badge.svg)](https://github.com/carpentries/workshop-template/actions/workflows/website.yml)
+# spatialR workshop
 
-# The Carpentries Workshop Template
+This repository is for teaching materials associated with the spatialR workshop
 
-This repository is The Carpentries' ([Software Carpentry][swc-site], [Data Carpentry][dc-site], and
-[Library Carpentry][lc-site]'s) template for creating websites for workshops.
+Spatial Analysis in R: An introduction to data manipulation, spatial data analysis and statistical modeling. 
 
-1. **Please _do not fork this repository directly on GitHub._** Instead, please use GitHub's
-   "template" function following [the instructions below](#creating-a-repository) to copy this
-   `workshop-template` repository and customize it for your workshop.
+The statistical program R has become the de facto standard in the statistical, spatial and ecological modeling communities. Due to an extensive academic user community, developing R libraries, the software is readily extendable to encompass a very large variety of statistical and analytical approaches including: complex multi-criteria data summaries, linear/nonlinear regression, machine learning, spatial statistics, time series, ordination, imputation, clustering and wildlife modeling all with well-developed spatial object classes. Additionally, customized analysis is easily implemented through scripting, user-written functions and integration of external code support. R is object oriented with a complex scoping language that provides a robust programming environment. The software also has the capacity for online access, database connection and flexible data import functionality. The R programming environment, combined with an extensive suite of package environments, provides robust data manipulation and modeling, with state of the art algorithms, to both novice and advanced users.     
 
-2. Please *do your work in your repository's `gh-pages` branch*, since that is what is
-   [automatically published as a website by GitHub][github-project-pages].
+This workshop will focus on spatial analysis and modeling in R using experiential learning where students are expected to formulate and implement analysis. As such, participants will be required to conceptualize, develop procedural steps and then write R code. Instructors will provide brief background followed by “hands on” interactive guidance to assist in this process. The content and structure of the exercises will be high-paced with the goal to build basic knowledge in programming, complex spatial analytical methods and statistics. We will illustrate the flexibility of R for implementing specialized analysis that leverages a variety of data and novel statistical methodologies. Participants can expect to come away with skills to perform exploratory analysis, perform complex data manipulation, summary and query tasks and, implement a variety of spatial modeling approaches.
 
-3. Once you are done, please also [let us know][email] the workshop URL. If this is a self-organised
-   workshop, you should also [fill in the self-organized workshop
-   form][self-organized-workshop-form] (if you have not already done so), so we can keep track of
-   all workshops. We build the list of workshops on our websites from the data included in your
-   `index.md` page. We can only do that if you [customize][customization] that page correctly *and*
-   let us know the workshop URL.
+DAY 1
 
-If you run into problems,
-or have ideas about how to make this process simpler,
-please [get in touch](#getting-and-giving-help).
-The pages on [customizing your website][customization],
-the [FAQ][faq],
-and the [design notes][design] have more detail on what we do and why.
-And please note:
-if you are teaching Git,
-please [create a separate repository](#setting-up-a-separate-repository-for-learners)
-for your learners to practice in.
+Section 1 (9:00am – 12:00pm) – Foundations of R for spatial analysis
 
-## Video Tutorial
+Introduction to coding structure, object classes, data manipulation, writing functions, for loops and reading/writing spatial data. We will introduce the basic foundations of R logic and coding syntax, object-oriented structure, object classes and looping. Building on these basics, we will then cover data manipulation of the various spatial class objects introducing indexing, query, merging and subsetting data. We will also introduce creating, reading and writing vector spatial classes.  For those wishing to improve their R skills in preparation for the workshop, some suggested foundation tutorial materials will be made available.  
 
-There is a [YouTube video](https://www.youtube.com/watch?v=_Ag1JiZzyUQ) that demonstrates how to
-create a workshop website.
+Learning objectives: 
+1.	Understanding vector, data frame, matrix, list object types and other object classes
+2.	Understanding base functions for manipulating and query of data.
+3.	Understanding bracket “indexing” and data manipulation. 
+4.	Implementing “for/while” loops for repetitive task and simulation.
+5.	Understanding the use of apply and other recursive functions  
+6.	How to write functions
+7.	Creating, reading and writing spatial classes (sp, sf, raster, terra). 
 
-## Creating a Repository
+Section 2 (1:00pm – 5:00pm) – Spatial data query, manipulation, overlay and distance/neighbor analysis 
 
-1.  Log in to GitHub.
-    (If you do not have an account, you can quickly create one for free.)
-    You must be logged in for the remaining steps to work.
+One limitation to full implementation of spatial analysis in R is ability to implement some basic GIS functions.  In this section, we will cover various vector overlay procedures, distance and proximity analysis. We will focus on spatial data analysis, starting with data manipulation, query and overlay. We will also cover distance and proximity analysis thus, providing a foundation to topics covered later in the workshop (e.g., assessing spatial autocorrelation, network analysis). To provide a context to common spatial analytic tasks, we will replicate a few tasks available in common GIS software and then extend them into specialized analysis. 
 
-2.  On this page (<https://github.com/carpentries/workshop-template>),
-    click on the green "Use this template" button (top right)
+Learning objectives
+1.	Understanding vector overlay analysis and translate complex analysis to workflows
+2.	Build skills for using available libraries/functions to replicate, customize and batch common GIS tasks.
+3.	Ability to conduct distance and proximity analysis on vector data.
 
-    ![screenshot of this repository's GitHub page with an arrow pointing to the the 'use this template' button on the top left](fig/select-github-use-template.png?raw=true)
+DAY 2
 
-3.  Select the owner for your new repository.
-    (This will probably be you, but may instead be an organization you belong to.)
+Section 3 (9:00am – 12:00pm) – Spatial autocorrelation and testing model assumptions.  
 
-4.  Choose a name for your workshop website repository.
-    This name should have the form `YYYY-MM-DD-site`,
-    e.g., `2016-12-01-oomza`,
-    where `YYYY-MM-DD` is the start date of the workshop.
-    If your workshop is held online, then the respository name should have `-online` in the end.
-    e.g., `2016-12-01-oomza-online`
+Understanding spatial autocorrelation is fundamental for understanding spatial process, testing model assumptions and conducting spatial analysis.  In this section, we will cover what is spatial autocorrelations, importance and implications of spatial autocorrelation in modeling ecological systems, how to assess spatial autocorrelation (global and local), and how to test model assumptions using spatial autocorrelation tests.  
 
-5.  Make sure the repository is public, leave "Include all branches" unchecked, and click
-on "Create repository from template".
-You will be redirected to your new copy of the workshop template respository.
+Learning objectives:
+1.	Understand how and why to test for spatial autocorrelation.  
+2.	Be able to interpret spatial autocorrelation results for both population and sample data.  
+3.	Implement spatial autocorrelation analyses to test parametric model assumptions.  
 
-6. Your new website will be rendered at `https://your_username.github.io/YYYY-MM-DD-site`.
-For example, if your username is `gvwilson`, the website's URL will be
-`https://gvwilson.github.io/2016-12-01-oomza`.
+Section 4 (1:00pm – 3:00pm) – Raster data 
 
-If you experience a problem, please [get in touch](#getting-and-giving-help).
+Introduction to raster analysis including moving window, overlay and integration with vector data. 
 
-## Customizing Your Website (Required Steps)
+Learning objectives:
+1.	Understanding import/export of raster formats and raster data structures 
+2.	Understanding univariate, overlay and descriptive raster analysis
+3.	Understanding raster moving window analysis
+4.	Applying functions to rasters
+5.	Implementing raster and vector integration
 
-There are two ways of customizing your website. You can either:
+Section 5 (3:00pm – 5:00pm) – Quantifying landscape structure 
 
-- edit the files directly in GitHub using your web browser
-- clone the repository on your computer and update the files locally
+Will provide a general understanding of landscape pattern, fragmentation and gradients including derivation and implementation of landscape metrics.  
 
-### Updating the files on GitHub in your web browser
+Learning objectives:
+1.	Implementing “landscape metrics” using raster and vector data
+2.	Gradient metrics and surface characterization
+3.	Incorporating pattern and gradient metrics into statistical models   
 
-1.  Go into your newly-created repository,
-    which will be at `https://github.com/your_username/YYYY-MM-DD-site`.
-    For example,
-    if your username is `gvwilson`,
-    the repository's URL will be `https://github.com/gvwilson/2016-12-01-oomza`.
+DAY 3
 
-3.  Ensure you are on the gh-pages branch by clicking on the branch under the drop
-    down in the menu bar (see the note below):
+Section 6 (8:30am – 12:30pm) – Graph theoretical and gravity models 
 
-    ![screenshot of this repository's GitHub page showing the "Branch" dropdown menu expanded with the "gh-pages" branch selected](fig/select-gh-pages-branch.png?raw=true)
+We will provide an overview to graph theoretical approaches with emphasis on gravity models. There are many ways graphs can be implemented to understand population structure and relate that structure to landscape characteristics (see Dyer and Nason 2004).  In this exercise, we will focus on one specialized case.  Gravity models are a type of inferential model that exploit graph characteristics.  Gravity models include both at site (nodes) and between side (edges) landscape data.  In this section, we will use the gravity model framework to build an empirical model of connectivity for a Columbia spotted frog dataset in central Idaho (Murphy et al. 2010).
 
-3.  Edit the header of `index.md` to customize the list of instructors,
-    workshop venue, etc.
-    You can do this in the browser by clicking on it in the file view on GitHub
-    and then selecting the pencil icon in the menu bar:
+Learning objectives:
+1.	Understanding graph structures 
+2.	Implementing the gravity model form
+3.	How to structure and specify a gravity model in R, AIC and model selection
+4.	Implement concepts from sections 1-5 in a real analytical framework (spatial objects, manipulating spatial data, spatial weight matrices, extract function, etc.).
 
-    ![screenshot of top menu bar for GitHub's file interface with the edit icon highlighted in the top right](fig/edit-index-file-menu-bar.png?raw=true)
+Section 7 (1:30pm – 4:30pm) – Predictive models with Random Forests
 
-    Editing hints are embedded in `index.md`,
-    and full instructions are in [the customization instructions][customization].
+We will introduce the conceptual and mathematical foundations of recursive partitioning, ensemble and Random Forests methods along with implementation of a binomial predictive model in R and methods for model selection, significance testing and validation of fit and performance. Time allowing, we will also cover overfit, the class imbalance problem and multi-model approaches for sample convergence.  
 
-4.  Remove the notice about using the workshop template in the `index.md` file. You can safely
-    delete everything between the `{% comment %}` and `{% endcomment %}` (included) as indicated
-    below (about from line 35 to line 51):
+Learning objectives:
+1.	Concepts and caveats of recursive partitioning, ensemble methods and Random Forests
+2.	Background on “presence-only” verses “pseudo-absence” modeling approaches
+3.	How to structure data for a spatial Random Forests model
+4.	Implementation of a Random Forest model, including class imbalance, model selection and multi-model approaches for sample convergence.  
+5.	Model validation
 
-    ```jekyll
-    {% comment %} <------------ remove from this line
-    8< ============= For a workshop delete from here =============
-    For a workshop please delete the following block until the next dashed-line
-    {% endcomment %}
 
-    <div class="alert alert-danger">
-      ....
-    </div>
-
-    {% comment %}
-     8< ============================= until here ==================
-    {% endcomment %} <--------- until this line
-    ```
-
-4.  Edit `_config.yml` to customize certain site-wide variables, such as: `carpentry` (to tell your
-    participants the lesson program for your workshop), `curriculum` and `flavor` for the
-    curriculum  taught in your workshop, and `title` (overall title for all pages).
-
-    Editing hints are embedded in `_config.yml`,
-    and full instructions are in [the customization instructions][customization].
-
-5. Edit the `schedule.html` file to edit the schedule for your upcoming workshop. This file is
-   located in the `_includes` directory, make sure to choose the one from the appropriate `dc` (Data
-   Carpentry workshop), `lc` (Library Carpentry), or `swc` (Software Carpentry) subdirectory.
-
-### Working locally
-
-> Note: you don't have to do this, if you have already updated your site using the web interface.
-
-
-If you are already familiar with Git, you can clone the repository to your desktop, edit `index.md`,
-`_config.yml`, and `schedule.html` following the instruction above there, and push your changes back to the repository.
-
-```shell
-git clone https://github.com/your_username/YYYY-MM-DD-site
-```
-
-In order to view your changes once you are done editing, if you have bundler installed (see the
-[installation instructions below](#installing-software)), you can preview your site locally with:
-
-```shell
-make serve
-```
-and go to <http://0.0.0.0:4000> to preview your site.
-
-Before pushing your changes to your repository, we recommend that you also check for any potential
-issues with your site by running:
-
-```shell
-make workshop-check
-```
-
-Once you are satisfied with the edits to your site, commit and push the changes to your repository.
-A few minutes later, you can go to the GitHub Pages URL for your workshop site and preview it. In the example above, this is `https://gvwilson.github.io/2016-12-01-oomza`. [The finished
-page should look something like this](fig/completed-page.png?raw=true).
-
-
-## Optional but Recommended Steps
-
-
-### Update your repository description and link your website
-
-At the top of your repository on GitHub you'll see
-
-~~~
-No description, website, or topics provided. — Edit
-~~~
-
-Click 'Edit' and add:
-
-1.  A very brief description of your workshop in the "Description" box (e.g., "Oomza University workshop, Dec. 2016")
-
-2.  The URL for your workshop in the "Website" box (e.g., `https://gvwilson.github.io/2016-12-01-oomza`)
-
-This will help people find your website if they come to your repository's home page.
-
-### Update the content of the README file
-
-You can change the `README.md` file in your website's repository, which contains these instructions,
-so that it contains a short description of your workshop and a link to the workshop website.
-
-
-## Additional Notes
-
-**Note:**
-please do all of your work in your repository's `gh-pages` branch,
-since [GitHub automatically publishes that as a website][github-project-pages].
-
-**Note:**
-this template includes some files and directories that most workshops do not need,
-but which provide a standard place to put extra content if desired.
-See the [design notes][design] for more information about these.
-
-Further instructions are available in [the customization instructions][customization].
-This [FAQ][faq] includes a few extra tips (additions are always welcome)
-and these notes on [the background and design][design] of this template may help as well.
-
-
-## Creating Extra Pages
-
-In rare cases,
-you may want to add extra pages to your workshop website.
-You can do this by putting either Markdown or HTML pages in the website's root directory
-and styling them according to the instructions give in
-[the lesson template][lesson-example].
-
-
-## Installing Software
-
-If you want to set up Jekyll so that you can preview changes on your own machine before pushing them
-to GitHub, you must install the software described in the lesson example [setup
-instructions](https://carpentries.github.io/lesson-example/setup.html#jekyll-setup-for-lesson-development).
-
-## Setting Up a Separate Repository for Learners
-
-If you are teaching Git,
-you should create a separate repository for learners to use in that lesson.
-You should not have them use the workshop website repository because:
-
-* your workshop website repository contains many files that most learners don't need to see during
-  the lesson, and
-
-* you probably don't want to accidentally merge a damaging pull request from a novice Git user into
-  your workshop's website while you are using it to teach.
-
-You can call this repository whatever you like, and add whatever content you need to it.
-
-## Getting and Giving Help
-
-We are committed to offering a pleasant setup experience for our learners and organizers.
-If you find bugs in our instructions,
-or would like to suggest improvements,
+If you find bugs in our the teaching materials, or would like to suggest improvements,
 please [file an issue][issues]
 or [mail us][email].
 
-[email]: mailto:team@carpentries.org
-[customization]: https://carpentries.github.io/workshop-template/customization/index.html
-[dc-site]: https://datacarpentry.org
+[email]: mailto:jeffrey_evans@tnc.org
+[tnc-profile]: https://www.nature.org/en-us/about-us/who-we-are/our-people/jeff-evans/
 [design]: https://carpentries.github.io/workshop-template/design/index.html
-[faq]: https://carpentries.github.io/workshop-template/faq/index.html
-[github-project-pages]: https://help.github.com/en/github/working-with-github-pages/creating-a-github-pages-site
-[issues]: https://github.com/carpentries/workshop-template/issues
-[lesson-example]: https://carpentries.github.io/lesson-example/
-[self-organized-workshop-form]: https://amy.carpentries.org/forms/self-organised/
-[swc-site]: https://software-carpentry.org
-[lc-site]: https://librarycarpentry.org
+[issues]: https://github.com/jeffreyevans/spatialR/issues
