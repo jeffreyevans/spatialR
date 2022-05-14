@@ -1,7 +1,8 @@
 ---
 source: Rmd
-title: "spatialR workshop - Spatial data introduction"
-author: "Jeffrey S. Evans"
+title: "spatialR workshop - Foundations of R for spatial analysis"
+author:
+  - Jeffrey S. Evans^[The Nature Conservancy, jeffrey_evans@tnc.org] 
 date: "5/16/2022"
 output:
   html_document: 
@@ -10,7 +11,9 @@ output:
     code_folding: hide
 ---
 
-spatialR workshop R review
+**Objectives**
+
+Introduction to coding structure, object classes, data manipulation, writing functions, for loops and reading/writing spatial data. We will introduce the basic foundations of R logic and coding syntax, object-oriented structure, object classes and looping. Building on these basics, we will then cover data manipulation of the various spatial class objects introducing indexing, query, merging and subsetting data. We will also introduce creating, reading and writing vector spatial classes.  
 
 # **Setup**
 

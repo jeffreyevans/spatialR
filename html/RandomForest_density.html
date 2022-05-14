@@ -452,13 +452,18 @@ pre code {
 
 <h1 class="title toc-ignore">spatialR workshop - Random Forests for
 estimating point-process models</h1>
-<h4 class="author">Jeffrey S. Evans</h4>
-<h4 class="date">5/16/2022</h4>
+<h4 class="author">Jeffrey S. Evans<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a></h4>
+<h4 class="date">5/18/2022</h4>
 
 </div>
 
 <div id="TOC">
 <ul>
+<li><a href="#setup"><strong>Setup</strong></a>
+<ul>
+<li><a href="#add-required-libraries-and-set-working-environment">Add
+required libraries and set working environment</a></li>
+</ul></li>
 <li><a href="#data-preparation"><strong>Data preparation</strong></a>
 <ul>
 <li><a href="#read-shapefile-vector-and-img-rasters-from-disk">Read
@@ -490,6 +495,7 @@ density and probability results</strong></a></li>
 </ul>
 </div>
 
+<p><strong>Objectives</strong></p>
 <p>An introduction to density-based point process random forests models.
 Conceptually, a Poisson Point-process Model (PPM) uses point
 observations [X,Y] to fit an intensity process (surface) that is then
@@ -506,8 +512,10 @@ sample. This is not dissimilar to a PPM, (Renner &amp; Warton 2013
 demonstrated this equivalency) but, MaxEnt does not rely on an intensity
 function, rather solving a probability distribution via maximized
 entropy.</p>
-<p>Add required libraries, download data for exercises (need to set a
-working directory)</p>
+<div id="setup" class="section level1">
+<h1><strong>Setup</strong></h1>
+<div id="add-required-libraries-and-set-working-environment" class="section level2">
+<h2>Add required libraries and set working environment</h2>
 <pre class="r fold-show"><code>invisible(lapply(c(&quot;sf&quot;, &quot;spatialEco&quot;, &quot;terra&quot;, &quot;raster&quot;, &quot;randomForest&quot;, 
                    &quot;rfUtilities&quot;, &quot;ggplot2&quot;, &quot;ranger&quot;), 
           require, character.only=TRUE))
@@ -523,6 +531,8 @@ download.file(&quot;https://spatialr.s3-us-west-2.amazonaws.com/day04.zip&quot;,
               destfile=&quot;day04.zip&quot;, mode=&quot;wb&quot;)
   unzip(&quot;day04.zip&quot;)
     file.remove(&quot;day04.zip&quot;)</code></pre>
+</div>
+</div>
 <div id="data-preparation" class="section level1">
 <h1><strong>Data preparation</strong></h1>
 <div id="read-shapefile-vector-and-img-rasters-from-disk" class="section level2">
@@ -732,6 +742,12 @@ kde.2nd &lt;- pseudo.absence(as(spp, &quot;Spatial&quot;), n=nrow(spp),
 par(mfrow=c(2,1))
   plot(kde.1st, main=&quot;Scott strong 1st order sigma&quot;)
   plot(kde.2nd, main=&quot;Diggle strong 2nd order sigma&quot;)</code></pre>
+</div>
+<div class="footnotes footnotes-end-of-document">
+<hr />
+<ol>
+<li id="fn1"><p>The Nature Conservancy, <a href="mailto:jeffrey_evans@tnc.org" class="email">jeffrey_evans@tnc.org</a><a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+</ol>
 </div>
 
 

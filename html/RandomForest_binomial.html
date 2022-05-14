@@ -452,8 +452,8 @@ pre code {
 
 <h1 class="title toc-ignore">spatialR workshop - Random Forests for
 Binominal probabilistic models</h1>
-<h4 class="author">Jeffrey S. Evans</h4>
-<h4 class="date">5/16/2022</h4>
+<h4 class="author">Jeffrey S. Evans<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a></h4>
+<h4 class="date">5/18/2022</h4>
 
 </div>
 
@@ -514,9 +514,12 @@ analysis - individual (observation)</a></li>
 </ul>
 </div>
 
-<p>An introduction to specifying binomial (probabilistic) random forests
-models. In a probabilistic binomial instance, Random Forest does need a
-null [0,1]. In this example we will be using surveyed data representing
+<p><strong>Objectives</strong></p>
+<p>I will introduce the conceptual and mathematical foundations of
+recursive partitioning, ensemble and Random Forests methods along with
+implementation of a binomial (probabilistic) predictive model. In a
+probabilistic binomial instance, Random Forest does need a null [0,1].
+In this example we will be using surveyed data representing
 presence/absence. However, when this is not the case methods must be
 employed to create a pseudo absence to act as the null. The simplest
 sample framework is a random or systematic sample. However, there are
@@ -975,6 +978,12 @@ grid.arrange(
   autoplot(shap, type = &quot;contribution&quot;, row_num = sample(idx,1)),
 ncol=2, nrow = 2)</code></pre>
 </div>
+</div>
+<div class="footnotes footnotes-end-of-document">
+<hr />
+<ol>
+<li id="fn1"><p>The Nature Conservancy, <a href="mailto:jeffrey_evans@tnc.org" class="email">jeffrey_evans@tnc.org</a><a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+</ol>
 </div>
 
 

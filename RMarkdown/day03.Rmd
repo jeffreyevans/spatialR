@@ -1,8 +1,9 @@
 ---
 source: Rmd
-title: "spatialR workshop - Spatial data introduction"
-author: "Jeffrey S. Evans"
-date: "5/16/2022"
+title: "spatialR workshop - Distance, proximity, spatial depedency and time-series analysis"
+author:
+  - Jeffrey S. Evans^[The Nature Conservancy, jeffrey_evans@tnc.org] 
+date: "5/18/2022"
 output:
   html_document: 
     toc: yes
@@ -10,7 +11,9 @@ output:
     code_folding: hide
 ---
 
-An introduction to basic vector and raster analysis. We will also cover applying landscape metrics at the landscape and sample (plot) levels. 
+**Objectives**
+
+We will build foundation of more advanced spatial modeling by introducing proximity, distance and nearest neighbor analysis, then progressing to Point Pattern Analysis for quantifying spatial structure.  Understanding spatial autocorrelation is fundamental for understanding spatial process, testing model assumptions and conducting spatial analysis.  In this section, we will cover what is spatial autocorrelations, importance and implications of spatial autocorrelation in modeling ecological systems, how to assess spatial autocorrelation (global and local), and how to test model assumptions using spatial autocorrelation tests. Finally, we will cover basics of time-series analysis, moving towards pratical applications on raster time-series data.   
 
 # Setup
 

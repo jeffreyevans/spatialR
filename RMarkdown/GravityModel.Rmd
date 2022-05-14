@@ -1,7 +1,9 @@
 ---
 title: "Graph-theoretic and Gravity Models"
-author: "Melanie A. Murphy & Jeffrey S. Evans"
-date: "2/21/2022"
+author:
+  - Jeffrey S. Evans^[The Nature Conservancy, jeffrey_evans@tnc.org] 
+  - Melanie A. Murphy^[University of Wyoming, melanie.murphy@uwyo.org] 
+date: "5/18/2022"
 output:
   html_document: 
     toc: yes
@@ -9,17 +11,17 @@ output:
     code_folding: hide
 ---
 
-This is an introduction to graph theoretic and gravity modeling approaches for quantifying geneflow in spatial systems. 
+**Objectives**
+
+We will provide an overview to graph theoretical approaches with emphasis on gravity models. There are many ways graphs can be implemented to understand population structure and relate that structure to landscape characteristics (see Dyer and Nason 2004).  In this exercise, we will focus on one specialized case.  Gravity models are a type of inferential model that exploit graph characteristics.  Gravity models include both at site (nodes) and between side (edges) landscape data.  In this section, we will use the gravity model framework to build an empirical model of connectivity for a Columbia spotted frog dataset in central Idaho (Murphy et al. 2010).
 
 **Overview of Worked Example**
 
-_Background_
-Gravity models are a type of inferential model that exploit graph characteristics. Gravity models include both at-site and between-site landscape data. They are a type of graph consisting of nodes and edges. These nodes and edges of landscape characteristics associated with these graph elements.
+_Background:_ Gravity models are a type of inferential model that exploit graph characteristics. Gravity models include both at-site and between-site landscape data. They are a type of graph consisting of nodes and edges. These nodes and edges of landscape characteristics associated with these graph elements.
 
 There are many ways graphs can be implemented to understand population structure and relate that structure to landscape characteristics (see Dyer and Nason 2004). In this exercise, we will calculate various graph metrics and apply graphs to fit a gravity model.
 
-_Data set_
-In this exercise, you will use the gravity model framework to build an empirical model of gene flow for the Columbia spotted frog dataset in central Idaho that you have used for several other exercises (Murphy et al. 2010).
+_Data set:_ In this exercise, you will use the gravity model framework to build an empirical model of gene flow for the Columbia spotted frog dataset in central Idaho that you have used for several other exercises (Murphy et al. 2010).
 
 # **Setup**
 

@@ -1,8 +1,9 @@
 ---
 source: Rmd
-title: "spatialR workshop - Spatial data introduction"
-author: "Jeffrey S. Evans"
-date: "5/16/2022"
+title: "spatialR workshop - Spatial data query, manipulation, topology operators, raster analysis and landscape structure"
+author:
+  - Jeffrey S. Evans^[The Nature Conservancy, jeffrey_evans@tnc.org] 
+date: "5/17/2022"
 output:
   html_document: 
     toc: yes
@@ -10,7 +11,9 @@ output:
     code_folding: hide
 ---
 
-An introduction to basic vector and raster analysis. We will also cover applying landscape metrics at the landscape and sample (plot) levels. 
+**Objectives**
+
+One seemingly limiting factor to full migration of spatial analysis in R is ability to implement basic GIS functions. We will cover various vector overlay procedures, distance and proximity analysis. We will focus on spatial data analysis, starting with data manipulation, query and overlay. We will also cover distance and proximity analysis thus, providing a foundation to topics covered later in the workshop (e.g., assessing spatial autocorrelation, network analysis). We will also cover basic raster analysis including single raster operators, overlay and focal functions. Finally, we will introduce concepts of quantifying landscape structure using landscape metrics.  
 
 # Setup
 

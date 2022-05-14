@@ -1,8 +1,9 @@
 ---
 source: Rmd
 title: "spatialR workshop - Random Forests for Binominal probabilistic models"
-author: "Jeffrey S. Evans"
-date: "5/16/2022"
+author:
+  - Jeffrey S. Evans^[The Nature Conservancy, jeffrey_evans@tnc.org] 
+date: "5/18/2022"
 output:
   html_document: 
     toc: yes
@@ -10,7 +11,9 @@ output:
     code_folding: hide
 ---
 
-An introduction to specifying binomial (probabilistic) random forests models. In a probabilistic binomial instance, Random Forest does need a null [0,1]. In this example we will be using surveyed data representing presence/absence. However, when this is not the case methods must be employed to create a pseudo absence to act as the null. The simplest sample framework is a random or systematic sample. However, there are numerous issues with a null that is disconected from the spatial process observed in the data. The pseudo.absence function in the spatialEco library uses an isotropic intensity estimate to create sample weights in generating a random sample. This incorporates a continuous gradient of the spatial process in the observed data. 
+**Objectives**
+
+I will introduce the conceptual and mathematical foundations of recursive partitioning, ensemble and Random Forests methods along with implementation of a binomial (probabilistic) predictive model. In a probabilistic binomial instance, Random Forest does need a null [0,1]. In this example we will be using surveyed data representing presence/absence. However, when this is not the case methods must be employed to create a pseudo absence to act as the null. The simplest sample framework is a random or systematic sample. However, there are numerous issues with a null that is disconected from the spatial process observed in the data. The pseudo.absence function in the spatialEco library uses an isotropic intensity estimate to create sample weights in generating a random sample. This incorporates a continuous gradient of the spatial process in the observed data. 
 
 In this exercise, we will leverage a spatial sample and raster data representing various hypothesized ecological processes associated with our species. We will employ a model selection procedure, evaluate the significance of the selected parameters, fit a final model, estimate the spatial uncertainty and perform model validation to evaluate fit and performance. Finaly, we will explore inferential methods using partial dependence plots to evaluate functional relationships and take a brief look at Shapley analysis for individual and aggregated relationships.    
 

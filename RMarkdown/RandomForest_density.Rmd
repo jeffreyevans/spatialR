@@ -1,8 +1,9 @@
 ---
 source: Rmd
 title: "spatialR workshop - Random Forests for estimating point-process models"
-author: "Jeffrey S. Evans"
-date: "5/16/2022"
+author:
+  - Jeffrey S. Evans^[The Nature Conservancy, jeffrey_evans@tnc.org] 
+date: "5/18/2022"
 output:
   html_document: 
     toc: yes
@@ -10,11 +11,15 @@ output:
     code_folding: hide
 ---
 
+**Objectives**
+
 An introduction to density-based point process random forests models. Conceptually, a Poisson Point-process Model (PPM) uses point observations [X,Y] to fit an intensity process (surface) that is then used with matching covariates to estimate the Probability Density (PDF) or Intensity function. The intensity function is an estimate of the density following an assumption of a Poisson point process. We can emulate the PPM structure by simply estimating the intensity and then using random forests, rather than a linear model, to solve the regression equation. 
 
 I would note that MaxEnt is not a presence-only model per se but, generates a large number of regular samples to act as the null (background) with the know observations embedded in the background sample. This is not dissimilar to a PPM, (Renner & Warton 2013 demonstrated this equivalency) but, MaxEnt does not rely on an intensity function, rather solving a probability distribution via maximized entropy. 
 
-Add required libraries, download data for exercises (need to set a working directory)
+# **Setup**
+
+## Add required libraries and set working environment
 
 ```{r, class.source = "fold-show", eval=FALSE}
 invisible(lapply(c("sf", "spatialEco", "terra", "raster", "randomForest", 

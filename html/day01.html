@@ -12,7 +12,7 @@
 <meta name="author" content="Jeffrey S. Evans" />
 
 
-<title>spatialR workshop - Spatial data introduction</title>
+<title>spatialR workshop - Foundations of R for spatial analysis</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -450,108 +450,79 @@ pre code {
 
 
 
-<h1 class="title toc-ignore">spatialR workshop - Spatial data
-introduction</h1>
-<h4 class="author">Jeffrey S. Evans</h4>
+<h1 class="title toc-ignore">spatialR workshop - Foundations of R for
+spatial analysis</h1>
+<h4 class="author">Jeffrey S. Evans<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a></h4>
 <h4 class="date">5/16/2022</h4>
 
 </div>
 
 <div id="TOC">
 <ul>
-<li><a href="#setup">Setup</a>
+<li><a href="#setup"><strong>Setup</strong></a>
 <ul>
 <li><a href="#add-required-libraries-and-set-working-environment">Add
 required libraries and set working environment</a></li>
 </ul></li>
-<li><a href="#distance-and-proximity"><strong>3.1 - Distance and
-proximity</strong></a>
+<li><a href="#reading-and-writing-of-spatial-classes"><strong>1.1 -
+Reading and writing of spatial classes</strong></a>
 <ul>
-<li><a href="#read-data">Read data</a></li>
-<li><a href="#create-distance-matrix">Create distance matrix</a></li>
-<li><a href="#distance-matrix---nearest-neighbors">Distance matrix -
-nearest neighbors</a></li>
-<li><a href="#distance-matrix---conditional-nearest-neighbors">Distance
-matrix - conditional nearest neighbors</a></li>
-<li><a href="#graph-structures---nearest-neighbors">Graph structures -
-nearest neighbors</a></li>
+<li><a href="#read-shapefile-vector-from-disk">Read shapefile vector
+from disk</a></li>
+<li><a href="#subset-vector-data">Subset vector data</a></li>
+<li><a href="#write-vector-data">Write vector data</a></li>
+<li><a href="#read-raster-data">Read raster data</a></li>
+<li><a href="#read-multi-band-raster">Read multi-band raster</a></li>
+<li><a href="#coercion-of-raster-data">Coercion of raster data</a></li>
+<li><a href="#write-raster-data">Write raster data</a></li>
 </ul></li>
-<li><a href="#spatial-dependency---point-pattern-analysis"><strong>3.2
-Spatial dependency - Point Pattern Analysis</strong></a>
+<li><a href="#indexing-and-query-of-spatial-vector-classes"><strong>1.2
+- Indexing and query of spatial vector classes</strong></a>
 <ul>
-<li><a href="#read-data-1">read data</a></li>
-<li><a href="#create-spatstat-object">Create spatstat object</a></li>
-<li><a href="#identify-duplicates">Identify duplicates</a></li>
-<li><a href="#geits-gr-statistic">Geits G(r) statistic</a></li>
-<li><a href="#ripleys-k-statistic">Ripley’s-K statistic</a></li>
+<li><a href="#create-point-vector">Create point vector</a></li>
+<li><a href="#subset-rows-of-point-vector">Subset rows of point
+vector</a></li>
+<li><a href="#create-random-sample">Create random sample</a></li>
+<li><a href="#subset-using-bracket-query">Subset using bracket
+query</a></li>
+<li><a href="#query-to-get-percent">Query to get percent</a></li>
+<li><a href="#aggregrated-statistics">Aggregrated statistics</a></li>
+<li><a href="#random-sample-polygons">Random sample polygons</a></li>
+<li><a href="#distance-based-random-sample">Distance-based random
+sample</a></li>
 </ul></li>
-<li><a href="#spatial-dependency---global-autocorrelation"><strong>3.3
-Spatial dependency - global autocorrelation</strong></a>
+<li><a href="#functions"><strong>1.3 Functions</strong></a>
 <ul>
-<li><a href="#read-data-2">Read data</a></li>
-<li><a href="#spatial-weights-matrix-wij">Spatial Weights Matrix
-(Wij)</a></li>
-<li><a href="#calculate-morans-i-global-autocorrelation">Calculate
-Moran’s-I (global autocorrelation)</a></li>
-<li><a href="#calculate-gearys-c-global-autocorrelation">Calculate
-Geary’s-C (global autocorrelation)</a></li>
-<li><a href="#calculate-getis-ord-global-autocorrelation">Calculate
-Getis-Ord (global autocorrelation)</a></li>
+<li><a href="#step-through-and-dissect-function">Step through and
+dissect function</a></li>
+<li><a href="#write-observed-mean-distance-function">Write observed mean
+distance function</a></li>
 </ul></li>
-<li><a href="#spatial-dependency---model-assumptions"><strong>3.4
-Spatial dependency - model assumptions</strong></a>
+<li><a href="#basic-plotting-of-spatial-objects"><strong>1.4 Basic
+plotting of spatial objects</strong></a>
 <ul>
-<li><a href="#read-data-3">Read data</a></li>
-<li><a href="#create-linear-model">Create linear model</a></li>
-<li><a href="#morans-i-on-regression-residuals">Moran’s-I on regression
-residuals</a></li>
-</ul></li>
-<li><a href="#spatial-dependency---local-autocorrelation"><strong>3.4
-Spatial dependency - local autocorrelation</strong></a>
-<ul>
-<li><a href="#read-data-4">read data</a></li>
-<li><a href="#local-g">Local-G</a></li>
-<li><a href="#cross-correlation-algebraic-approximation">Cross
-correlation algebraic approximation</a></li>
-</ul></li>
-<li><a href="#time-series-analysis"><strong>3.5 - Time-series
-analysis</strong></a>
-<ul>
-<li><a href="#read-data-5">Read data</a></li>
-<li><a href="#subset-single-pixel-time-series-observation">Subset single
-pixel time-series observation</a></li>
-<li><a href="#imputing-missing-values">Imputing missing values</a></li>
-<li><a href="#smoothing-time-series">Smoothing time-series</a></li>
-<li><a href="#smoothing-time-series-confidence">Smoothing time-series
-(confidence)</a></li>
-<li><a href="#create-time-series-class-object">Create time-series class
-object</a></li>
-<li><a href="#specify-trend-model">Specify trend model</a></li>
-<li><a href="#periodicity">Periodicity</a></li>
-</ul></li>
-<li><a href="#raster-time-series-analysis"><strong>3.6 - Raster
-time-series analysis</strong></a>
-<ul>
-<li><a href="#temporal-statistical-aggregation">Temporal statistical
-aggregation</a></li>
-<li><a href="#rate-of-change">Rate of change</a></li>
-<li><a href="#mann-kendall">Mann-Kendall</a></li>
-<li><a href="#raster-time-series-trend-model">Raster time-series trend
-model</a></li>
+<li><a href="#plot-attribute-query">Plot attribute query</a></li>
+<li><a href="#plot-nominal-colors">Plot nominal colors</a></li>
+<li><a href="#plot-continuous-colors">Plot continuous colors</a></li>
 </ul></li>
 </ul>
 </div>
 
-<p>An introduction to basic vector and raster analysis. We will also
-cover applying landscape metrics at the landscape and sample (plot)
-levels.</p>
+<p><strong>Objectives</strong></p>
+<p>Introduction to coding structure, object classes, data manipulation,
+writing functions, for loops and reading/writing spatial data. We will
+introduce the basic foundations of R logic and coding syntax,
+object-oriented structure, object classes and looping. Building on these
+basics, we will then cover data manipulation of the various spatial
+class objects introducing indexing, query, merging and subsetting data.
+We will also introduce creating, reading and writing vector spatial
+classes.</p>
 <div id="setup" class="section level1">
-<h1>Setup</h1>
+<h1><strong>Setup</strong></h1>
 <div id="add-required-libraries-and-set-working-environment" class="section level2">
 <h2>Add required libraries and set working environment</h2>
-<pre class="r fold-show"><code>p = c(&quot;sp&quot;, &quot;terra&quot;, &quot;spdep&quot;, &quot;spatialEco&quot;, &quot;sf&quot;, &quot;terra&quot;, 
-      &quot;raster&quot;, &quot;spatstat&quot;, &quot;spatstat.geom&quot;, &quot;spatstat.core&quot;,
-      &quot;dplyr&quot;, &quot;forecast&quot;, &quot;RANN&quot;, &quot;rgeoda&quot;)
+<pre class="r fold-show"><code>p = c(&quot;sp&quot;, &quot;raster&quot;, &quot;spdep&quot;, &quot;rgdal&quot;, &quot;rgeos&quot;,  
+      &quot;spatialEco&quot;, &quot;sf&quot;, &quot;terra&quot;, &quot;spatstat&quot;, &quot;spatstat.geom&quot;)
   if(any(!unlist(lapply(p, requireNamespace, quietly=TRUE)))) { 
     m = which(!unlist(lapply(p, requireNamespace, quietly=TRUE)))
       suppressMessages(invisible(lapply(p[-m], require,    
@@ -561,661 +532,318 @@ levels.</p>
     suppressMessages(invisible(lapply(p, require, character.only=TRUE)))
   }
 
-# set your working and data directories here
-setwd(&quot;C:/evans/spatialR/day03&quot;) 
-  data.dir &lt;- file.path(getwd(), &quot;data&quot;)
+# set your working directory variable here
+setwd(&quot;C:/spatialR/day01&quot;) 
+  data.dir = file.path(getwd(), &quot;data&quot;)
 
-download.file(&quot;https://spatialr.s3-us-west-2.amazonaws.com/day03.zip&quot;, 
-              destfile=&quot;day03.zip&quot;, mode=&quot;wb&quot;)
-  unzip(&quot;day03.zip&quot;)
-  file.remove(&quot;day03.zip&quot;)
-
-# data is in day01/data, you can use file.path to set a path to 
-# the data directory eg., dat.dir &lt;- file.path(getwd(), &quot;data&quot;)</code></pre>
+download.file(&quot;https://spatialr.s3-us-west-2.amazonaws.com/day01.zip&quot;, 
+              destfile=&quot;day01.zip&quot;, mode=&quot;wb&quot;)
+  unzip(&quot;day01.zip&quot;)
+  file.remove(&quot;day01.zip&quot;)</code></pre>
 </div>
 </div>
-<div id="distance-and-proximity" class="section level1">
-<h1><strong>3.1 - Distance and proximity</strong></h1>
-<div id="read-data" class="section level2">
-<h2>Read data</h2>
-<p>Read “plots.shp” and “soil.shp” in as sf objects. Plot resulting
-objects. See; st_read, plot, st_geometry</p>
-<pre class="r"><code># Read data 
+<div id="reading-and-writing-of-spatial-classes" class="section level1">
+<h1><strong>1.1 - Reading and writing of spatial classes</strong></h1>
+<div id="read-shapefile-vector-from-disk" class="section level2">
+<h2>Read shapefile vector from disk</h2>
+<p>Read the “birds” shapefile, (see st_read) and display the first few
+rows of associated data. Hint; sf::st_read</p>
+<pre class="r"><code>( birds &lt;- sf::st_read(file.path(data.dir, &quot;birds.shp&quot;)) )
+  str(birds)
 
-plots &lt;- st_read(file.path(data.dir, &quot;plots.shp&quot;))
-  plots$plot.id &lt;- paste(&quot;plot&quot;, plots$ID, sep=&quot;.&quot;)</code></pre>
+## for reference, read sp object using rgdal
+# birds &lt;- rgdal::readOGR(file.path(getwd(), &quot;data&quot;), &quot;birds&quot;)  </code></pre>
 </div>
-<div id="create-distance-matrix" class="section level2">
-<h2>Create distance matrix</h2>
-<p>Calculate a distance matrix on the “plots” point object. See;
-st_distance, dist</p>
-<pre class="r"><code># dist matrix
-dmat &lt;- units::drop_units(st_distance(plots))
-  diag(dmat) &lt;- NA  # set 0 diag to NA
-    rownames(dmat) &lt;- plots$plot.id
-    colnames(dmat) &lt;- plots$plot.id
-head(dmat)</code></pre>
+<div id="subset-vector-data" class="section level2">
+<h2>Subset vector data</h2>
+<p>Subset the birds data, using a bracket index, using the condition
+Max2005 &gt;= 20. Hint; x[x$col &gt;= p,] ) or subset</p>
+<pre class="r"><code>( birds.sub &lt;- birds[birds$Max2005 &gt;= 20,] ) </code></pre>
 </div>
-<div id="distance-matrix---nearest-neighbors" class="section level2">
-<h2>Distance matrix - nearest neighbors</h2>
-<p>See if you can use the distance matrix to find each obs nearest
-neighbor</p>
-<pre class="r"><code># Iterate through each row and select the minimum distance neighbor
-samples &lt;- data.frame(plot.id=plots$plot.id, kNN=NA, dist=NA)
-  for(j in 1:nrow(dmat)) {
-    samples[j,][2] &lt;- names(dmat[,j])[which.min(dmat[,j])]
-    samples[j,][3] &lt;- dmat[,j][which.min(dmat[,j])]
-  }
+<div id="write-vector-data" class="section level2">
+<h2>Write vector data</h2>
+<p>Write the subset observations out to the data directory (data.dir) as
+new shapefile then, read back in. Hint; file.path, sf::st_write,
+sf::st_read</p>
+<pre class="r"><code>sf::st_write(birds.sub, file.path(data.dir, &quot;birds_sub.shp&quot;))
+sf::st_read(file.path(data.dir, &quot;birds_sub.shp&quot;))
 
-## or, using lapply
-# samples &lt;- as.data.frame(do.call(rbind,(lapply(1:nrow(dmat), function(j) {
-#   c(names(dmat[,j])[which.min(dmat[,j])], 
-#     dmat[,j][which.min(dmat[,j])])}))))
-#   samples[,2] &lt;- as.numeric(samples[,2])
-
-# Or, a straight forward R-like way using apply 
-nn &lt;- apply(dmat, MARGIN=1, which.min)
-  ( kNN.ids &lt;- colnames(dmat)[nn] )
-
-# Add kNN to plots point data and subset kNN observations  
-plots &lt;- merge(plots, samples, by=&quot;plot.id&quot;)
-  plots.knn &lt;- plots[which(plots$plot.id %in% unique(plots$kNN)),]
-
-plot(st_geometry(plots), pch=20)
-  plot(st_geometry(plots.knn), pch=20, col=&quot;red&quot;, cex=2, add=TRUE)
-    box()</code></pre>
+## for reference, for sp object using rgdal 
+# writeOGR(birds.sub, file.path(getwd(), &quot;data&quot;), &quot;birds_sub&quot;, 
+#          driver=&quot;ESRI Shapefile&quot;, check_exists=TRUE, 
+#          overwrite_layer=TRUE)</code></pre>
 </div>
-<div id="distance-matrix---conditional-nearest-neighbors" class="section level2">
-<h2>Distance matrix - conditional nearest neighbors</h2>
-<p>Deriving k nearest neighbors is a very good example of the numerous
-ways you can approach and correctly solve a problem in R.</p>
-<p>Bound the distances, in the distance matrix, considered before
-finding the nearest neighbor. Here you could set a distance bandwidth
-(range) in the same way the minimum distance was set. Set the bandwidth
-to 1000, 5000 then find the 1st nearest neighbor. See; apply,
-which.min</p>
-<pre class="r"><code># 1. Bound the distance matrix to represent a bandwidth then, 
-#    find the 1st nearest neighbor
-
-min.dist = 1000
-max.dist = 5000 
-dmat[dmat &lt; min.dist] &lt;- NA
-dmat[dmat &gt; max.dist] &lt;- NA
-
-nn &lt;- apply(dmat, MARGIN=1, which.min)
-  ( kNN.ids &lt;- colnames(dmat)[nn] )</code></pre>
+<div id="read-raster-data" class="section level2">
+<h2>Read raster data</h2>
+<p>Read the isograv.img raster, located in the data directory, into a
+terra raster class object. Hint; file.path, rast</p>
+<pre class="r"><code>( r &lt;- rast(file.path(data.dir,&quot;isograv.img&quot;)) )</code></pre>
 </div>
-<div id="graph-structures---nearest-neighbors" class="section level2">
-<h2>Graph structures - nearest neighbors</h2>
-<p>We can use a graph structure to efficiently represent a [Wij]d
-matrix. This is the “under the hood” approach in the spdep library.</p>
-<p>Find the 1st nearest neighbor using a graph structure. See; spdep,
-knearneigh, knn2nb, dnearneigh</p>
-<pre class="r"><code># Proximity K nearest neighbors using knearneigh and knn2nb
+<div id="read-multi-band-raster" class="section level2">
+<h2>Read multi-band raster</h2>
+<p>Make a multi-band raster object using bouguer, isograv, magnetic img
+rasters. Hint; rast, +1 for using list.files</p>
+<pre class="r"><code>r &lt;- rast(c(file.path(data.dir,&quot;bouguer.img&quot;), 
+          file.path(data.dir,&quot;isograv.img&quot;), 
+          file.path(data.dir,&quot;magnetic.img&quot;)))
 
-plots.knn &lt;- knearneigh(st_coordinates(plots), k=4)
- plot(st_geometry(plots), pch=19)
-   box()
-   plot(knn2nb(plots.knn), st_coordinates(plots), add=TRUE)
-       title(main=&quot;K nearest neighbors, k=1&quot;)
-
-nn1.ids &lt;- as.vector(plots.knn$nn[1,])             
-  nn1 &lt;- plots[nn1.ids,]
-  plot(st_geometry(nn1), pch=19, col=&quot;red&quot;)    
-    plot(st_geometry(plots[1,]), pch=19, col=&quot;black&quot;, 
-         cex=2.5, add=TRUE)
-
-# Distance K nearest neighbors using dnearneigh and nbdists
-#   this approach would allow for a bandwidth as we did previosly 
-    
-plots.dist &lt;- dnearneigh(st_coordinates(plots), 0.0001, 10000)
-  dist.list &lt;- nbdists(plots.dist, st_coordinates(plots))
-  plots$NNDist &lt;- unlist(lapply(dist.list, FUN=function(x) min(x)))
-
-plot(plots[&quot;NNDist&quot;], pch=20, main=&quot;neighbor distances&quot;)
-
-# Now, after all that work apply this single function &quot;kn2&quot;, which 
-# is an implementation of the Arya and Mount&#39;s Approximate 
-# Nearest Neighbours (ANN) C++ library, that does all of this 
-# And, very fast!
-
-data(meuse, package = &quot;sp&quot;)
-meuse &lt;- st_as_sf(meuse, coords = c(&quot;x&quot;, &quot;y&quot;), 
-                  crs = 28992, agr = &quot;constant&quot;)
-
-idx &lt;- sample(1:nrow(meuse), 10) 
-  pts &lt;- meuse[idx,]
-  meuse &lt;- meuse[-idx,]
-    meuse$IDS &lt;- 1:nrow(meuse)
-
-nn &lt;- RANN::nn2(st_coordinates(meuse), st_coordinates(pts), k=2)$nn.idx
-  plot(st_geometry(pts), pch=20, main=&quot;KNN&quot;)
-    plot(st_geometry(meuse[nn[,1],]), pch=20, col=&quot;red&quot;, add=TRUE)
-    plot(st_geometry(meuse[nn[,2],]), pch=20, col=&quot;blue&quot;, add=TRUE)
-      box()</code></pre>
+( f &lt;- list.files(data.dir, &quot;img$&quot;, full.names = TRUE) )
+( r &lt;- rast(f[c(1,3,4)]) )</code></pre>
+</div>
+<div id="coercion-of-raster-data" class="section level2">
+<h2>Coercion of raster data</h2>
+<p>First, coerce r into a matrix/array. Ten coerce into a
+SpatialPixelsDataFrame. Unfortunately, terra does not provide this
+coercion but, the raster package does so, you have to coerce to a raster
+class object first. Hint; as.matrix, as, “SpatialPixelsDataFrame”</p>
+<pre class="r"><code>( r &lt;- rast(list.files(data.dir, &quot;img$&quot;, full.names = TRUE)[c(1,3,4)]) )
+r.sp &lt;- as(stack(r), &quot;SpatialPixelsDataFrame&quot;)
+  class(r.sp)
+  head(r.sp@data)
+  plot(r.sp)</code></pre>
+</div>
+<div id="write-raster-data" class="section level2">
+<h2>Write raster data</h2>
+<p>I prefer the geo tiff format with LZW compression. You do not have to
+specify datatype but, it is good to know how to control bit depth. Here
+we specify INT1U which is float -3.4e+38 to 3.4e+38. Note that if you
+are writing an sp raster type you must use writeGDAL. Hint; writeRaster
+with gdal and datatype arguments.</p>
+<pre class="r"><code>( r &lt;- rast(list.files(data.dir, &quot;img$&quot;, full.names = TRUE)[c(1,3,4)]) )
+writeRaster(r, file.path(data.dir, &quot;test.tif&quot;), 
+            overwrite=TRUE, gdal=c(&quot;COMPRESS=LZW&quot;),
+                datatype=&#39;INT1U&#39;)</code></pre>
 </div>
 </div>
-<div id="spatial-dependency---point-pattern-analysis" class="section level1">
-<h1><strong>3.2 Spatial dependency - Point Pattern
-Analysis</strong></h1>
-<p>What if you wish to describe the spatial processes of a population?
-An entire field of spatial statistics exist to address exactly this
-question. Point Pattern Analysis (PPA) is a family of statistics
-developed to describe spatial processes of point observations and can
-represent a marked [X,Y]Z or unmarked [X,Y] process. The Complete
-Spatial Randomness (CSR) null of a PPA follows a Poisson process.</p>
-<p>Most often PPA describes clustering process and can indicate
-attraction and diffusion processes. These statistics are often used in
-spatial epidemiology for quantifying disease spread. The spatstat
-library is the de facto standard for Point Pattern Analysis but, does
-require coercing our data into a special spatial class.</p>
-<p>For this exercise, we have a point locations of wetlands located in
-in the Bighorn Crags, Idaho and want to know if these wetlands are
-clustered.</p>
-<div id="read-data-1" class="section level2">
-<h2>read data</h2>
-<pre class="r"><code>wetland &lt;- read.csv(file.path(data.dir, &quot;Wetlands.csv&quot;), header=TRUE)</code></pre>
-</div>
-<div id="create-spatstat-object" class="section level2">
-<h2>Create spatstat object</h2>
-<p>Create a ppp object from wetland csv file. The file includes all
-wetlands. RALU is the presence or absences of Columbia spotted frogs at
-sites and can function as a mark.</p>
-<div class="line-block">  See: owin and ppp</div>
-<pre class="r"><code>window &lt;- owin(xrange=c(min(wetland$X),max(wetland$X)), 
-               yrange=c(min(wetland$Y),max(wetland$Y)))
+<div id="indexing-and-query-of-spatial-vector-classes" class="section level1">
+<h1><strong>1.2 - Indexing and query of spatial vector
+classes</strong></h1>
+<div id="create-point-vector" class="section level2">
+<h2>Create point vector</h2>
+<p>We will use the meuse dataset for all of these exercises, add the
+data and coerce to sf points. Hint; st_as_sf</p>
+<pre class="r"><code>data(meuse)
+meuse &lt;- st_as_sf(meuse, coords = c(&quot;x&quot;, &quot;y&quot;), crs = 28992, 
+                  agr = &quot;constant&quot;)
 
-#*** window is min/max of x and Y
-wetland.ppp &lt;- ppp(wetland$X, wetland$Y, window=window, marks=wetland$RALU)
-  class(wetland.ppp)</code></pre>
+## sp coersion of data.frame to spatial points object
+#  coordinates(meuse) &lt;- ~x+y</code></pre>
 </div>
-<div id="identify-duplicates" class="section level2">
-<h2>Identify duplicates</h2>
-<p>Not all data are perfect. This dataset include duplicate points that
-are likely an error, Remove them from the dataset. Note; Using
-distinct(x) you could do this directly on the sf object, before
-converting to a ppp object.</p>
-<div class="line-block"> See: unique</div>
-<pre class="r"><code>wetland.ppp &lt;- unique(wetland.ppp)</code></pre>
+<div id="subset-rows-of-point-vector" class="section level2">
+<h2>Subset rows of point vector</h2>
+<p>Subset the first 10 rows of meuse to a new dataset. Hint: Use a
+standard bracket index, remember the comma position for rows verses
+columns. Observations in an sp object are by row</p>
+<pre class="r"><code>( msub &lt;- meuse[1:10,] )</code></pre>
 </div>
-<div id="geits-gr-statistic" class="section level2">
-<h2>Geits G(r) statistic</h2>
-<p>Are wetlands homogeneous? Calculate Nearest Neighbor Distance (G)</p>
-<div class="line-block">  See: Gest</div>
-<pre class="r"><code>plot(Gest(wetland.ppp))</code></pre>
-<p><strong>G(r) results</strong> * rs: Edge corrected estimator of G(r )
-* km: the spatial Kaplan-Meier estimator of G(r) * pois: the theoretical
-value of G(r ) for a stationary Poisson process</p>
-<p>Results indicates a homogeneous representation of the same estimated
-intensity so, yes they are clustered</p>
+<div id="create-random-sample" class="section level2">
+<h2>Create random sample</h2>
+<p>Create a random sample of meuse (n=10). Hint; sample with
+1:nrow(meuse) to create sample index</p>
+<pre class="r"><code>( mrs &lt;- meuse[sample(1:nrow(meuse), 10),] )
+  plot(st_geometry(mrs))</code></pre>
 </div>
-<div id="ripleys-k-statistic" class="section level2">
-<h2>Ripley’s-K statistic</h2>
-<p>So, the wetlands are clustered in space. What is the range of spatial
-structure? We can use a Ripley’s-K statistic to assess the spatial
-dispersion of the clustering process.</p>
-<p>What do data following a CSR process look like in a Ripley’s K of
-same size as dataset? Apply a CSR randomization and compair the real
-data in a K statistic.</p>
-<div class="line-block">  See: rpoispp, Kest</div>
-<pre class="r"><code>random.wet &lt;- rpoispp(length(wetland[,1]))
-  plot(random.wet)        # spatially random &quot;wetland&quot; synthetic data
-  
-  plot(Kest(wetland))     # Ripley&#39;s K on observed process    
-  plot(Kest(random.wet))  # Ripley&#39;s K on synthetic data</code></pre>
+<div id="subset-using-bracket-query" class="section level2">
+<h2>Subset using bracket query</h2>
+<p>Query the meuse attribute “copper” to subset data to greater
+than/equal to 75th percentile of copper, plot results. Hint; bracket
+index using “&gt;=” and quantile function</p>
+<pre class="r"><code>( cop075 &lt;- meuse[meuse$copper &gt;= quantile(meuse$copper, p=0.75),] )
+  plot(cop075[&quot;copper&quot;])</code></pre>
 </div>
+<div id="query-to-get-percent" class="section level2">
+<h2>Query to get percent</h2>
+<p>Calculate the percent of class 1 in “soil” attribute using a brack
+query</p>
+<pre class="r"><code>nrow(meuse[meuse$soil == &quot;1&quot;,]) / nrow(meuse)</code></pre>
 </div>
-<div id="spatial-dependency---global-autocorrelation" class="section level1">
-<h1><strong>3.3 Spatial dependency - global
-autocorrelation</strong></h1>
-<p>What if you wish to know if observations of species abundance are
-spatially autocorrelated (observations correlated with themselves in
-space), from either an inferential and violation of assumptions
-perspective? We will conduct an evaluation of autocorrelation and
-testing of effects on linear model assumptions. In a frequentest
-context, spatial autocorrelation is a special case of the
-pseudo-replication problem.</p>
-<div id="read-data-2" class="section level2">
-<h2>Read data</h2>
-<p>Read the “RALU_abundance.csv” data and coerce into a sf POINT
-object</p>
-<pre class="r"><code>sdata &lt;- read.csv(file.path(data.dir, &quot;RALU_abundance.csv&quot;))
-  sdata &lt;- st_as_sf(sdata, coords = c(&quot;X&quot;, &quot;Y&quot;), 
-                    crs = 26911, agr = &quot;constant&quot;)
+<div id="aggregrated-statistics" class="section level2">
+<h2>Aggregrated statistics</h2>
+<p>Calculate the mean of cadmium for all soil classes. Hint; tapply</p>
+<pre class="r"><code>tapply(meuse$cadmium, meuse$soil, mean)</code></pre>
+</div>
+<div id="random-sample-polygons" class="section level2">
+<h2>Random sample polygons</h2>
+<p>Buffer observsations 1, 50 and 100 to 500m and then create 10 random
+samples for each polygon. Hint; st_buffer, st_sample, for or lapply,
+st_as_sf</p>
+<pre class="r"><code>p &lt;- st_buffer(meuse[c(1,50,100),], dist=500)
+  s &lt;- st_sample(p, size = 10) 
+    plot(st_geometry(p))
+      plot(s, pch=20, add=TRUE)
+   
+# Wait, that&#39;s not 10 per-polygon. We need to iterate over
+# the polygons (for or lapply)
 
-# distinct(sdata)</code></pre>
-</div>
-<div id="spatial-weights-matrix-wij" class="section level2">
-<h2>Spatial Weights Matrix (Wij)</h2>
-<p>We first we need to specify a Wij matrix representing a hypothesis of
-spatial relationships (e., contingency, distance, weighted). The spdep
-library implements many well established methods for quantifying spatial
-depedency.</p>
-<p>First, plot the Probability Density Function (PDF) of “abundance” to
-examine the underlying distribution. Then, create a kNN neighbor matrix
-(all neighbors) from the sdata (specify contiguity by distance). This
-requires finding the max distance, then creating a distance matrix.</p>
-<div class="line-block">  See: density, knearneigh and knn2nb, nbdists,
-max, dnearneigh, nb2listw with style = “W” (for weights)</div>
-<pre class="r"><code>plot(density(sdata$abundance))
+s &lt;- do.call(rbind,   
+  lapply(1:nrow(p), function(i) { st_as_sf(st_sample(p[i,], 
+         size = 10))} ) )     
 
-( nm &lt;- knn2nb(knearneigh(sdata)) )
+plot(st_geometry(p))
+  plot(s, pch=20, add=TRUE) </code></pre>
+</div>
+<div id="distance-based-random-sample" class="section level2">
+<h2>Distance-based random sample</h2>
+<p>Draw a distance based random sample from a single observation drawn
+from meuse (sp) using; xy &lt;- meuse[2,] Use 15-100 and 100-200 for
+distances with 50 random samples, plot results. Hint; sample.annulus</p>
+<p>Note; Because I have not yet updated this function in spatialEco we
+must use an sp class object (package updates are pending and will be
+released soon). As such use data(meuse) and then coordinates(meuse)
+&lt;- ~x+y to create needed object.</p>
+<pre class="r"><code>data(meuse)
+  coordinates(meuse) &lt;- ~x+y
+  proj4string(meuse) &lt;- CRS(&quot;+init=epsg:28992&quot;)
 
-# find the max distance
-# adding 1 is a rough fix for empty neighbors 
+xy &lt;- meuse[2,]
 
-( max.dist &lt;- max(unlist(nbdists(nm, sdata))) + 1 ) 
-#( max.dist &lt;- units::drop_units(max(st_distance(sdata))) ) #matrix approach
+rs100 &lt;- sample.annulus(xy, r1=50, r2=100, n = 50, type = &quot;random&quot;)
+rs200 &lt;- sample.annulus(xy, r1=100, r2=200, n = 50, type = &quot;random&quot;)
 
-# create contiguity by distance, including all distances
+plot(rs200, pch=20, col=&quot;red&quot;)
+  points(rs100, pch=20, col=&quot;blue&quot;)
+  points(xy, pch=20, cex=2, col=&quot;black&quot;)
+  box()
+  legend(&quot;topright&quot;, legend=c(&quot;50-100m&quot;, &quot;100-200m&quot;, &quot;source&quot;), 
+         pch=c(20,20,20), col=c(&quot;blue&quot;,&quot;red&quot;,&quot;black&quot;))</code></pre>
+</div>
+</div>
+<div id="functions" class="section level1">
+<h1><strong>1.3 Functions</strong></h1>
+<div id="step-through-and-dissect-function" class="section level2">
+<h2>Step through and dissect function</h2>
+<p>Calculate the Nearest Neighbor Index (NNI), using spatialEco::nni
+function, using meuse (sp).</p>
+<p>Then, step through and dissect the the function by typeing
+spatailEco::nni to return the code then (nni is included in collopased
+code block):</p>
+<ol style="list-style-type: lower-alpha">
+<li><p>defining parameters x = meuse and win = “hull”</p></li>
+<li><p>stepping through each line and if block, exploring the value and
+class of each output</p></li>
+</ol>
+<p>How could you make this function work with sf objects?</p>
+<pre class="r"><code>data(meuse)
+  coordinates(meuse) &lt;- ~x+y
 
-nb &lt;- dnearneigh(sdata, 0, max.dist)
+nni(meuse)
 
-# Then, create Wij spatial weight matrix
-( sweight &lt;- nb2listw(nb, style=&quot;W&quot;) )</code></pre>
-</div>
-<div id="calculate-morans-i-global-autocorrelation" class="section level2">
-<h2>Calculate Moran’s-I (global autocorrelation)</h2>
-<p>Calculate Moran’s I for the abundance variable. Note; abundance data
-are an occupancy estimate as original data did not have measured
-abundance.</p>
-<ul>
-<li>sdata[,Var] - identifies the target variable in sdata</li>
-<li>sweight - this is the listw object</li>
-<li>length(nb) - number of zones.</li>
-</ul>
-<div class="line-block">   See: using weights (Wij) matrix “sweight”,
-moran.test, moran.mc</div>
-<pre class="r"><code># Moran&#39;s-I (global autocorrelation)
-( abund.I &lt;- moran(sdata$abundance, sweight, length(nb), Szero(sweight)) )
-
-#  Are the results significant? 
-nsim &lt;- 999
-moran.test(sdata$abundance, nb2listw(nb, style=&quot;W&quot;))
-  ( Iperm &lt;- moran.mc(sdata$abundance, listw=sweight, nsim=nsim) ) 
-
-#*** Describe the distribution of the permuted Moran&#39;s I
-mean(Iperm$res[1:nsim])
-var(Iperm$res[1:nsim])
-summary(Iperm$res[1:nsim])</code></pre>
-</div>
-<div id="calculate-gearys-c-global-autocorrelation" class="section level2">
-<h2>Calculate Geary’s-C (global autocorrelation)</h2>
-<p>Calculate Geary’s-C for the abundance variable. Are the results
-statistically significant? Test this using a permutation test.</p>
-<p>Interesting side note; the Geary’s-C can be decomposed into
-semivariance used in geostatistics.</p>
-<div class="line-block">   See: geary, geary.mc, what are the
-expectations?</div>
-<pre class="r"><code>geary(sdata$abundance, sweight, length(nb), length(nb)-1, Szero(sweight))
-
-nsim &lt;- 999
-cperm &lt;- geary.mc(sdata$abundance, nb2listw(nb),
-                  nsim=nsim, alternative=&quot;greater&quot;) 
-  plot(cperm)
-
-# assess if normal distribution.  
-mean(cperm$res)
-var(cperm$res)
-summary(cperm$res)</code></pre>
-</div>
-<div id="calculate-getis-ord-global-autocorrelation" class="section level2">
-<h2>Calculate Getis-Ord (global autocorrelation)</h2>
-<p>Getis-ord is a global statistic that compliments local
-statistics.</p>
-<p>Calculate Getis-Ord for abundance, you will need to transform your
-Wij matrix to binary contingency representation.</p>
-<div class="line-block">  See: globalG.test</div>
-<pre class="r"><code>bweights &lt;- nb2listw(nb, style=&quot;B&quot;)
-( globalG &lt;- globalG.test(sdata$abundance, bweights,  
-                          alternative=&quot;greater&quot;, 
-                                      adjust.n=TRUE) )</code></pre>
-</div>
-</div>
-<div id="spatial-dependency---model-assumptions" class="section level1">
-<h1><strong>3.4 Spatial dependency - model assumptions</strong></h1>
-<p>Assessing impacts of autocorrelation on linear model assumptions such
-as iid and residual error.</p>
-<div id="read-data-3" class="section level2">
-<h2>Read data</h2>
-<pre class="r"><code># read data to build the objects for a slightly different set of data
-ralu.lm &lt;- st_read(file.path(data.dir, &quot;ralu.lm.shp&quot;))
-  
-  # build neighbor list and find the max distance
-  nm.ralu &lt;- knn2nb(knearneigh(ralu.lm)) 
-  max.dist &lt;- max(unlist(nbdists(nm.ralu, ralu.lm))) + 1 
-  
-  # Build Wij using distance, not proximity (kNN)
-  nb.ralu &lt;- dnearneigh(ralu.lm, 0, max.dist)
-    sweight.ralu &lt;- nb2listw(nb.ralu, style=&quot;W&quot;)</code></pre>
-</div>
-<div id="create-linear-model" class="section level2">
-<h2>Create linear model</h2>
-<p>Create a linear model explaining abundance using the formula
-“abundance ~ Elev + pH + Depth + Area + Dforest” and plot regression
-diagnostics.</p>
-<div class="line-block">  See: lm</div>
-<pre class="r"><code>summary( froga.lm &lt;- lm(abundance ~ Elev + pH + Depth + Area + Dforest, 
-                        data= ralu.lm) )
-  plot(froga.lm, las = 1)    </code></pre>
-</div>
-<div id="morans-i-on-regression-residuals" class="section level2">
-<h2>Moran’s-I on regression residuals</h2>
-<p>Using the Lagrange spatial dependence test test if there is an effect
-on the regression residual error. If you create a data.frame from the
-residuals of lm object, you can calculate Moran’s-I. What does it mean
-if there is significant autocorrelation in the residuals?</p>
-<div class="line-block">   See: lm.morantest; lm.LMtests, moran.test,
-residuals</div>
-<pre class="r"><code># option 1 - lm.LMtests, Lagrange spatial dependence test on residual error
-( ralu.lagrange &lt;- lm.LMtests(residuals(froga.lm), nb2listw(nb.ralu)) )
-
-# option 2 - lm.morantest, moran residuals
-( moran.res.ralu &lt;- lm.morantest(froga.lm, nb2listw(nb.ralu, style=&quot;W&quot;)) )
-
-# Option 3 - moran.test, moran&#39;s I directly on residuals
-( ralu.moran.res &lt;- moran.test(residuals(froga.lm), 
-                      nb2listw(nb.ralu, style=&quot;W&quot;)) )</code></pre>
-</div>
-</div>
-<div id="spatial-dependency---local-autocorrelation" class="section level1">
-<h1><strong>3.4 Spatial dependency - local autocorrelation</strong></h1>
-<p>Historically, local autocorrelation has been used to indicate spatial
-outliers and is considered a nonstationary process. However, while it
-poses many statistical problems for traditional models, there is
-tremendous opportunity to leverage it in inferential ways. The
-Geographically Weighted Regression (GWR) method was developed
-specifically to address spatial nonstationarity problems (although, it
-is a horrible model, which is why I do not teach it. please do not use
-GWR unless for simple exploratory analysis of local autocorrelation!).
-The LISA (local Moran’s-I) statistic can be used to find juxtaposition
-of values (not bounded -1 to 1) ie., high-low, high-high, low-low,
-low-high which can be very useful in understanding the spatial
-distribution of values. Other local statistics (eg., Local-G) can be
-used to indicate processes such as local hot spots.</p>
-<div id="read-data-4" class="section level2">
-<h2>read data</h2>
-<pre class="r"><code>sdata &lt;- read.csv(file.path(data.dir, &quot;RALU_abundance.csv&quot;))
-  sdata &lt;- st_as_sf(sdata, coords = c(&quot;X&quot;, &quot;Y&quot;), 
-                    crs = 26911, agr = &quot;constant&quot;)</code></pre>
-</div>
-<div id="local-g" class="section level2">
-<h2>Local-G</h2>
-<p>Calculate the local-G measure(s) of local autocorrelation and plot
-them.</p>
-<div class="line-block">   See: localG, localmoran (and weight matrix),
-crossCorrelation</div>
-<pre class="r"><code># adding 1 is a rough fix for empty neighbors 
-nm &lt;- knn2nb(knearneigh(sdata)) 
-max.dist &lt;- max(unlist(nbdists(nm, sdata))) + 1 
-nb &lt;- dnearneigh(sdata, 0, max.dist)
-
-#*** local G
-G &lt;- localG(sdata$abundance, nb2listw(include.self(nb), style=&quot;B&quot;))
-  sdata$G &lt;- as.numeric(G)
-plot(sdata[&quot;G&quot;], main=&quot;Getis-Ord Local G*&quot;, pch=20)
-  plot(density(sdata$G))
-
-## For reference, spdep approach (please skip)
-#  #*** Create local autocorrelation object &quot;I&quot; using &quot;sdata&quot; 
-#  nb &lt;- dnearneigh(sdata, 0, max(as.numeric(st_distance((sdata))/2)
-#  I.local &lt;- localmoran(sdata$abundance, nb2listw(nb, style=&quot;B&quot;))
-#    names(I.local)[9] &lt;- &quot;p.value&quot;
-#
-#  #*** create sp object of results
-#  I &lt;- sdata
-#    I &lt;- cbind(sdata, as.data.frame(I.local))
-#     
-#  # Plot critical values
-#  plot(I[, ]&quot;Z.Ii&quot;], xlab=&quot;Local Moran&#39;s-I&quot;)
-#  
-#  #*** High and Low have no distinct I values so one must create  
-#  #    a vector to distinguish significant and high hotspots
-#  I &lt;- cbind(I, HotSpots = ifelse( I.local[,5] &lt;= 0.05 &amp; 
-#               I.local[,4] &gt;= mean(I.local[,4]), 1, 0) )
-#      I$HotSpots &lt;- as.factor(I$HotSpots)  
-#        plot(I[&quot;HotSpots&quot;], xlab=&quot;Local Moran&#39;s-I Hot Spots&quot;, 
-#            col=c(&quot;blue&quot;,&quot;red&quot;) )  </code></pre>
-<p>Here is where I get taken behind the barn and shot. After all these
-functions for deriving Wij and complex syntax for autocorrelation
-statistics now, the easy way using the GEODA API “rgeoda”. However,
-there are many good reasons for being familiar with the spdep
-functions</p>
-<p>Calculate the local Moran’s (LISA) using the traditional Anselin
-(1995) approach using GeoDa. Note that rgeoda has several Wij options
-available including things like adaptive bandwidth kernel matrices so,
-lots of options. In this case please just the good ol’ queens
-contingency.</p>
-<div class="line-block">   See; queen_weights and local_moran</div>
-<p>Anselin, L. 1995. Local indicators of spatial association,
-Geographical Analysis, 27:93–115</p>
-<pre class="r"><code># Create Queen contiguity, also see distance_weights, knn_weights 
-# and  kernel_weights for alternate Wij options
-w &lt;- queen_weights(sdata)
-  is_symmetric(w)
-  weights_sparsity(w)
-  get_neighbors(w, idx = 1)
-
-# Observation-level spatial lags
-spatial_lag(w, sdata[&quot;abundance&quot;])  
-
-# Calculate LISA local autocorrelation. Local Geary, 
-# Getis-Ord, quantile LISA and Join Count (binomial) 
-# as univariate or multivariate are also available      
-( lisa &lt;- local_moran(w, sdata[&quot;abundance&quot;]) )
-    lisa_colors &lt;- lisa_colors(lisa)
-    lisa_labels &lt;- lisa_labels(lisa)
-    lisa_clusters &lt;- lisa_clusters(lisa)
-plot(st_geometry(sdata), pch=20,  
-     col=sapply(lisa_clusters, function(x){return(lisa_colors[[x+1]])}))
-     box()
-  title(main = &quot;Local Moran Map of abundance&quot;)
-  legend(&#39;bottomleft&#39;, legend = lisa_labels, pch=c(20), col = lisa_colors)</code></pre>
-</div>
-<div id="cross-correlation-algebraic-approximation" class="section level2">
-<h2>Cross correlation algebraic approximation</h2>
-<p>Local spatial association using a matrix algebraic approximation
-following Chen (2015). This is a very different way of solving for
-global and local autocorrelation and is predicated on the specification
-of the Wij matrix. The functional form of Wij represents a hypothesis of
-the spatial process so, is very different than just defining distance
-decay.</p>
-<p>Chen., Y. (2015) A New Methodology of Spatial Cross-Correlation
-Analysis. PLoS One 10(5):e0126158. <a href="doi:10.1371/journal.pone.0126158" class="uri">doi:10.1371/journal.pone.0126158</a></p>
-<p>Create local autocorrelation object “I” using “sdata” and the
-crossCorrelation function</p>
-<pre class="r"><code>( I &lt;- crossCorrelation(sdata$abundance, 
-                        coords = st_coordinates(sdata), 
-                        clust = TRUE, k=99) )
-                        
-#*** create sp object of results
-sdata$lisa &lt;- I$SCI[,&quot;lsci.xy&quot;]
-  sdata$lisa.clust &lt;- as.factor(I$cluster)
-  
-      spplot(sdata, &quot;lisa&quot;)
-      spplot(sdata, &quot;lisa.clust&quot;)     </code></pre>
-</div>
-</div>
-<div id="time-series-analysis" class="section level1">
-<h1><strong>3.5 - Time-series analysis</strong></h1>
-<div id="read-data-5" class="section level2">
-<h2>Read data</h2>
-<p>Add LAI raster object, using “lai.tif”, contaning 71 monthly layers,
-we will also create a date vector representing the image dates</p>
-<pre class="r"><code>( lai &lt;- rast(file.path(data.dir, &quot;lai.tif&quot;)) )
-  ( dates &lt;- date_seq(&quot;2000/01/01&quot;, &quot;2005-12-01&quot;, step=&quot;month&quot;) )
-
-# plot 1st and 50th rasters
-dev.new(height=6, width=11)
-  plot(lai[[c(1,50)]])</code></pre>
-</div>
-<div id="subset-single-pixel-time-series-observation" class="section level2">
-<h2>Subset single pixel time-series observation</h2>
-<p>Using x,y coordinates cbind(13028094, 146990) extract a pixel
-time-series from the lai stack</p>
-<p>You can also try plotting a single raster layer and then using
-click() to get different coordinates printed to screen see,
-cellFromXY</p>
-<pre class="r"><code>( x &lt;- as.numeric(lai[cellFromXY(lai, cbind(13028094, 146990))]) )</code></pre>
-</div>
-<div id="imputing-missing-values" class="section level2">
-<h2>Imputing missing values</h2>
-<p>An important pre-processing set for time-series analysis is to
-address missing values. This can be done with an imputation approach
-using a local local polynomial regression. Add a few NA’s into the
-time-series vector (copy to a new object first) and then apply an
-imputation. See; impute.loess with smooth = FALSE (will only modify
-NA’s)</p>
-<pre class="r"><code>xna &lt;- x
-  xna[c(20, 30, 50)] &lt;- NA
-
-print(xna)  
-impute.loess(xna, s = 0.4, smooth = FALSE)</code></pre>
-</div>
-<div id="smoothing-time-series" class="section level2">
-<h2>Smoothing time-series</h2>
-<p>A second consideration in exploratory analysis of time-seires data is
-addressing outliers and stochastic. This is commonly addressed through
-smoothing the series. We can use a local polynomial regression or a
-Savitzky-Golay convolution quadratic filter (Savitzky &amp; Golay
-1964).</p>
-<p>Apply a smoothing function and plot. See; impute.loess impute.loess
-with smooth = TRUE (will smooth entire series), sg.smooth (for
-reference)</p>
-<p>Savitzky, A., and Golay, M.J.E. (1964). Smoothing and
-Differentiation<br />
-of Data by Simplified Least Squares Procedures. Analytical Chemistry.
-36(8):1627-39</p>
-<pre class="r"><code>x.smooth &lt;- impute.loess(x, s = 0.4, smooth = TRUE)
-  dev.new(height=6, width=14)
-    plot(dates, x, type=&quot;l&quot;)
-      lines(dates, x.smooth, col=&quot;red&quot;)
-    legend(&quot;topleft&quot;, legend=c(&quot;raw&quot;, &quot;smoothed&quot;), 
-           lty=c(1,1), col=c(&quot;black&quot;,&quot;red&quot;))  </code></pre>
-</div>
-<div id="smoothing-time-series-confidence" class="section level2">
-<h2>Smoothing time-series (confidence)</h2>
-<p>Evaluate confidence of fit via permutation test using the same
-smoothing parameter (“s” and “span” arguments) as above. See;
-loess.boot</p>
-<pre class="r"><code>sb &lt;- loess.boot(1:length(x), x, nreps=99, 
-                 confidence=0.90, span=0.40)
-  dev.new(height=6, width=14)
-    plot(sb)</code></pre>
-</div>
-<div id="create-time-series-class-object" class="section level2">
-<h2>Create time-series class object</h2>
-<p>Create a ts (time-series) object from our lai time-series vector.
-These object types are a real pain and I try to avoid them whenever
-possible however, there are some convenient functions that require a ts
-class.</p>
-<pre class="r"><code>x.ts &lt;- ts(x.smooth, start= c(2000, 01), frequency = 12)</code></pre>
-</div>
-<div id="specify-trend-model" class="section level2">
-<h2>Specify trend model</h2>
-<p>Specify trend regression model without any autoregressive (AR)
-terms</p>
-<div class="line-block">   See; ts, forecast, tslm</div>
-<pre class="r"><code>fit &lt;- forecast::tslm(x.ts ~ trend)
-  trend &lt;- forecast::forecast(fit, h=length(x), level=0)
-
-  # Plot linear trend   
-  dev.new(height=6, width=14)
-    plot(dates, x, type=&quot;l&quot;, main=&quot;LAI time-series, no correction&quot;)
-      lines(dates, trend$fitted, lwd = 2)</code></pre>
-</div>
-<div id="periodicity" class="section level2">
-<h2>Periodicity</h2>
-<p>Account for periodicity (seasonal effects) and specify detrended
-linear model</p>
-<p>now you can see that we are getting somewhere in representing a more
-accurate trend</p>
-<div class="line-block">   See; decompose, tslm, forecast</div>
-<pre class="r"><code># decomposed trend and seasonal components
-detrend &lt;- decompose(ts(x, start= c(2000, 01), frequency = 12))
-  fit.dt &lt;- forecast::tslm(detrend$trend ~ trend)
-    trend.dt &lt;- forecast(fit.dt, h=length(x), level=0)
-
-  dev.new(height=6, width=14)
-    plot(detrend)
-
-  dev.new(height=6, width=14)
-    plot(detrend$trend, type=&quot;l&quot;, main=&quot;LAI detrended time-series&quot;)
-      lines(trend.dt$fitted, lwd = 2)</code></pre>
-</div>
-</div>
-<div id="raster-time-series-analysis" class="section level1">
-<h1><strong>3.6 - Raster time-series analysis</strong></h1>
-<p>We can apply the correct componets of time-series exploratory
-analysis to a raster time-series, treating each pixel as an independent
-serial measure. We can also apply formal models across the raster
-time-series.</p>
-<div id="temporal-statistical-aggregation" class="section level2">
-<h2>Temporal statistical aggregation</h2>
-<p>Create a raster time-series object and calculate yearly means, don’t
-forget that dates object that we created. The rts library provides
-functionality for deriving temporal aggregations. The resulting object
-is a rts class and the actual raster data is in the <span class="citation">@raster</span> slot</p>
-<div class="line-block">   See; rts, apply.yearly</div>
-<pre class="r"><code>lai.ts &lt;- rts(lai, dates)
-  means &lt;- apply.yearly(lai.ts, mean)@raster
-plot(means)</code></pre>
-</div>
-<div id="rate-of-change" class="section level2">
-<h2>Rate of change</h2>
-<p>Calculate a simple delta as well as rate of change between two
-rasters and plot. Rate of change can be derived using (x-y)/x.</p>
-<div class="line-block">   See; lapp</div>
-<pre class="r"><code>chg &lt;- means[[1]] - means[[6]]
-  roc &lt;- lapp(means[[c(1,6)]], fun=function(x, y) { (x - y) / x })
-
-  dev.new(height=12, width=10)
-    par(mfrow=c(2,1))
-      plot(chg, main=&quot;delta&quot;)
-      plot(roc, main=&quot;rate of change&quot;)</code></pre>
-</div>
-<div id="mann-kendall" class="section level2">
-<h2>Mann-Kendall</h2>
-<p>The Kendall Tau statistic represents the temporal correlation across
-a time-series. The Theil-Sen is a monotonic slope based on a repeted
-medians. This is a non-parametric test but, does suffer from the
-long-run problem.</p>
-<p>Calculate the Kendall Tau temporal correlation and Theil-Sen Slope
-and plot.</p>
-<div class="line-block">   See; raster.kendall</div>
-<pre class="r"><code>k &lt;- raster.kendall(stack(means), tau = TRUE)
-  dev.new(height=6, width=11)
-    plot(k)</code></pre>
-</div>
-<div id="raster-time-series-trend-model" class="section level2">
-<h2>Raster time-series trend model</h2>
-<p>Now, let’s put a few pieces together. Here is an approach for putting
-a modeling framework into a function that can then be passed to a raster
-time-series object.</p>
-<p>Apply the detrended regression to our raster time-series to get a
-spatial estimate of the detrended slope. Below is a function for
-returning slope of time-series detrended regression.</p>
-<pre class="r"><code>ts.trend &lt;- function(y, d=c(2000, 01)) {
-  y &lt;- na.omit(y)
-  if(length(y) &gt;= 12) { 
-    detrend &lt;- stats::decompose(stats::ts(y, start= c(2000, 01),
-                                  frequency = 12))
-      trend &lt;- forecast::tslm(detrend$trend ~ trend)
-      s &lt;- stats::coefficients(trend)[2] 
-  } else {   
-      s &lt;- NA 
-  }
-  return(as.numeric(s))
+nni &lt;- function(x, win = &quot;hull&quot;) {
+    if (!class(x) == &quot;SpatialPointsDataFrame&quot; &amp; !class(x) == &quot;SpatialPoints&quot;) 
+      stop(deparse(substitute(x)), &quot; MUST BE A sp POINTS OBJECT&quot;)
+    if (win == &quot;hull&quot;) {
+      w &lt;- spatstat.geom::convexhull.xy(sp::coordinates(x))
+    }
+    if (win == &quot;extent&quot;) {
+      e &lt;- as.vector(sp::bbox(x))
+      w &lt;- spatstat.geom::as.owin(c(e[1], e[3], e[2], e[4]))
+    }
+    x &lt;- spatstat.geom::as.ppp(sp::coordinates(x), w)
+    A &lt;- spatstat.geom::area.owin(w)
+      obsMeanDist &lt;- sum(spatstat.geom::nndist(x))/x$n
+        expMeanDist &lt;- 0.5 * sqrt(A / x$n)
+          se &lt;- 0.26136 / ((x$n**2.0 / A)**0.5)
+        nni &lt;- obsMeanDist / expMeanDist
+      z &lt;- (obsMeanDist - expMeanDist) / se
+    return(list(NNI = nni, z.score = z, p = 2*stats::pnorm(-abs(z)),  
+           expected.mean.distance = expMeanDist,
+           observed.mean.distance = obsMeanDist))
 }
 
-# pass function to terra app and plot
-slp &lt;- app(lai, ts.trend)
+x = meuse
+win = &quot;hull&quot;
 
-dev.new(height=11, width=8)
-  par(mfcol=c(2,1))
-    plot(slp, main=&quot;detrended slope&quot;)
-    plot(rast(k[[1]]), main=&quot;Kendall slope&quot;)</code></pre>
+w &lt;- spatstat.geom::convexhull.xy(sp::coordinates(x))
+x &lt;- spatstat.geom::as.ppp(sp::coordinates(x), w)
+A &lt;- spatstat.geom::area.owin(w)
+obsMeanDist &lt;- sum(spatstat.geom::nndist(x))/x$n
+expMeanDist &lt;- 0.5 * sqrt(A / x$n)
+se &lt;- 0.26136 / ((x$n**2.0 / A)**0.5)
+nni &lt;- obsMeanDist / expMeanDist
+z &lt;- (obsMeanDist - expMeanDist) / se
+p = 2*stats::pnorm(-abs(z))</code></pre>
 </div>
+<div id="write-observed-mean-distance-function" class="section level2">
+<h2>Write observed mean distance function</h2>
+<p>Write a function that returns observed mean distance from the above
+nni function, don’t worry about bells-and-whistles but write it to take
+an sf object. The object to return from the nni function is
+“obsMeanDist”</p>
+<pre class="r"><code>data(meuse)
+meuse &lt;- st_as_sf(meuse, coords = c(&quot;x&quot;, &quot;y&quot;), crs = 28992, 
+                  agr = &quot;constant&quot;)
+  
+omd &lt;- function(x) {
+    w &lt;- convexhull.xy(st_coordinates(x))
+    x &lt;- as.ppp(st_coordinates(x), w)
+    A &lt;- area.owin(w)
+    obsMeanDist &lt;- sum(nndist(x)) / x$n
+  return(obsMeanDist)
+}
+
+omd(meuse)</code></pre>
+</div>
+</div>
+<div id="basic-plotting-of-spatial-objects" class="section level1">
+<h1><strong>1.4 Basic plotting of spatial objects</strong></h1>
+<div id="plot-attribute-query" class="section level2">
+<h2>Plot attribute query</h2>
+<p>Plot only soil class 1, Then, Make a 4 panel plot window and plot all
+points, and soil classes 1, 2 and 3 as separate plots. You need to use
+brackets [“soil”] to define which attribute you wish to plot or use
+st_geometry. To set the plot window to muliple pannels use
+par(mfrow=c(2,2))</p>
+<p>hint; plot can accept a bracket index to subset the data.</p>
+<pre class="r"><code>data(meuse)
+meuse &lt;- st_as_sf(meuse, coords = c(&quot;x&quot;, &quot;y&quot;), crs = 28992, 
+                  agr = &quot;constant&quot;)
+
+plot(meuse[meuse$soil == &quot;1&quot;,][&quot;soil&quot;], pch=19)
+
+par(mfrow=c(2,2))
+  plot(st_geometry(meuse), pch=19)
+    box()
+  plot(st_geometry(meuse[meuse$soil == &quot;1&quot;,]), pch=19)
+    box()
+  plot(st_geometry(meuse[meuse$soil == &quot;2&quot;,]), pch=19)
+    box()
+  plot(st_geometry(meuse[meuse$soil == &quot;3&quot;,]), pch=19)
+    box()</code></pre>
+</div>
+<div id="plot-nominal-colors" class="section level2">
+<h2>Plot nominal colors</h2>
+<p>Create a color vector for the soil column and plot meuse by soil
+class colors (see ifelse, plot with col and pch arguments, use “red”,
+“green” and “blue” for your “col” colors). Hint; you can pass a vector
+of colors to the col argument in plot.</p>
+<pre class="r"><code>data(meuse)
+meuse &lt;- st_as_sf(meuse, coords = c(&quot;x&quot;, &quot;y&quot;), crs = 28992, 
+                  agr = &quot;constant&quot;)
+
+my.col &lt;- ifelse(meuse$soil == &quot;1&quot;, &quot;red&quot;,
+            ifelse(meuse$soil == &quot;2&quot;, &quot;green&quot;, 
+                    ifelse(meuse$soil == &quot;3&quot;, &quot;blue&quot;, NA)))
+               
+plot(st_geometry(meuse), pch=19, col=my.col)</code></pre>
+</div>
+<div id="plot-continuous-colors" class="section level2">
+<h2>Plot continuous colors</h2>
+<p>Using a continous attribute (eg., cadmium) in meuse, define breaks
+and plot using the breaks argument.</p>
+<pre class="r"><code>data(meuse)
+meuse &lt;- st_as_sf(meuse, coords = c(&quot;x&quot;, &quot;y&quot;), crs = 28992, 
+                  agr = &quot;constant&quot;)
+
+bks &lt;- seq(min(meuse$cadmium), max(meuse$cadmium), 
+                by = diff(range(meuse$cadmium))/10) 
+  plot(meuse[&quot;cadmium&quot;], breaks = bks, pch=20)</code></pre>
+</div>
+</div>
+<div class="footnotes footnotes-end-of-document">
+<hr />
+<ol>
+<li id="fn1"><p>The Nature Conservancy, <a href="mailto:jeffrey_evans@tnc.org" class="email">jeffrey_evans@tnc.org</a><a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+</ol>
 </div>
 
 
