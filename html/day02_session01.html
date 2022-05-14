@@ -9,10 +9,10 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="Melanie A. Murphy &amp; Jeffrey S. Evans" />
+<meta name="author" content="Jeffrey S. Evans" />
 
 
-<title>Graph-theoretic and Gravity Models</title>
+<title>spatialR workshop - Spatial data introduction</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -450,628 +450,616 @@ pre code {
 
 
 
-<h1 class="title toc-ignore">Graph-theoretic and Gravity Models</h1>
-<h4 class="author">Melanie A. Murphy &amp; Jeffrey S. Evans</h4>
-<h4 class="date">2/21/2022</h4>
+<h1 class="title toc-ignore">spatialR workshop - Spatial data
+introduction</h1>
+<h4 class="author">Jeffrey S. Evans</h4>
+<h4 class="date">5/16/2022</h4>
 
 </div>
 
 <div id="TOC">
 <ul>
-<li><a href="#setup"><strong>Setup</strong></a>
+<li><a href="#setup">Setup</a>
 <ul>
 <li><a href="#add-required-libraries-and-set-working-environment">Add
 required libraries and set working environment</a></li>
 </ul></li>
-<li><a href="#wetland-complex-data-preparation"><strong>Wetland complex
-data preparation</strong></a>
+<li><a href="#vector-analysis">2.1 - Vector analysis</a>
 <ul>
-<li><a href="#read-in-wetlands-data">Read in wetlands data</a></li>
-<li><a href="#create-wetlands-graph">Create wetlands graph</a></li>
-<li><a href="#graph-metrics">Graph metrics</a></li>
-<li><a href="#plot-graph-metric">Plot graph metric</a></li>
+<li><a href="#read-data">Read data</a></li>
+<li><a href="#buffer-points-to-200m-hint-st_buffer">Buffer points to
+200m Hint; st_buffer</a></li>
+<li><a href="#clip-polygons">Clip polygons</a></li>
+<li><a href="#calculate-spatial-area-fractions">Calculate spatial area
+fractions</a></li>
+<li><a href="#point-in-polygon">Point in polygon</a></li>
+<li><a href="#spatial-aggregration-dissolve">Spatial aggregration
+(dissolve)</a></li>
+<li><a href="#spatial-aggregration-zonal">Spatial aggregration
+(zonal)</a></li>
 </ul></li>
-<li><a href="#field-data-preparation"><strong>Field-data
-preparation</strong></a>
+<li><a href="#raster-data-analysis">2.2 Raster data analysis</a>
 <ul>
-<li><a href="#read-site-data">Read site data</a></li>
-<li><a href="#saturated-graph">Saturated Graph</a>
-<ul>
-<li><a href="#create-graph-from-site-locations">1. Create graph from
-site locations</a></li>
-<li><a href="#merge-the-graph-with-genetic-distance.">2. Merge the graph
-with genetic distance.</a></li>
+<li><a href="#read-raster-data-single-band-and-multi-band">Read raster
+data (single band and multi band)</a></li>
+<li><a href="#global-raster-statistics">Global raster
+statistics</a></li>
+<li><a href="#raster-transformations">Raster transformations</a></li>
+<li><a href="#multi-band-statistics">Multi-band statistics</a></li>
+<li><a href="#multi-band-functions">Multi-band functions</a></li>
+<li><a href="#focal-statistics">Focal statistics</a></li>
+<li><a href="#focal-functions">Focal functions</a></li>
+<li><a href="#reproject-raster">Reproject raster</a></li>
 </ul></li>
-</ul></li>
-<li><a href="#spatial-model-data-prepration"><strong>Spatial model data
-prepration</strong></a>
+<li><a href="#rastervector-integration">2.3 - Raster/Vector
+integration</a>
 <ul>
-<li><a href="#read-raster-data-using-terra">Read raster data using
-terra</a></li>
-<li><a href="#reclassify-wetlands">Reclassify wetlands</a></li>
-<li><a href="#calculate-the-proportion-of-the-landscape-around-sites">Calculate
-the proportion of the landscape around sites</a>
-<ul>
-<li><a href="#challenge">Challenge:</a></li>
+<li><a href="#read-data-1">Read data</a></li>
+<li><a href="#extract-raster-values-for-points">Extract raster values
+for points</a></li>
+<li><a href="#extract-raster-values-for-polygons">Extract raster values
+for polygons</a></li>
+<li><a href="#aggregrate-polygon-raster-values">Aggregrate polygon
+raster values</a></li>
 </ul></li>
-<li><a href="#add-values-of-rasters-to-sample-sites">Add values of
-rasters to sample sites</a></li>
-<li><a href="#add-raster-covariates-to-graph-edges-lines.">Add raster
-covariates to graph edges (lines).</a></li>
-<li><a href="#what-about-categorical-variables">What about categorical
-variables?</a></li>
-<li><a href="#evaluate-node-and-edge-correlations">Evaluate node and
-edge correlations</a></li>
-<li><a href="#add-node-data">Add node data</a>
+<li><a href="#quantifying-landscape-structure">2.4 Quantifying landscape
+structure</a>
 <ul>
-<li><a href="#build-node-data">1. Build node data</a></li>
-<li><a href="#merge-nodes-and-edges">2. Merge nodes and edges</a></li>
-</ul></li>
-</ul></li>
-<li><a href="#gravity-model"><strong>Gravity model</strong></a>
-<ul>
-<li><a href="#develop-hypothesis">Develop hypothesis</a></li>
-<li><a href="#compare-competing-models.">Compare competing
-models.</a></li>
-<li><a href="#fit-final-models">Fit final model(s)</a></li>
-<li><a href="#back-predict-global_fit-model">Back predict global_fit
-model</a></li>
-<li><a href="#aggregrate-estimates-and-plot">Aggregrate estimates and
-plot</a></li>
+<li><a href="#read-data-2">Read data</a></li>
+<li><a href="#reclassifing-to-forestnon-forest">Reclassifing to
+forest/non-forest</a></li>
+<li><a href="#smooth-by-calculating-percent-forest">Smooth by
+calculating percent forest</a></li>
+<li><a href="#forest-cores">Forest cores</a></li>
+<li><a href="#landscape-level-metrics">Landscape-level metrics</a></li>
+<li><a href="#sample-level-metrics">Sample-level metrics</a></li>
 </ul></li>
 </ul>
 </div>
 
-<p>This is an introduction to graph theoretic and gravity modeling
-approaches for quantifying geneflow in spatial systems.</p>
-<p><strong>Overview of Worked Example</strong></p>
-<p><em>Background</em> Gravity models are a type of inferential model
-that exploit graph characteristics. Gravity models include both at-site
-and between-site landscape data. They are a type of graph consisting of
-nodes and edges. These nodes and edges of landscape characteristics
-associated with these graph elements.</p>
-<p>There are many ways graphs can be implemented to understand
-population structure and relate that structure to landscape
-characteristics (see Dyer and Nason 2004). In this exercise, we will
-calculate various graph metrics and apply graphs to fit a gravity
-model.</p>
-<p><em>Data set</em> In this exercise, you will use the gravity model
-framework to build an empirical model of gene flow for the Columbia
-spotted frog dataset in central Idaho that you have used for several
-other exercises (Murphy et al. 2010).</p>
+<p>spatialR workshop R review</p>
 <div id="setup" class="section level1">
-<h1><strong>Setup</strong></h1>
+<h1>Setup</h1>
 <div id="add-required-libraries-and-set-working-environment" class="section level2">
 <h2>Add required libraries and set working environment</h2>
-<pre class="r fold-show"><code>p &lt;- c(&quot;raster&quot;, &quot;rgdal&quot;, &quot;igraph&quot;, &quot;sp&quot;, &quot;GeNetIt&quot;, &quot;spatialEco&quot;, 
-       &quot;sf&quot;, &quot;terra&quot;, &quot;sfnetworks&quot;, &quot;spdep&quot;, &quot;dplyr&quot;, &quot;tmap&quot;, &quot;devtools&quot;) 
+<pre class="r fold-show"><code>p = c(&quot;sp&quot;, &quot;terra&quot;, &quot;spdep&quot;, &quot;spatialEco&quot;, &quot;sf&quot;, &quot;terra&quot;, 
+      &quot;raster&quot;, &quot;spatstat&quot;, &quot;spatstat.geom&quot;, &quot;dplyr&quot;,
+        &quot;landscapemetrics&quot;, &quot;devtools&quot;)
   if(any(!unlist(lapply(p, requireNamespace, quietly=TRUE)))) { 
     m = which(!unlist(lapply(p, requireNamespace, quietly=TRUE)))
       suppressMessages(invisible(lapply(p[-m], require,    
                        character.only=TRUE)))
     stop(&quot;Missing library, please install &quot;, paste(p[m], collapse = &quot; &quot;))
   } else {
-    if(packageVersion(&quot;GeNetIt&quot;) &lt; &quot;0.1-5&quot;) {
-      remotes::install_github(&quot;jeffreyevans/GeNetIt&quot;)
-    } 
     suppressMessages(invisible(lapply(p, require, character.only=TRUE)))
   }
 
-# set your working directory here
-setwd(wd &lt;- &quot;C:/evans/GITS/Gravity&quot;)
+# set your working and data directories here
+setwd(&quot;C:/evans/spatialR/day02&quot;) 
+  data.dir &lt;- file.path(getwd(), &quot;data&quot;)
 
-# indicates UTM 11 NAD83 projection
-prj = 32611 
+download.file(&quot;https://spatialr.s3-us-west-2.amazonaws.com/day02.zip&quot;, 
+              destfile=&quot;day02.zip&quot;, mode=&quot;wb&quot;)
+  unzip(&quot;day02.zip&quot;)
+  file.remove(&quot;day02.zip&quot;)
 
-# Some needed functions
-back.transform &lt;- function(y) exp(y + 0.5 * stats::var(y))
-rmse &lt;- function(p, o){ sqrt(mean((p - o)^2)) }
-
-# Download data
-d = &quot;https://spatialr.s3.us-west-2.amazonaws.com/Gravity/data.zip&quot;
-download.file(d, destfile=&quot;data.zip&quot;, mode=&quot;wb&quot;)
-  unzip(&quot;data.zip&quot;)
-    file.remove(&quot;data.zip&quot;)</code></pre>
+# data is in day01/data, you can use file.path to set a path to 
+# the data directory eg., dat.dir &lt;- file.path(getwd(), &quot;data&quot;)</code></pre>
 </div>
 </div>
-<div id="wetland-complex-data-preparation" class="section level1">
-<h1><strong>Wetland complex data preparation</strong></h1>
-<p>In this sections, we will read in all wetland locations in the study
-area and calculate a few graph-based metrics to assign to wetland sites
-that data was collected at. This allows us to put our samples into the
-context of the larger wetland system thus, accounting for proximity and
-juxtaposition.</p>
-<div id="read-in-wetlands-data" class="section level2">
-<h2>Read in wetlands data</h2>
-<p>Read file “Wetlands.csv” and make a spatial object.</p>
-<p>See: read.csv, coordinates, st_as_sf</p>
-<pre class="r"><code>wetlands &lt;- read.csv(file.path(wd, &quot;data&quot;, &quot;Wetlands.csv&quot;), 
-                    header = TRUE)
-  head(wetlands)
+<div id="vector-analysis" class="section level1">
+<h1>2.1 - Vector analysis</h1>
+<div id="read-data" class="section level2">
+<h2>Read data</h2>
+<p>Read “plots.shp” and “soil.shp” in as sf objects. Plot resulting
+objects. Hint; st_read, plot, st_geometry</p>
+<pre class="r"><code># Read data 
+plots &lt;- st_read(file.path(data.dir, &quot;plots.shp&quot;))
+  soil &lt;- st_read(file.path(data.dir, &quot;soil.shp&quot;))
+
+plot(st_geometry(soil))
+  points(st_coordinates(plots), pch=20, col=&quot;red&quot;)
+  # plot(st_geometry(plots), pch=20, col=&quot;red&quot;, add=TRUE)</code></pre>
+</div>
+<div id="buffer-points-to-200m-hint-st_buffer" class="section level2">
+<h2>Buffer points to 200m Hint; st_buffer</h2>
+<pre class="r"><code>plots.buff &lt;- st_buffer(plots, dist=200)
+  plot(st_geometry(plots.buff))
+    plot(st_geometry(plots), pch=20, add=TRUE)</code></pre>
+</div>
+<div id="clip-polygons" class="section level2">
+<h2>Clip polygons</h2>
+<p>Intersect (clip) soil with buffers and relate back to points. Hint;
+gIntersection and intersect)</p>
+<pre class="r"><code>plots.soil &lt;- st_intersection(plots.buff, soil) 
+  plot(st_geometry(plots.soil))</code></pre>
+</div>
+<div id="calculate-spatial-area-fractions" class="section level2">
+<h2>Calculate spatial area fractions</h2>
+<p>Calculate soil-type (“musym” attribute) area proportion for each
+plot. Hint; table, prop.table</p>
+<pre class="r"><code># Pull unique soil types
+( stype = sort(unique(plots.soil$musym)) )
+
+# Note; polygons are non-sequential eg., 
+which(plots.soil$ID == 25)
+
+# get area for each polygon     
+plots.soil$soil.area &lt;- as.numeric(st_area(plots.soil))
+
+# loop through each polygon and get proportion(s)
+soil.pct &lt;- list()
+  for(i in unique(plots.soil$ID) ) {
+    s &lt;- plots.soil[plots.soil$ID == i ,]
+      ta &lt;- sum(s$soil.area)
+        spct &lt;- tapply(s$soil.area, s$musym, function(x) sum(x) / ta)  
+        scts &lt;- table(factor(s$musym, levels=stype))
+      scts[which(names(scts) %in% names(spct))] &lt;- round(spct,4)
+    soil.pct[[i]] &lt;- scts
+    }
+soil.pct &lt;- data.frame(ID=unique(plots.soil$ID), do.call(rbind, soil.pct))
+  plots &lt;- merge(plots, soil.pct, by=&quot;ID&quot;)
+    plot(plots[&quot;GpD&quot;], pch=20, cex=2)
   
+#### or, alternately using lapply as loop (AKA the R way)  
+p &lt;- lapply(unique(plots.soil$ID), function(i) {
+  s &lt;- plots.soil[plots.soil$ID == i ,]
+    ta &lt;- sum(s$soil.area)
+    round(tapply(s$soil.area, s$musym, function(x) sum(x) / ta),4)  
+})
+  p &lt;- plyr::ldply(p, rbind)
+    p[is.na(p)] &lt;- round(0,4)
+      str(p)</code></pre>
+</div>
+<div id="point-in-polygon" class="section level2">
+<h2>Point in polygon</h2>
+<p>Point in polygon analysis to relate soil attributes to plots. Hint;
+point.in.poly</p>
+<pre class="r"><code># Point in polygon (relate soil attributes to points)
+soil.plots &lt;- point.in.poly(plots, soil, sp=FALSE)
+  head(soil)
+  head(plots)  
+  head(soil.plots)</code></pre>
+</div>
+<div id="spatial-aggregration-dissolve" class="section level2">
+<h2>Spatial aggregration (dissolve)</h2>
+<p>Dissolve polygons using “NWBIR74” column, create column where &lt;
+median is 0 else 1 then dissolve features by this column and plot</p>
+<pre class="r"><code># read data from sf package
+polys &lt;- st_read(system.file(&quot;shape/nc.shp&quot;, package=&quot;sf&quot;))
+  polys$p &lt;- ifelse(polys$NWBIR74 &lt; quantile(polys$NWBIR74, p=0.5), 0 ,1)
+   
+# sf approach  
+diss &lt;- polys %&gt;% 
+  dplyr::group_by(p) %&gt;% 
+    summarise(m = max(p)) %&gt;% 
+      st_cast()
+plot(diss[&quot;p&quot;])
   
-wetlands &lt;- st_as_sf(wetlands, coords = c(&quot;X&quot;, &quot;Y&quot;), 
-                     crs = 32611, agr = &quot;constant&quot;) </code></pre>
+# sp object approach
+diss &lt;- rgeos::gUnaryUnion(as(polys, &quot;Spatial&quot;), id = polys$p)
+  plot(diss, col=c(&quot;red&quot;,&quot;green&quot;))</code></pre>
 </div>
-<div id="create-wetlands-graph" class="section level2">
-<h2>Create wetlands graph</h2>
-<p>Create Gabriel graph from the wetlands to represent a “realization”
-of connectivity and spatial arrangement.</p>
-<div class="line-block">   See: gabrielneigh, graph2nb, nb2lines</div>
-<p>What other types of graphs could you build? What wetlands are
-connected to each other based on the graph?</p>
-<pre class="r"><code># Derive Gabriel graph
-gg &lt;- graph2nb(gabrielneigh(st_coordinates(wetlands)),sym=TRUE)
-  plot(gg, coords=st_coordinates(wetlands))
+<div id="spatial-aggregration-zonal" class="section level2">
+<h2>Spatial aggregration (zonal)</h2>
+<p>Work through this zonal function that calculates the proportion of
+covertypes around the periphery of each polygon and then calculates
+Isolation by Distance (IBD). Please take the time to examine the output
+objects of each step, plot intermediate results and dissect the
+peripheral.zonal function. Please note; when you dissect a for loop you
+need to define the iterator so, in this case if it is defined (eg., j=1)
+then you can run the inside of the loop (omitting the for line and the
+end curly bracket. Don’t forget, to run the function you need to
+copy-and-paste the whole thing into R to “source” it.</p>
+<pre class="r"><code># Read shapefile &quot;wetlands&quot; and raster &quot;landtype.tif&quot; in data.dir
+( wetlands &lt;- st_read(file.path(data.dir, &quot;wetlands.shp&quot;)) )
+  ( wetlands &lt;- wetlands[sample(1:nrow(wetlands),10),] )
 
-# Coerce to sf line object (will be used to create igraph object)
-gg &lt;- nb2lines(gg, coords = sf::st_coordinates(wetlands), 
-                 proj4string = prj, as_sf=TRUE)</code></pre>
-</div>
-<div id="graph-metrics" class="section level2">
-<h2>Graph metrics</h2>
-<p>Using the sf line/graph we just made coerce to sfnetworks, then
-calculate graph metrics of betweenness and closeness with weights and
-degree.</p>
-<div class="line-block">   See: as_sfnetwork, activate, degree,
-betweenness, closeness</div>
-<p>Do you think this graph is ecologically meaningful? What information,
-in the graph structure itself, might this graph contain?</p>
-<p>degree - the number of connections a node has Calculate betweenness -
-the number of shortest paths going through a node closensess -</p>
-<pre class="r"><code># Create sfnetwork, igraph object
-wg &lt;- as_sfnetwork(gg, edges=gg, nodes=wetlands, directed = FALSE,
-                  node_key = &quot;SiteName&quot;, length_as_weight = TRUE, 
-                          edges_as_lines = TRUE)
+plot(st_geometry(wetlands))
 
-# Calculate weights and graph metrics
-w &lt;- wg %&gt;% activate(&quot;edges&quot;) %&gt;% pull(weight) %&gt;% as.numeric()
-  w[w &lt;= 0] &lt;- 1
-    w = w / sum(w)
+# Landcover classes
+# 3-Barren, 4-regeneration, 5-forest, 10-Riparian, 11-urban, 
+# 12-pasture, 13-weedy grasses, 15-crops, 19-water
 
-# calculate and add betweenness, degree and  closeness     
-wetlands$betweenness &lt;- igraph::betweenness(wg, directed=FALSE, weights=w)
-wetlands$degree &lt;- igraph::degree(wg)
-wetlands$closeness &lt;- igraph::closeness(wg, weights=w)</code></pre>
-</div>
-<div id="plot-graph-metric" class="section level2">
-<h2>Plot graph metric</h2>
-<p>Plot results using the graph edges and wetlands points with the
-attribute “betweenness”</p>
-<div class="line-block">   See: plot, st_geometry, add=TRUE</div>
-<pre class="r"><code>plot(st_geometry(gg), col=&quot;grey&quot;)
-  plot(wetlands[&quot;betweenness&quot;], pch=19,  
-       cex=0.75, add=TRUE)
-     box()
-     title(&quot;Wetlands Gabriel graph betweenness&quot;)</code></pre>
-</div>
-</div>
-<div id="field-data-preparation" class="section level1">
-<h1><strong>Field-data preparation</strong></h1>
-<p>In this section we will read the field data, add the node metrics we
-just calculated.</p>
-<div id="read-site-data" class="section level2">
-<h2>Read site data</h2>
-<p>sing RALU_Site.csv, read in the data, add the node data (betweenness
-and degree), create a spatial object that includes the node data. Look
-at the RALU_Site file. What are the fields here? What data are
-included?</p>
-<div class="line-block">   See: which, merge</div>
-<p>Using names is dangerous as, small changes in names can result in
-non-matches. In this case, the ID fields are not consistent (data were
-collected at different times for different purposes originally).
-However, names are standardized in a drop-down list of a database. So
-they are a matching field. My preference is do to this type of operation
-on a numeric field.</p>
-<pre class="r"><code>sites &lt;- read.csv(file.path(wd, &quot;data&quot;, &quot;RALU_Site.csv&quot;), 
-                  header = TRUE)
-  sites$SiteID &lt;- as.character(sites$SiteID)
+lcov &lt;- rast(file.path(data.dir, &quot;landtype.tif&quot;) )
 
-nodestats &lt;- st_drop_geometry(wetlands[,c(3,5:7)])
-  nodestats &lt;- nodestats[which(nodestats$SiteName %in% sites$SiteName),] 
-sites &lt;- merge(nodestats, sites, by=&quot;SiteName&quot;)
+# Syntax for erasing a polygon, follows idea of inverse 
+# focal function  
+p &lt;- st_buffer(wetlands[1,], dist=1000)
+  p &lt;- st_difference(p, st_union(wetlands[1,]))                
+    plot(mask(crop(lcov, ext(p)),vect(p)))
 
-sites &lt;- st_as_sf(sites, coords = c(&quot;X&quot;, &quot;Y&quot;), 
-                 crs = prj, agr = &quot;constant&quot;) </code></pre>
-</div>
-<div id="saturated-graph" class="section level2">
-<h2>Saturated Graph</h2>
-<div id="create-graph-from-site-locations" class="section level3">
-<h3>1. Create graph from site locations</h3>
-<div class="line-block">   See: knn.graph, make sure to use correct
-field</div>
-<p>To assess connectivity using a gravity model, we need to build a
-graph from the occupied frog sites create a graph. This could be any
-type of graph, but I generally use saturated or pruned by some maximum
-distance.</p>
-<pre class="r"><code>dist.graph &lt;- knn.graph(sites, row.names = sites$SiteName)
-  dist.graph &lt;- merge(dist.graph, st_drop_geometry(sites), 
-                      by.y=&quot;SiteName&quot;, by.x=&quot;from_ID&quot;)
-    dist.graph &lt;- dist.graph[,-c(11:19)] # drop extra columns
-    
-## Can create a distance-constrained graph with max.dist arg (not run)
-# dist.graph &lt;- knn.graph(sites, row.names = sites$SiteName, max.dist=5000)</code></pre>
-</div>
-<div id="merge-the-graph-with-genetic-distance." class="section level3">
-<h3>2. Merge the graph with genetic distance.</h3>
-<p>This involves: reading in RALU_Dps.csv genetic distance, convert to
-flow (1-distance), unfold matrix into a dataframe then, merge graph with
-genetic distances</p>
-<div class="line-block">   See: dmatrix.df</div>
-<p>Note; if you get stuck on this step, read in gdist.csv</p>
-<pre class="r"><code>gdist &lt;- read.csv(file.path(wd, &quot;data&quot;, &quot;RALU_Dps.csv&quot;), header=TRUE) 
-  rownames(gdist) &lt;- t(names(gdist))
-      
-# Make a matrix, gdist, unfold data  
-gdist &lt;- dmatrix.df(as.matrix(gdist)) 
-  names(gdist) &lt;- c(&quot;FROM&quot;, &quot;TO&quot;, &quot;GDIST&quot;) #unfold the file
-    gdist &lt;- gdist[!gdist$FROM == gdist$TO ,]
-    gdist[,1] &lt;-sub(&quot;X&quot;, &quot;&quot;, gdist[,1])
-    gdist[,2] &lt;-sub(&quot;X&quot;, &quot;&quot;, gdist[,2])
-    gdist &lt;- cbind(from.to=paste(gdist[,1], gdist[,2], sep=&quot;.&quot;), 
-                   gdist)
+# Define classes and class names
+( classes &lt;- sort(unique(lcov[])) )
+lcnames &lt;- c(&quot;barren&quot;, &quot;regen&quot;, &quot;forest&quot;, &quot;riparian&quot;,   
+             &quot;urban&quot;, &quot;pasture&quot;, &quot;grasses&quot;,  &quot;crops&quot;, 
+                   &quot;water&quot;)
 
-# Transform genetic distance to genetic flow
-gdist$GDIST &lt;- flow(gdist$GDIST)
-
-# Merge data  
-dist.graph$from.to &lt;- paste(dist.graph$i, dist.graph$j, sep=&quot;.&quot;)
-  dist.graph &lt;- merge(dist.graph, gdist, by = &quot;from.to&quot;)</code></pre>
-</div>
-</div>
-</div>
-<div id="spatial-model-data-prepration" class="section level1">
-<h1><strong>Spatial model data prepration</strong></h1>
-<div id="read-raster-data-using-terra" class="section level2">
-<h2>Read raster data using terra</h2>
-<div class="line-block">   See: list.files, rast</div>
-<p>Note; R uses regular expressions so, a wildcard is not “*”</p>
-<pre class="r"><code>list.files(file.path(wd,&quot;data&quot;), &quot;tif$&quot;)
-xvars &lt;- rast(list.files(file.path(wd,&quot;data&quot;), &quot;tif$&quot;, 
-                        full.names = TRUE))</code></pre>
-</div>
-<div id="reclassify-wetlands" class="section level2">
-<h2>Reclassify wetlands</h2>
-<p>Reclassify NLCD, in xvars, into a single class</p>
-<div class="line-block">  See: matrix, reclassify</div>
-<pre class="r"><code>m &lt;- c(0,10.8, 0,10.9,12.1,1,12.9,89.5,0, 89.1,95.1,1,95.9,100,0 )
-  reclass &lt;- matrix(m, ncol=3, byrow=TRUE)
-  
-wetlnd &lt;- classify(xvars[[&quot;nlcd&quot;]], reclass)
-  names(wetlnd) &lt;- &quot;wetlnd&quot;
-    xvars &lt;- c(xvars, wetlnd)</code></pre>
-</div>
-<div id="calculate-the-proportion-of-the-landscape-around-sites" class="section level2">
-<h2>Calculate the proportion of the landscape around sites</h2>
-<p>Assign proportion of landcover that is wetland to sites as
-pwetland</p>
-<div class="line-block">   See: write function, extract</div>
-<p>You want to know if areas of dense wetlands produce more frogs? What
-buffer distance will you use?</p>
-<pre class="r"><code>## method 1 (can result in Inf if all zero)
-#  prop.land &lt;- function(x) {
-#   length(x[x==1]) / length(x)  
-#  }
-
-## method 2 (no divide by zero error)
-prop.land &lt;- function(x) {
-  prop.table(table(factor(x, levels=c(0,1))))[2]
+pzonal &lt;- function(x, y, d = 1000, classes = NULL, 
+                   class.names = NULL) {
+  if(is.null(classes)) {
+    classes &lt;- sort(unique(y[]))
+  }
+  if(!is.null(class.names)) 
+    names(results) &lt;- class.names
+    suppressWarnings({
+      p &lt;- st_buffer(x, dist=1000)
+      p &lt;- st_difference(p, st_union(x))
+    })  
+    r &lt;- extract(y, vect(p))
+      r &lt;- lapply(unique(r$ID), function(j) {
+        prop.table(table(factor(r[r$ID==j,][,2],
+        levels=classes)))})
+  r &lt;- as.data.frame(do.call(rbind, r))
+    if(!is.null(class.names)) 
+      names(r) &lt;- class.names
+  return(r)
 }
 
-b &lt;- st_buffer(sites, 300)
-pwetland &lt;- extract(wetlnd, vect(b))
-  pwetland &lt;- tapply(pwetland[,2], pwetland[,1], prop.land)
+# Calculate peripheral zonal statistics
+( class.prop &lt;- pzonal(x=wetlands, y=lcov, d = 1000,
+                      class.names=lcnames) ) 
+ 
+# check global class proportions (column sums)
+apply(class.prop, MARGIN=2, sum)
+ 
+# Isolation by Distance (IBD) 
+( d &lt;- as.matrix(st_distance(wetlands) ))    
+  diag(d) &lt;- NA
+    d &lt;- apply(d, MARGIN=1, FUN=function(x) min(x, na.rm=TRUE))
+      d &lt;- d / max(d)
+
+# add proportion and IBD results to polygons
+wetlands$ibd &lt;- d
+wetlands &lt;- merge(wetlands, data.frame(ID=wetlands$ID, class.prop), by=&quot;ID&quot;)
+
+# Plot some landcover proportions
+plot(wetlands[&quot;crops&quot;])
+plot(wetlands[&quot;grasses&quot;])
+plot(wetlands[&quot;pasture&quot;])
+
+# Plot IBD
+plot(wetlands[&quot;ibd&quot;])
+
+# Define class breaks, cut, create color vector and pass to plot
+l &lt;- cut(wetlands$ibd, classBreaks(wetlands$ibd, n=3, 
+         type = &quot;geometric&quot;), include.lowest = TRUE,
+         labels=c(&quot;low&quot;, &quot;med&quot;, &quot;high&quot;))
+
+# color vector
+my.col &lt;- l
+  levels(my.col) &lt;- c(&quot;blue&quot;, &quot;orange&quot;, &quot;red&quot;)
+
+# Plot results 
+plot(st_geometry(wetlands), col=as.character(my.col), border = NA)
+  box()
+  legend(&quot;bottomleft&quot;, legend=levels(l), 
+         fill=levels(my.col))  </code></pre>
+</div>
+</div>
+<div id="raster-data-analysis" class="section level1">
+<h1>2.2 Raster data analysis</h1>
+<div id="read-raster-data-single-band-and-multi-band" class="section level2">
+<h2>Read raster data (single band and multi band)</h2>
+<p>Read bands 1 and 5 from from “ppt2000.tif” as single band objects,
+all bands from “ppt2000.tif” and “ppt2001.tif” (2 single band and 2
+multi band objects).</p>
+<pre class="r"><code>ppt.jan &lt;- rast(file.path(data.dir, &quot;ppt2000.tif&quot;), lyrs=1) 
+ppt.may &lt;- rast(file.path(data.dir, &quot;ppt2000.tif&quot;), lyrs=5)
+ppt.2000 &lt;- rast(file.path(data.dir, &quot;ppt2000.tif&quot;)) 
+ppt.2001 &lt;- rast(file.path(data.dir, &quot;ppt2001.tif&quot;))</code></pre>
+</div>
+<div id="global-raster-statistics" class="section level2">
+<h2>Global raster statistics</h2>
+<p>Calculate summary statistics (global) for mean, sd and bakers choice.
+Hint; global, summary</p>
+<pre class="r"><code># Summary statistics (global)
+( rmin &lt;- global(ppt.jan, stat=&quot;min&quot;) )
+( rmax &lt;- global(ppt.jan, stat=&quot;max&quot;) )
+( rmean &lt;- global(ppt.jan, stat=&quot;mean&quot;) )
+summary(ppt.jan)
+summary(ppt.jan)[5]</code></pre>
+</div>
+<div id="raster-transformations" class="section level2">
+<h2>Raster transformations</h2>
+<p>Row standardization is a common approach in getting data on the same
+scale while retaining the distribution. There are numerious other
+transformations that can be leveraged for various reasons so, this is
+something to have passing familiarity with.</p>
+<p>Row standardize (x / max(x)) “ppt.jan” then, “ppt.jan” and “ppt.may”
+Hint; global, max and standard math operations</p>
+<pre class="r"><code># Row standardization
+ppt.jan.std &lt;- ppt.jan / as.numeric(global(ppt.jan, stat=&quot;max&quot;))
+
+# Row standardization using global max values across months
+ppt.jan.std &lt;- ppt.jan / max(global(c(ppt.jan, ppt.may), stat=&quot;max&quot;))
+  summary(ppt.jan.std)</code></pre>
+</div>
+<div id="multi-band-statistics" class="section level2">
+<h2>Multi-band statistics</h2>
+<ol style="list-style-type: decimal">
+<li><p>Calculate mean of “ppt.jan” and “ppt.may”</p></li>
+<li><p>Calculate median for all dates in ppt.2000</p></li>
+<li><p>Calculate median for growing season may-aug [[5:8]] in
+ppt.2000</p></li>
+<li><p>Calculate abs difference for may [5] between ppt.2000 &amp;
+ppt.2001</p></li>
+</ol>
+<p>Hint; app, lapp, mean, median</p>
+<pre class="r"><code># 1. Returns mean between &gt;=2 raster
+# Difference usage between direct operator, 
+#   these two calls have the same result
+( mean.ppt &lt;- (ppt.jan + ppt.may) / 2 )
+( mean.ppt &lt;- app(c(ppt.jan, ppt.may), fun=mean) )
+
+# 2. Returns median for entire raster stack
+( med.2000 &lt;- app(ppt.2000, median) )
+
+# 3. Returns median for range in raster stack
+( gs.med.2000 &lt;- app(ppt.2000[[5:8]], median) )
+
+# 4. Returns absolute difference between two rasters (note lapp)
+adif.ppt &lt;- lapp(c(ppt.2000[[5]], ppt.2001[[5]]), 
+                    fun=function(x,y) { abs(x-y) } )
+
+par(mfrow=c(2,2))
+  plot(mean.ppt)
+  plot(med.2000)
+  gs.plot(med.2000)
+  plot(ppt.adif)</code></pre>
+</div>
+<div id="multi-band-functions" class="section level2">
+<h2>Multi-band functions</h2>
+<p>Calculate number of days with rain over median across all dates.
+Hint; app, median</p>
+<pre class="r"><code>( m &lt;- global(ppt.2000, stat=median)[,1] )
+
+rain.fun &lt;- function(x, p = 23.4997) {
+  if( length(which(TRUE == (x %in% NA))) == length(x) )  {
+      return(NA)
+    } else {
+    return( length(na.omit(x[x &gt;= p])) )
+   }
+ } 
+
+rain.freq &lt;- app(ppt.2000, fun=rain.fun, p=m) 
+
+plot(rain.freq, main=&quot;Frequency &gt; median precipitation 2000&quot;)  </code></pre>
+</div>
+<div id="focal-statistics" class="section level2">
+<h2>Focal statistics</h2>
+<p>A focal window is defined as a matrix where 1 represents values and 0
+non-values. A uniform valued NxN window can easily be defined using:
+matrix(1, nrow=n, ncol=n). And, yes you can use custom values (eg.,
+Guassian) in the matrix to perform specialized operators. For example
+using matrix(1/9,nrow=3,ncol=3) to decompose the focal values will
+return the same result as calculating mean with a uniform matrix.</p>
+<p>Calculate focal mean of “ppt.jan” within an 11x11 window, plot
+results. Hint; focal, matrix</p>
+<pre class="r"><code>ppt.mean11 &lt;- focal(ppt.jan, w=matrix(1,nrow=11,ncol=11), fun=mean)
+  par(mfrow=c(1,2)) 
+    plot(ppt.mean11)
+    plot(ppt.jan)</code></pre>
+</div>
+<div id="focal-functions" class="section level2">
+<h2>Focal functions</h2>
+<p>It is possible to also write custom functions for local scale
+evaluation. With highly customized functions you can even calculate
+focal funtions on more than one raster. Honestly, the sky is the limit
+but, here is one example that derives the fractional deviation of the
+local from the global (starting to get into gradient landscape
+metrics).</p>
+<p>Calculate percent of values &lt;= global mean within an 11x11 window/
+Hint; focal, global, matrix</p>
+<pre class="r"><code># Passing focal custom function
+pct.mean &lt;- function(x, p=22.6776) { length(x[x &gt;= p]) / length(x) }
+
+( p.mean = global(ppt.jan, stat=&quot;mean&quot;)[,1] )
+ppt.break &lt;- focal(ppt.jan, w=matrix(1,nrow=5,ncol=5), 
+                   fun=pct.mean, p=p.mean) </code></pre>
+</div>
+<div id="reproject-raster" class="section level2">
+<h2>Reproject raster</h2>
+<p>Reproject to UTM using “elev.tif” as reference raster. Hint; project,
+rast</p>
+<pre class="r"><code>( elev &lt;- rast(file.path(data.dir, &quot;elev.tif&quot;)) )
+( ppt &lt;- rast(file.path(data.dir, &quot;ppt_geo.tif&quot;), lyrs=5) )
+
+# Create a reference raster from an extent
+ref &lt;- rast(ext(elev), crs=crs(elev))
+  res(ref) &lt;- 1000 # target resolution from native DD 0.04166667 
+
+# Reproject to UTM 
+( ppt.utm &lt;- project(ppt, ref, method=&quot;bilinear&quot;) )
+                                                  
+par(mfrow=c(2,1))
+  plot(ppt)
+  plot(ppt.utm)</code></pre>
+</div>
+</div>
+<div id="rastervector-integration" class="section level1">
+<h1>2.3 - Raster/Vector integration</h1>
+<div id="read-data-1" class="section level2">
+<h2>Read data</h2>
+<p>Read the “plots.shp” points and “landcover.tif” raster. Hint;
+st_read, rast</p>
+<pre class="r"><code>plots &lt;- st_read(file.path(data.dir, &quot;plots.shp&quot;))
+  lc &lt;- rast(file.path(data.dir, &quot;landcover.tif&quot;)) </code></pre>
+</div>
+<div id="extract-raster-values-for-points" class="section level2">
+<h2>Extract raster values for points</h2>
+<p>Extract raster cell values (lc) for points (plots). Note; vector
+objects (ie., sf) must be terra vect class objects. Hint; extract and
+vect</p>
+<pre class="r"><code>head( v &lt;- extract(lc, vect(plots)) ) </code></pre>
+</div>
+<div id="extract-raster-values-for-polygons" class="section level2">
+<h2>Extract raster values for polygons</h2>
+<p>Buffer the plots to 200m and then extract the “lc” raster cell
+values. What class is the object?</p>
+<pre class="r"><code>plots.buff &lt;- st_buffer(plots, dist=200)
+  ( r.vals &lt;- extract(lc, vect(plots.buff)) )   </code></pre>
+</div>
+<div id="aggregrate-polygon-raster-values" class="section level2">
+<h2>Aggregrate polygon raster values</h2>
+<p>Unlike points, that have one value per point, polygons have any
+number of values that intersect each given polygon. As such, the data
+structure is a bit different. Historically, in the raster library,
+results were returned as a list object necessitating the use of lapply.
+In the terra library, results are returned as a data.frame with an ID
+column indicating the polygon index. If there were 10 raster cells
+intersecting a polygon then that polygon index will be replicated 10
+times, with the associated raster values. You can use an iterator on the
+ID field to aggregate these values into a desired statistic.<br />
+Now write a function, to pass to tapply, that will calculate the
+proportion of value 23 and one for 41, 42 and 43. Add to data and play
+with plotting results. Hint; for, tapply, split, aggregrate</p>
+<pre class="r"><code>pct &lt;- function(x, p = 23) { length( x[x == p] ) / length(x) }
+  tapply(r.vals[,2], r.vals$ID, FUN=pct)
+ 
+pct &lt;- function(x, p) { length(which( x %in% p)) / length(x) }
+  tapply(r.vals[,2], r.vals$ID, FUN=pct, p=c(41,42,43))
+
+# Add to &quot;plots&quot; data
+plots$pct.forest &lt;- as.numeric(tapply(r.vals[,2], r.vals$ID, FUN=pct, p=c(41,42,43)))
+
+# Plot results
+plot(lc)
+  plot(st_geometry(plots), pch=20, col=&quot;black&quot;, add=TRUE)
+  plot(st_geometry(plots[plots$pct.forest &gt;= 0.25 ,]), pch=20,
+         cex=2, col=&quot;red&quot;, add=TRUE)</code></pre>
+</div>
+</div>
+<div id="quantifying-landscape-structure" class="section level1">
+<h1>2.4 Quantifying landscape structure</h1>
+<div id="read-data-2" class="section level2">
+<h2>Read data</h2>
+<p>Read “plots.shap” and “” Calculating landscape metrics for a entire
+landscape</p>
+<pre class="r"><code>plots &lt;- st_read(file.path(data.dir, &quot;plots.shp&quot;)) #read in plot data
+land.cover &lt;- rast(file.path(data.dir, &quot;landcover.tif&quot;)) 
+  plot(land.cover)
+    plot(plots, pch=20, add=TRUE)</code></pre>
+</div>
+<div id="reclassifing-to-forestnon-forest" class="section level2">
+<h2>Reclassifing to forest/non-forest</h2>
+<p>Let’s say that you are interested in forest/non-forest. However,
+there are multiple forest classes (41,42, 43), you will need to
+reclassify as forest/non-forest (forest=41,42,43).</p>
+<p>Hint: classify, writing a function (ifelse) the calling app or using
+terra’s native method for ifelse, ifel</p>
+<pre class="r"><code># three reclassify solution for forest/nonforest
+m &lt;- c(0,40.8, 0,40.9,43.1,1,43.9,91,0)
+reclass &lt;- matrix(m, ncol=3, byrow=TRUE)
+forest &lt;- classify(land.cover, reclass)
+
+# function solution, much more stable. 
+#   ifelse as a function 
+fnf &lt;- function(x) { ifelse( x == 41, 1, 
+                       ifelse( x == 42, 1, 
+                         ifelse( x == 43, 1, 0)))
+    }                        
+  forest &lt;- app(land.cover, fun=fnf)
+
+# ifelse directly as ifel method
+forest &lt;- ifel(land.cover == 41, 1, 
+            ifel(land.cover == 42, 1, 
+              ifel(land.cover == 43, 1, 0)))
+
+plot(forest)
+  plot(plots, pch=20, add=TRUE)</code></pre>
+</div>
+<div id="smooth-by-calculating-percent-forest" class="section level2">
+<h2>Smooth by calculating percent forest</h2>
+<p>While forest at a cell may be important, you want to smooth your
+result and put the overall amount of forest in context. Calculate
+percent forest within 11x11 window. Create a function for a calculating
+percent and create a new raster that is pct.forest in a 11 X11
+window</p>
+<p>Hint: length of target value, focal</p>
+<pre class="r"><code>pct &lt;- function(x) { round( (length(x[x == 1]) / length(x)), 4) } 
+pct.forest &lt;- focal(forest, w=matrix(1,nrow=11,ncol=11), fun=pct)</code></pre>
+</div>
+<div id="forest-cores" class="section level2">
+<h2>Forest cores</h2>
+<p>Next you wish to identify forest cores. Calculate 60 percent volume
+of forest percent to identify core areas, based on the above focal
+fractional forest results. Unfortunately, the function to return percent
+volume requires a raster class input so, you will have to coerce rast to
+raster (you can do it on the fly). Hint; raster.vol</p>
+<pre class="r"><code>cores &lt;- raster.vol(raster(pct.forest), p=0.60)
+  cores[is.na(cores)] &lt;- 0 #replace non-core areas (NA) with 0
+    cores &lt;- mask(rast(cores), forest)
   
-# Add the % wetland back to the dataframe
-sites$pwetland &lt;- as.numeric(pwetland)</code></pre>
-<div id="challenge" class="section level3">
-<h3>Challenge:</h3>
-<ul>
-<li>What happens if you change this radius?</li>
-<li>What radius do you think makes the most sense ecologically?</li>
-</ul>
-<p>You may recall, the landscapemetrics package can be used to calculate
-various landscape. Here is an example for calculating pland. Calculate a
-few different bandwidths (radi) and compare the differences across
-scales?</p>
-<pre class="r"><code>r = 300 # sample radius
-nlcd_sampled &lt;- landscapemetrics::sample_lsm(landscape = xvars[[&quot;wetlnd&quot;]], 
-                                             what = &quot;lsm_c_pland&quot;,
-                                             shape = &quot;circle&quot;,
-                                             y = sites, 
-                                             size = r, 
-                                             return_raster = FALSE,
-                                             plot_id=sites@data$SiteID)
-pwetland &lt;- dplyr::select(dplyr::filter(nlcd_sampled, class == 1, 
-                                        metric == &quot;pland&quot;), plot_id, value)  
-names(pwetland) &lt;- c(&quot;SiteID&quot;, &quot;pwetland&quot;)
-pwetland$pwetland &lt;- pwetland$pwetland/100
+par(mfrow=c(1,2))
+  plot(pct.forest)  
+    plot(cores)</code></pre>
+</div>
+<div id="landscape-level-metrics" class="section level2">
+<h2>Landscape-level metrics</h2>
+<p>Describe the landscape using landscape metrics and compare forest to
+forest cores. HINT: landscapemetrics, pland, contagion, proportion of
+like adjacency (many other available metrics, select those you think are
+most meaningful)</p>
+<p>Hint; lsm_c_pland, lsm_l_pladj, lsm_l_contag</p>
+<pre class="r"><code># Percent landscape
+( forest.pland &lt;- lsm_c_pland(forest, directions=8) )
+( cores.pland &lt;- lsm_c_pland(cores, directions=8) )
 
-head(pwetland)</code></pre>
-</div>
-</div>
-<div id="add-values-of-rasters-to-sample-sites" class="section level2">
-<h2>Add values of rasters to sample sites</h2>
-<p>This adds potential “at site” variables, keep as sf POINT class
-object</p>
-<div class="line-block">   See: st_sf, terra, extract</div>
-<pre class="r"><code>  stats &lt;- extract(xvars[[-6]], vect(sites))
-  sites &lt;- st_sf(data.frame(as.data.frame(sites), stats), 
-                 geometry=sites$geometry)</code></pre>
-</div>
-<div id="add-raster-covariates-to-graph-edges-lines." class="section level2">
-<h2>Add raster covariates to graph edges (lines).</h2>
-<p>Remove nlcd and wetlnd rasters before calculating statistics</p>
-<div class="line-block">   See: graph.statistics</div>
-<pre class="r"><code>idx &lt;- which(names(xvars) %in% c(&quot;nlcd&quot;,&quot;wetlnd&quot;))
-suppressWarnings(
-  stats &lt;- graph.statistics(dist.graph, r = xvars[[-idx]], 
-                            buffer= NULL, stats = c(&quot;min&quot;,         
-                            &quot;mean&quot;,&quot;max&quot;, &quot;var&quot;, &quot;median&quot;)) )
+# contagion
+( forest.contag &lt;- lsm_l_contag(forest, verbose=TRUE)$value )
+( core.contag &lt;- lsm_l_contag(cores, verbose=TRUE)$value )
 
-  dist.graph &lt;- st_sf(data.frame(as.data.frame(dist.graph), 
-                      stats), geometry=dist.graph$geometry)</code></pre>
+# proportion of like adjacencies 
+( forest.plaj &lt;- lsm_l_pladj(forest)$value )
+( core.plaj &lt;- lsm_l_pladj(cores)$value )</code></pre>
 </div>
-<div id="what-about-categorical-variables" class="section level2">
-<h2>What about categorical variables?</h2>
-<p>Moments are nonsensical. Create a function for returning the %
-wetland between sites. Then use it to calculate an additional statistic
-and, add result to the graph.</p>
-<div class="line-block">   See: ifelse, table, prop.table, factor,
-graph.statistics</div>
-<p>Are there other categorical variables that you think may be
-ecologically important?</p>
-<pre class="r"><code>wet.pct &lt;- function(x) {
-  x &lt;- ifelse(x == 11 | x == 12 | x == 90 | x == 95, 1, 0)
-    prop.table(table(factor(x, levels=c(0,1))))[2] 
-}   
+<div id="sample-level-metrics" class="section level2">
+<h2>Sample-level metrics</h2>
+<p>Calculating landscape metrics for sample locations is a powerful way
+to compute covariates. Calculate landscape metrics for plots for both
+forest and cores. Hint; sample_lsm,</p>
+<pre class="r"><code># Print available metrics 
+am &lt;- as.data.frame(list_lsm())
 
-suppressWarnings(
-  wetstats &lt;- graph.statistics(dist.graph, r=xvars[[&quot;nlcd&quot;]], 
-                               buffer= NULL, stats = c(&quot;wet.pct&quot;)) )
-dist.graph$wet.pct.nlcd &lt;- as.numeric(wetstats[,1]) </code></pre>
-</div>
-<div id="evaluate-node-and-edge-correlations" class="section level2">
-<h2>Evaluate node and edge correlations</h2>
-<p>We need to evaluate correlations in the data to not overdispersion
-our models. Note, we are not going to actually remove the correlated
-variables but, just go through a few methods of evaluating them. The
-code to remove colinear variables is commented out for reference. We do
-have to log transform the data as to evaluate the actual model
-structure.</p>
-<p>See: cor, collinear</p>
-<pre class="r"><code>node.var &lt;- c(&quot;degree&quot;, &quot;betweenness&quot;, &quot;Elev&quot;, &quot;Length&quot;, &quot;Area&quot;, &quot;Perim&quot;, 
-              &quot;Depth&quot;, &quot;pH&quot;,&quot;Dforest&quot;,&quot;Drock&quot;, &quot;Dshrub&quot;, &quot;pwetland&quot;, &quot;cti&quot;,
-                    &quot;dd5&quot;, &quot;ffp&quot;,&quot;gsp&quot;,&quot;pratio&quot;,&quot;hli&quot;,&quot;rough27&quot;,&quot;srr&quot;)
+# Subset to landscape level metrics
+LM &lt;- am[am$level == &quot;landscape&quot;,] 
 
-p = 0.8 
-s &lt;- st_drop_geometry(sites)[,node.var]
-  for(i in 1:ncol(s)) {
-    s[,i] &lt;- ifelse(s[,i] &lt;= 0, 0.00001, log(s[,i]))
-  }
+# Metric by type (full names)
+tapply(LM$name, LM$type, unique)
+ 
+# Metric by type (returned names)
+tapply(LM$metric, LM$type, unique)
+
+## class and patch level metrics  
+# CM &lt;- am[am$level == &quot;class&quot;,] 
+# PM &lt;- am[am$level == &quot;patch&quot;,]   
+
+# Calculate sample metrics with a 500m buffer
+mfnf &lt;- as.data.frame(sample_lsm(forest, y = plots, plot_id = plots$ID, 
+           size = 500, shape=&quot;circle&quot;, level = &quot;landscape&quot;, 
+               type = &quot;aggregation metric&quot;, 
+           classes_max = 2,
+           verbose = FALSE))
+  head(mfnf)
   
-#### site correlations  
-site.cor &lt;- cor(s, y = NULL, 
-                use = &quot;complete.obs&quot;, 
-                method = &quot;pearson&quot;)
-    diag(site.cor) &lt;- 0                 
-cor.idx &lt;- which(site.cor &gt; p | site.cor &lt; -p, arr.ind = TRUE)
-  cor.names &lt;- vector()
-  cor.p &lt;- vector()
-    for(i in 1:nrow(cor.idx)) {
-      cor.p[i] &lt;- site.cor[cor.idx[i,][1], cor.idx[i,][2]]
-      cor.names [i] &lt;- paste(rownames(site.cor)[cor.idx[i,][1]],
-                       colnames(site.cor)[cor.idx[i,][2]], sep=&quot;_&quot;)
-    }   
-data.frame(parm=cor.names, p=cor.p)
+# pull contagion 
+contag &lt;- mfnf[which(mfnf$metric %in% &quot;contag&quot;),]$value  
+  plots$fnf_contag &lt;- ifelse(is.na(contag), 0, contag)
 
-( node.cor &lt;- collinear(s, p=p) )
+# Evaluate core areas  
+mcores &lt;- as.data.frame(sample_lsm(cores, y = plots, plot_id = plots$ID, 
+           size = 500, shape=&quot;circle&quot;, level = &quot;landscape&quot;, 
+           type = &quot;aggregation metric&quot;, 
+           classes_max = 2,
+           verbose = FALSE))
+           
+contag &lt;- mcores[which(mcores$metric %in% &quot;contag&quot;),]$value  
+  plots$core_contag &lt;- ifelse(is.na(contag), 0, contag)
 
-# node.var &lt;- node.var[-which(node.var %in% node.cor)]</code></pre>
-</div>
-<div id="add-node-data" class="section level2">
-<h2>Add node data</h2>
-<div id="build-node-data" class="section level3">
-<h3>1. Build node data</h3>
-<p>Build and add node (at site) level data to graph then merge edge
-(distance graph) and edge (site) data.</p>
-<p>See: build.node.data, merge</p>
-<pre class="r"><code>node.var &lt;- c(&quot;degree&quot;, &quot;betweenness&quot;, &quot;Elev&quot;, &quot;Length&quot;, &quot;Area&quot;, &quot;Perim&quot;, 
-              &quot;Depth&quot;, &quot;pH&quot;,&quot;Dforest&quot;,&quot;Drock&quot;, &quot;Dshrub&quot;, &quot;pwetland&quot;, &quot;cti&quot;,
-                    &quot;dd5&quot;, &quot;ffp&quot;,&quot;gsp&quot;,&quot;pratio&quot;,&quot;hli&quot;,&quot;rough27&quot;,&quot;srr&quot;)  
-
-node &lt;- build.node.data(st_drop_geometry(sites), group.ids = &quot;SiteID&quot;, 
-                        from.parms = node.var)</code></pre>
-</div>
-<div id="merge-nodes-and-edges" class="section level3">
-<h3>2. Merge nodes and edges</h3>
-<p>Merge nodes and edges to create a design matrix (model data.frame)
-then, log transfomr all the paramters. What happens to zero values? Any
-ideas on how to deal with it?</p>
-<pre class="r"><code>gdata &lt;- merge(st_drop_geometry(dist.graph)[c(1,2,5,11,14,7)], node, 
-               by.x=&quot;SiteID&quot;, by.y=&quot;SiteID&quot;)
-    gdata &lt;- merge(gdata, st_drop_geometry(dist.graph)[c(11, 8:10, 15:55)], 
-                   by.x=&quot;SiteID&quot;, by.y=&quot;SiteID&quot;) 
-    
-    # log transform matrix
-    for(i in 5:ncol(gdata)) {
-      gdata[,i] &lt;- ifelse(gdata[,i] &lt;= 0, 0.00001, log(gdata[,i]))
-    }</code></pre>
-</div>
-</div>
-</div>
-<div id="gravity-model" class="section level1">
-<h1><strong>Gravity model</strong></h1>
-<div id="develop-hypothesis" class="section level2">
-<h2>Develop hypothesis</h2>
-<p>What type of gravity model do you wish to run (constrained by
-production or attraction)? Think about what hypothesss that you want to
-test. Write out model statements that group parameters into hypotheses
-and run models. Remember to run a NULL that is just distance.</p>
-<p>At site (node) potential parameters. These are all at site variables.
-Remember that we pulled all raster varibles. We want to critically think
-about hypotheses and not use all of these parameters.</p>
-<ul>
-<li>degree (graph) - graph degree</li>
-<li>betweenness (graph) - graph betweeness</li>
-<li>Elev (raster) - elevation (see comments below)</li>
-<li>Length (attributed) - geographic distance</li>
-<li>Area (field) - wetland area</li>
-<li>Perim (field) - wetland perimeter</li>
-<li>Depth (field) - wetland depth - highly correlated with predatory
-fish presence/abundance</li>
-<li>pH (field) - wetland pH</li>
-<li>Dforest (field) - distance to forest</li>
-<li>Drock (field) - distance to rock</li>
-<li>Dshrub (field) - distance to shrub</li>
-<li>pwetland (raster) - proportion of wetland in d radius</li>
-<li>cti (raster) - compound topographic wetness index - steady-state
-measure of wetness based on topography</li>
-<li>dd5 (raster) - degree days &gt;5C (sum of temp)</li>
-<li>ffp (raster) - frost free period</li>
-<li>gsp (raster) - growing season precipitation</li>
-<li>pratio (raster) - ratio of growing season precip to annual precip -
-can indicate amount of snow to rain</li>
-<li>hli (raster) - heat load index - topographic measure of exposure,
-related to productivity (ice-off and primary productivity) in this
-system</li>
-<li>rough27 (raster) - topographic variation at a n27 window size</li>
-<li>ssr (raster) - measure of topographic variation at a n27 window size
-- for this system pulling out ridgelines</li>
-<li>wet.pct.nlcd (raster) - percent of cells that are wetland class</li>
-</ul>
-<p>Between site (edge) potential paramaters include: cti, dd5, ffp, gsp,
-pratio, hli, rough27, ssr (min, mean, max, var, median for each)</p>
-<p>NOTE: we are adding elevation here as a covariate. HOWEVER -
-elevation does not represent an ecological processes in itself. I
-strongly encourage using the parameters (temp, moisture, rainfall,
-vegetation, accessibility, etc.) directly and not elevation as a
-surrogate parameter.</p>
-<pre class="r"><code># null model (under Maximum Likelihood) 
-( null &lt;- gravity(y = &quot;GDIST&quot;, x = c(&quot;length&quot;), d = &quot;length&quot;, group = &quot;from_ID&quot;, 
-                  data = gdata, fit.method = &quot;ML&quot;, ln = FALSE) )
-
-# Fish hypothesis (under Maximum Likelihood) 
-( depth &lt;- gravity(y = &quot;GDIST&quot;, x = c(&quot;length&quot;,&quot;from.Depth&quot;), d = &quot;length&quot;, 
-                   group = &quot;from_ID&quot;, data = gdata, fit.method = &quot;ML&quot;, ln = FALSE) )
-
-# Productivity hypothesis (under Maximum Likelihood) 
-( product &lt;- gravity(y = &quot;GDIST&quot;, x = c(&quot;length&quot;, &quot;from.ffp&quot;, &quot;from.hli&quot;), 
-                     d = &quot;length&quot;,  group = &quot;from_ID&quot;, data = gdata, 
-                     fit.method = &quot;ML&quot;, ln = FALSE) )
-
-# Climate hypothesis (under Maximum Likelihood) 
-( climate &lt;- gravity(y = &quot;GDIST&quot;, x = c(&quot;length&quot;, &quot;from.ffp&quot;, &quot;from.pratio&quot;), 
-                     d = &quot;length&quot;, group = &quot;from_ID&quot;, data = gdata, 
-                     fit.method = &quot;ML&quot;,  ln = FALSE) )
-
-# Wetlands hypothesis (under Maximum Likelihood) 
-( wetlands &lt;- gravity(y = &quot;GDIST&quot;, x = c(&quot;length&quot;, &quot;from.degree&quot;, &quot;from.betweenness&quot;, &quot;from.pwetland&quot;), 
-                      d = &quot;length&quot;, group = &quot;from_ID&quot;, data = gdata, fit.method = &quot;ML&quot;,
-                      ln = FALSE) )
-
-# Topography hypothesis (under Maximum Likelihood) 
-( topo &lt;- gravity(y = &quot;GDIST&quot;, x = c(&quot;length&quot;, &quot;median.srr&quot;, &quot;median.rough27&quot;), d = &quot;length&quot;, 
-                  group = &quot;from_ID&quot;, data = gdata, fit.method = &quot;ML&quot;,
-                  ln = FALSE) )
-
-# Habitat hypothesis (under Maximum Likelihood) 
-( habitat &lt;- gravity(y = &quot;GDIST&quot;, x = c(&quot;length&quot;, &quot;wet.pct.nlcd&quot;, &quot;median.gsp&quot;), 
-                     d = &quot;length&quot;, group = &quot;from_ID&quot;, data = gdata, fit.method = &quot;ML&quot;,
-                     ln = FALSE, method=&quot;ML&quot;) )
-
-# Global model (under Maximum Likelihood) 
-( global &lt;- gravity(y = &quot;GDIST&quot;, x = c(&quot;length&quot;, &quot;wet.pct.nlcd&quot;, &quot;median.gsp&quot;, 
-                    &quot;from.Depth&quot;, &quot;from.ffp&quot;, &quot;from.hli&quot;, &quot;from.pratio&quot;, &quot;from.degree&quot;, 
-                    &quot;from.betweenness&quot;, &quot;from.pwetland&quot;, &quot;median.srr&quot;, &quot;median.rough27&quot;), 
-                    d = &quot;length&quot;, group = &quot;from_ID&quot;, data = gdata, fit.method = &quot;ML&quot;,
-                    ln = FALSE) )</code></pre>
-</div>
-<div id="compare-competing-models." class="section level2">
-<h2>Compare competing models.</h2>
-<p>Should you use ML or REML? Create diagnostic plots</p>
-<div class="line-block">   See: compare.models</div>
-<p>Can you directly compare ML and REML? Why not?</p>
-<pre class="r"><code>compare.models(null, depth, product, climate, wetlands, 
-               topo, habitat, global)
-
-compare.models(depth, product, climate, wetlands, topo, 
-               habitat, global)
-
-par(mfrow=c(2,3))
-   for (i in 1:6) { plot(null, type=i) } </code></pre>
-</div>
-<div id="fit-final-models" class="section level2">
-<h2>Fit final model(s)</h2>
-<p>THen compair them and calculate effect size</p>
-<div class="line-block">   See: compare.models, gravity,es</div>
-<pre class="r"><code># Habitat fit (under REML)
-h &lt;- c(&quot;length&quot;, &quot;wet.pct.nlcd&quot;, &quot;median.gsp&quot;)
-habitat_fit &lt;- gravity(y = &quot;GDIST&quot;, x = h, d = &quot;length&quot;, group = &quot;from_ID&quot;,
-                      data = gdata, ln=FALSE)
-
-# global fit (under REML)
-g &lt;-  c(&quot;length&quot;, &quot;wet.pct.nlcd&quot;, &quot;median.gsp&quot;, &quot;from.Depth&quot;, &quot;from.ffp&quot;,
-        &quot;from.hli&quot;, &quot;from.pratio&quot;,  &quot;from.degree&quot;, &quot;from.betweenness&quot;,  
-        &quot;from.pwetland&quot;, &quot;median.srr&quot;,  &quot;median.rough27&quot;)
-global_fit &lt;- gravity(y = &quot;GDIST&quot;, x = g, d = &quot;length&quot;, 
-                      group = &quot;from_ID&quot;, data = gdata, ln=FALSE)
-
-
-gravity.es(habitat_fit)
-gravity.es(global_fit)
-
-par(mfrow=c(2,3))
-   for (i in 1:6) { plot(global_fit, type=i) } 
-dev.new()
-par(mfrow=c(2,3))
-   for (i in 1:6) { plot(habitat_fit, type=i) } </code></pre>
-</div>
-<div id="back-predict-global_fit-model" class="section level2">
-<h2>Back predict global_fit model</h2>
-<div class="line-block">   See: predict</div>
-<pre class="r"><code>gd &lt;- back.transform(gdata$GDIST)
-
-# Make individual-level (group) predictions (per slope) and
-# show RMSE 
-global.p &lt;- predict(global_fit, y = &quot;GDIST&quot;, x = g,  
-                    newdata=gdata, groups = gdata$from_ID,
-                    back.transform = &quot;simple&quot;)
-habitat.p &lt;- predict(habitat_fit, y = &quot;GDIST&quot;, x = h,  
-                     newdata=gdata, groups = gdata$from_ID,
-                     back.transform = &quot;simple&quot;)
-
-cat(&quot;RMSE of global&quot;, rmse(global.p, gd), &quot;\n&quot;)
-cat(&quot;RMSE of habitat&quot;, rmse(habitat.p, gd), &quot;\n&quot;)</code></pre>
-</div>
-<div id="aggregrate-estimates-and-plot" class="section level2">
-<h2>Aggregrate estimates and plot</h2>
-<p>We can aggregrate estimates back to the edges and nodes. An
-intercative map can be created using the tmap package</p>
-<div class="line-block">   See: tapply</div>
-<pre class="r"><code># Aggregate estimates to graph and node
-global.p &lt;- data.frame(EID = gdata$from.to,
-                       NID = gdata$from_ID,  
-                       p=global.p)
-
-edge.p &lt;- tapply(global.p$p, global.p$EID, mean)
-  dist.graph$global.flow &lt;- edge.p
-  
-node.p &lt;- tapply(global.p$p, global.p$NID, mean)
-node.var &lt;- tapply(global.p$p, global.p$NID, var)
-idx &lt;- which(sites$SiteName %in% names(node.p))
-  sites$global.flow[idx] &lt;- node.p
-  sites$global.var[idx] &lt;- node.var
-
-# Plot results using tmap
-pal &lt;- colorRampPalette(rev(c(&quot;red&quot;,&quot;orange&quot;,&quot;blue&quot;)), bias=0.15)
-tmap_mode(c(&quot;plot&quot;, &quot;view&quot;)[2])
-  tm_shape(dist.graph) +
-     tm_lines(&quot;global.flow&quot;, palette=pal(10)) +
-       tm_shape(sites) +
-         tm_symbols(col = &quot;global.flow&quot;, 
-                    size = &quot;global.var&quot;, 
-                    shape = 20, scale = 0.75, palette=pal(10))</code></pre>
+# Plot core 
+plot(cores, legend=FALSE)
+  plot(plots[&quot;core_contag&quot;], pch=20, cex=2, add=TRUE)</code></pre>
 </div>
 </div>
 

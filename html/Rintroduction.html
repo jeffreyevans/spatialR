@@ -458,7 +458,7 @@ pre code {
 
 <div id="TOC">
 <ul>
-<li><a href="#review-of-vectors">Review of vectors</a>
+<li><a href="#review-of-vectors"><strong>Review of vectors</strong></a>
 <ul>
 <li><a href="#creating-vectors">Creating vectors</a></li>
 <li><a href="#summarizing-vectors">Summarizing vectors</a></li>
@@ -468,7 +468,8 @@ pre code {
 vector</a></li>
 <li><a href="#factoral-vector">Factoral vector</a></li>
 </ul></li>
-<li><a href="#review-of-data.frames">Review of data.frames</a>
+<li><a href="#review-of-data.frames"><strong>Review of
+data.frames</strong></a>
 <ul>
 <li><a href="#creating-and-viewing-data.frames">Creating and viewing
 data.frames</a></li>
@@ -477,42 +478,44 @@ data.frames</a></li>
 <li><a href="#describing-data.frames">Describing data.frames</a></li>
 <li><a href="#basic-sampling">Basic sampling</a></li>
 </ul></li>
-<li><a href="#review-of-lists">Review of lists</a>
+<li><a href="#review-of-lists"><strong>Review of lists</strong></a>
 <ul>
 <li><a href="#creating-and-working-with-list-objects">Creating and
 working with list objects</a></li>
 </ul></li>
-<li><a href="#review-of-matrices">Review of matrices</a>
+<li><a href="#review-of-matrices-and-arrays"><strong>Review of matrices
+and arrays</strong></a>
 <ul>
 <li><a href="#creating-and-working-with-matrixarray-objects">Creating
 and working with matrix/array objects</a></li>
 </ul></li>
-<li><a href="#review-of-tables">Review of tables</a>
+<li><a href="#review-of-tables"><strong>Review of tables</strong></a>
 <ul>
 <li><a href="#creating-and-working-with-tables-objects">Creating and
 working with tables objects</a></li>
 </ul></li>
-<li><a href="#review-of-object-types">Review of object types</a>
+<li><a href="#review-of-object-types"><strong>Review of object
+types</strong></a>
 <ul>
 <li><a href="#check-and-verfy-object-classes">Check and verfy object
 classes</a></li>
-<li><a href="#object-defination-and-coersion">Object defination and
+<li><a href="#object-definition-and-coersion">Object definition and
 coersion</a></li>
 </ul></li>
-<li><a href="#loops-and-apply-family-functions">Loops and apply family
-functions</a>
+<li><a href="#loops-and-apply-family-functions"><strong>Loops and apply
+family functions</strong></a>
 <ul>
 <li><a href="#iterators-using-for-and-which-loops">Iterators using for
 and which loops</a></li>
 <li><a href="#iterators-using-apply-type-functions">Iterators using
 apply type functions</a></li>
 </ul></li>
-<li><a href="#file-manipulation">File manipulation</a>
+<li><a href="#file-manipulation"><strong>File manipulation</strong></a>
 <ul>
 <li><a href="#various-base-functions-for-on-disk-file-manipulation">Various
 base functions for on disk file manipulation</a></li>
 </ul></li>
-<li><a href="#spatial-classes">Spatial classes</a>
+<li><a href="#spatial-classes"><strong>Spatial classes</strong></a>
 <ul>
 <li><a href="#sp-vector-objects-historic-class-being-depreciated">sp
 vector objects (historic class, being depreciated)</a></li>
@@ -521,12 +524,37 @@ class)</a></li>
 <li><a href="#terra-raster-objects-replaces-raster-library">terra raster
 objects (replaces raster library)</a></li>
 </ul></li>
+<li><a href="#exercises"><strong>Exercises</strong></a>
+<ul>
+<li><a href="#variance-function">Variance function</a>
+<ul>
+<li><a href="#translate-variance-equation-to-code">Translate variance
+equation to code</a></li>
+<li><a href="#write-variance-function">Write variance function</a></li>
+</ul></li>
+<li><a href="#write-function-to-reclassify-a-vector">Write function to
+reclassify a vector</a></li>
+<li><a href="#shannons-entropy-function-diversity">Shannon’s Entropy
+function (diversity)</a>
+<ul>
+<li><a href="#proportion-of-species">1 - Proportion of species</a></li>
+<li><a href="#natural-log-of-proportions">2- Natural log of
+proportions</a></li>
+<li><a href="#multiplication-of-proportions-and-log">3 - Multiplication
+of proportions and log</a></li>
+<li><a href="#function-for-entropy">Function for Entropy</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#miscellaneous-query-and-manipulation-of-sf-objects"><strong>Miscellaneous
+query and manipulation of sf objects</strong></a></li>
 </ul>
 </div>
 
-<p>spatialR workshop R review</p>
+<p>Here I proved an overview of methods, object types, classes, how to
+interact with objects (indexing), iteration, functions and spatial
+object classes.</p>
 <div id="review-of-vectors" class="section level1">
-<h1>Review of vectors</h1>
+<h1><strong>Review of vectors</strong></h1>
 <div id="creating-vectors" class="section level2">
 <h2>Creating vectors</h2>
 <pre class="r"><code># Numeric sequence using a range of whole numbers
@@ -646,7 +674,7 @@ options(stringsAsFactors = FALSE) </code></pre>
 </div>
 </div>
 <div id="review-of-data.frames" class="section level1">
-<h1>Review of data.frames</h1>
+<h1><strong>Review of data.frames</strong></h1>
 <div id="creating-and-viewing-data.frames" class="section level2">
 <h2>Creating and viewing data.frames</h2>
 <pre class="r"><code># Create a data.frame using vectors
@@ -754,7 +782,7 @@ sample(c(&quot;A&quot;, &quot;B&quot;), 10, replace = TRUE)</code></pre>
 </div>
 </div>
 <div id="review-of-lists" class="section level1">
-<h1>Review of lists</h1>
+<h1><strong>Review of lists</strong></h1>
 <div id="creating-and-working-with-list-objects" class="section level2">
 <h2>Creating and working with list objects</h2>
 <pre class="r"><code>( l &lt;- list(runif(10), runif(15)) )
@@ -803,8 +831,8 @@ l &lt;- list()
     print(p)</code></pre>
 </div>
 </div>
-<div id="review-of-matrices" class="section level1">
-<h1>Review of matrices</h1>
+<div id="review-of-matrices-and-arrays" class="section level1">
+<h1><strong>Review of matrices and arrays</strong></h1>
 <div id="creating-and-working-with-matrixarray-objects" class="section level2">
 <h2>Creating and working with matrix/array objects</h2>
 <pre class="r"><code>x &lt;- as.matrix(rbind( c(0, 0.509, 0.842), 
@@ -828,11 +856,11 @@ x[lower.tri(x)]
 # Change diagonal to NA                            
 diag(x) &lt;- NA                                           
 
-# Change diagonal to NA 
+# Change diagonal to NA
 diag(x) &lt;- NA
   x
 
-# Change lower triangle to NA 
+# Change lower triangle to NA
 x[lower.tri(x)] &lt;- NA
 x
 
@@ -888,7 +916,7 @@ mat.df(x)</code></pre>
 </div>
 </div>
 <div id="review-of-tables" class="section level1">
-<h1>Review of tables</h1>
+<h1><strong>Review of tables</strong></h1>
 <div id="creating-and-working-with-tables-objects" class="section level2">
 <h2>Creating and working with tables objects</h2>
 <pre class="r"><code>( x &lt;- sample(1:5, 100, replace=TRUE) ) 
@@ -917,7 +945,7 @@ cbind(table(site1), table(site2))</code></pre>
 </div>
 </div>
 <div id="review-of-object-types" class="section level1">
-<h1>Review of object types</h1>
+<h1><strong>Review of object types</strong></h1>
 <div id="check-and-verfy-object-classes" class="section level2">
 <h2>Check and verfy object classes</h2>
 <pre class="r"><code>( x &lt;- runif(10) )
@@ -933,8 +961,8 @@ if(!is.numeric(y))  print( &quot;y is not numeric&quot; )
 
 if(class(y) == &quot;character&quot;)  print( &quot;We can do something to a character now&quot; )</code></pre>
 </div>
-<div id="object-defination-and-coersion" class="section level2">
-<h2>Object defination and coersion</h2>
+<div id="object-definition-and-coersion" class="section level2">
+<h2>Object definition and coersion</h2>
 <pre class="r"><code># Create empty vector, list, data.frame with no dimensions
 ( x &lt;- vector() ) 
 ( x &lt;- list() )
@@ -964,7 +992,7 @@ as.numeric(as.character(factor(c(1,3,5)))) # right, returns values</code></pre>
 </div>
 </div>
 <div id="loops-and-apply-family-functions" class="section level1">
-<h1>Loops and apply family functions</h1>
+<h1><strong>Loops and apply family functions</strong></h1>
 <div id="iterators-using-for-and-which-loops" class="section level2">
 <h2>Iterators using for and which loops</h2>
 <pre class="r"><code>data(iris)
@@ -1033,7 +1061,7 @@ sapply(list(site1, site2), function(x) {
 </div>
 </div>
 <div id="file-manipulation" class="section level1">
-<h1>File manipulation</h1>
+<h1><strong>File manipulation</strong></h1>
 <div id="various-base-functions-for-on-disk-file-manipulation" class="section level2">
 <h2>Various base functions for on disk file manipulation</h2>
 <pre class="r"><code># set working directory
@@ -1099,7 +1127,7 @@ basename(&quot;C:/path/to/file.txt&quot;)</code></pre>
 </div>
 </div>
 <div id="spatial-classes" class="section level1">
-<h1>Spatial classes</h1>
+<h1><strong>Spatial classes</strong></h1>
 <div id="sp-vector-objects-historic-class-being-depreciated" class="section level2">
 <h2>sp vector objects (historic class, being depreciated)</h2>
 <pre class="r"><code>library(sp)
@@ -1215,6 +1243,187 @@ raster(r)
 ( r &lt;- c(r,r,r) )
 stack(r)</code></pre>
 </div>
+</div>
+<div id="exercises" class="section level1">
+<h1><strong>Exercises</strong></h1>
+<div id="variance-function" class="section level2">
+<h2>Variance function</h2>
+<div id="translate-variance-equation-to-code" class="section level3">
+<h3>Translate variance equation to code</h3>
+<p><span class="math display">\[\sigma{_x}^{2} = \sum_{i=1}^{n} (x_i -
+\bar{x})^2\quad\]</span></p>
+<pre class="r"><code>x &lt;- runif(100)
+
+# Let&#39;s break it down into pieces: 
+#  We need, square of the summed deviations from the mean
+
+# deviations from mean
+  dev &lt;- x - mean(x) 
+
+# sum of deviations
+  sdev &lt;- sum(dev)  
+
+# square of summed deviations  
+  svar &lt;- sdev^2     
+
+# Now, put it together
+
+sum((x - mean(x))^2  </code></pre>
+</div>
+<div id="write-variance-function" class="section level3">
+<h3>Write variance function</h3>
+<pre class="r"><code>my.var &lt;- function(x) 1/length(x) * sum((x - mean(x))^2)
+
+# Test against the R var function 
+
+var(x)
+my.var(x)
+
+# Why is it slightly different? population vs. 
+# sample statistic!</code></pre>
+</div>
+</div>
+<div id="write-function-to-reclassify-a-vector" class="section level2">
+<h2>Write function to reclassify a vector</h2>
+<pre class="r"><code># create data
+y &lt;- runif(100, 0, 100)
+
+reclass &lt;- function(x, p) ifelse(x &lt;= p, 1, 0)
+reclass(x, p = mean(x))
+
+# We can then add an &quot;if&quot; statement to ensure that 
+# the vector is numeric
+reclass &lt;- function(x, p) {
+  if(!is.numeric(x)) stop (&quot;x is not numeric&quot;)
+  ifelse(x &lt;= p, 1, 0)
+}
+
+reclass(x, p = mean(x))
+
+# Check if statement
+reclass(as.character(x), p = mean(x) )</code></pre>
+</div>
+<div id="shannons-entropy-function-diversity" class="section level2">
+<h2>Shannon’s Entropy function (diversity)</h2>
+<p><span class="math display">\[H =\sum_{i=1}^{n} (p_{i} \log(p_{i})
+)\]</span></p>
+<div id="proportion-of-species" class="section level3">
+<h3>1 - Proportion of species</h3>
+<p>Proportion of species i at plot j – We can use apply to get row sums
+and then sweep to divide all values by row sums</p>
+<pre class="r fold-hide"><code>total &lt;- apply(spp@data[,2:ncol(spp)], MARGIN = 1, sum) 
+spp.prop &lt;- sweep(spp@data[,2:ncol(spp)], MARGIN = 1, total, &quot;/&quot;) </code></pre>
+</div>
+<div id="natural-log-of-proportions" class="section level3">
+<h3>2- Natural log of proportions</h3>
+<p>Natural log of proportion of species i at plot j – Here we will need
+a function that can be passed to apply</p>
+<pre class="r fold-hide"><code>div &lt;- function(x) { -1 * sum( x[x &gt; 0] * log(x[x &gt; 0]) ) }</code></pre>
+</div>
+<div id="multiplication-of-proportions-and-log" class="section level3">
+<h3>3 - Multiplication of proportions and log</h3>
+<p>For multiplication of 1 and 2 – We can incorporate this step into the
+function developed for step #2 and then pass the function to apply</p>
+<pre class="r fold-hide"><code>apply(spp.prop, MARGIN = 1, FUN = div )</code></pre>
+</div>
+<div id="function-for-entropy" class="section level3">
+<h3>Function for Entropy</h3>
+<p>Now, put the pieces together and write a function for entropy</p>
+<pre class="r fold-hide"><code># add data
+data(meuse)
+meuse &lt;- st_as_sf(meuse, coords = c(&quot;x&quot;, &quot;y&quot;), crs = 28992, 
+                  agr = &quot;constant&quot;)
+
+spp.df &lt;- read.csv(&quot;http://s3.amazonaws.com/RTools/spp.plots.csv&quot;)
+  spp &lt;- meuse[sample(1:nrow(meuse), nrow(spp.df)),]
+    spp &lt;- cbind(spp, spp.df) 
+
+# Shannon’s Diversity Index function
+shannon &lt;- function(x) {
+  s &lt;- function(x) { -1 * sum( x[x &gt; 0] * log(x[x &gt; 0]) ) }
+  spp.sum &lt;- apply(x, MARGIN = 1, sum)
+  spp.prop &lt;- sweep(x, MARGIN = 1, spp.sum, &quot;/&quot;)
+  apply(spp.prop, MARGIN = 1, FUN = s )
+}
+
+# Add results to data and plot
+names(spp)
+( diversity &lt;- shannon( st_drop_geometry(spp[,13:ncol(spp)])) )
+  spp$H &lt;- diversity
+
+ 
+# Bubble plot using ggplot2  
+library(ggplot2)   
+ggplot() +
+  geom_sf(
+    data = spp,
+    pch = 21,
+    aes(size = H, fill = H),
+    col = &quot;grey20&quot;) +
+  scale_size(
+    range = c(1, 9),
+    guide = guide_legend(
+      direction = &quot;horizontal&quot;,
+      nrow = 1,
+      label.position = &quot;bottom&quot;)) +
+  scale_fill_gradientn(colours = hcl.colors(5, &quot;RdBu&quot;,
+                                            rev = TRUE,
+                                            alpha = 0.4)) +
+  guides(fill = guide_legend(title = &quot;&quot;)) +
+  labs(title = &quot;Shannon Entropy (biodiversity)&quot;) +
+  theme_void() +
+  theme(legend.position = &quot;bottom&quot;)</code></pre>
+</div>
+</div>
+</div>
+<div id="miscellaneous-query-and-manipulation-of-sf-objects" class="section level1">
+<h1><strong>Miscellaneous query and manipulation of sf
+objects</strong></h1>
+<pre class="r"><code>data(meuse)
+meuse &lt;- st_as_sf(meuse, coords = c(&quot;x&quot;, &quot;y&quot;), crs = 28992, 
+                  agr = &quot;constant&quot;)
+
+# percent of soil class 1
+length(meuse[meuse$soil == &quot;1&quot; ,]$soil) / length(meuse$soil)
+length(meuse[meuse$soil != &quot;1&quot; ,]$soil) / length(meuse$soil)
+
+    # or, more efficiently  
+    prop.table(table(meuse$soil))
+
+# mean of cadmium in soil class 1 
+mean(meuse[meuse$soil == &quot;1&quot; ,]$cadmium)
+
+# mean of cadmium for all soil classes
+tapply(meuse$cadmium, meuse$soil, mean) 
+
+# Conditional plot for soil class 1
+plot(st_geometry(meuse[meuse$soil == &quot;1&quot; ,]), pch=20)
+
+#### Split data into list object
+soil &lt;- list()
+  for(i in unique(meuse$soil)) { soil[[i]] &lt;- meuse[meuse$soil == i,] }
+
+    # or, directly with lapply 
+    soil &lt;- lapply(unique(meuse$soil), function(i) {
+                   meuse[meuse$soil == i,] })
+
+# Plot each subset point list element
+par(mfrow=c(2,2))
+  lapply(soil, plot)
+
+##### Split data into new sp subset objects in global namespace 
+for(i in unique(meuse$soil)) { 
+    assign(paste(&quot;soil&quot;, i, sep=&quot;.&quot;), meuse[meuse$soil == i,])
+  }  
+
+ls() # list objects in global namespace
+
+# Plot soil subsets using &quot;get&quot; to call object from character variable
+par(mfrow=c(2,2))
+for(i in c(&quot;soil.1&quot;, &quot;soil.2&quot;, &quot;soil.3&quot;)) { plot(get(i), pch=20) }
+
+# delete objects
+remove(soil.1, soil.2, soil.3)</code></pre>
 </div>
 
 

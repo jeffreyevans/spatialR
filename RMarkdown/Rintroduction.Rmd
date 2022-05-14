@@ -6,13 +6,13 @@ date: "5/16/2022"
 output:
   html_document: 
     toc: yes
-    keep_md: yes
+    keep_md: no
     code_folding: show
 ---
 
-spatialR workshop R review
+Here I proved an overview of methods, object types, classes, how to interact with objects (indexing), iteration, functions and spatial object classes. 
 
-# Review of vectors
+# **Review of vectors**
  
 ## Creating vectors
 
@@ -154,7 +154,7 @@ options(stringsAsFactors = FALSE)
 
 ```
 
-# Review of data.frames
+# **Review of data.frames**
  
 ## Creating and viewing data.frames
 
@@ -277,7 +277,7 @@ sample(c("A", "B"), 10, replace = TRUE)
 
 ```
 
-# Review of lists
+# **Review of lists**
 
 ## Creating and working with list objects
 
@@ -330,7 +330,7 @@ l <- list()
 
 ```
 
-# Review of matrices
+# **Review of matrices and arrays**
 
 ## Creating and working with matrix/array objects
 
@@ -357,11 +357,11 @@ x[lower.tri(x)]
 # Change diagonal to NA                            
 diag(x) <- NA                                           
 
-# Change diagonal to NA 
+# Change diagonal to NA
 diag(x) <- NA
   x
 
-# Change lower triangle to NA 
+# Change lower triangle to NA
 x[lower.tri(x)] <- NA
 x
 
@@ -417,7 +417,7 @@ mat.df(x)
 
 ```
 
-# Review of tables
+# **Review of tables**
 
 ## Creating and working with tables objects
 
@@ -449,7 +449,7 @@ cbind(table(site1), table(site2))
   
 ```
 
-# Review of object types
+# **Review of object types**
 
 ## Check and verfy object classes
 
@@ -470,7 +470,7 @@ if(class(y) == "character")  print( "We can do something to a character now" )
 
 ```
 
-## Object defination and coersion
+## Object definition and coersion
 
 ```{r, eval=FALSE}
 
@@ -503,7 +503,7 @@ as.numeric(as.character(factor(c(1,3,5)))) # right, returns values
 
 ```
 
-# Loops and apply family functions
+# **Loops and apply family functions**
 
 ## Iterators using for and which loops
 
@@ -579,7 +579,7 @@ sapply(list(site1, site2), function(x) {
 
 ```
 
-# File manipulation
+# **File manipulation**
 
 ## Various base functions for on disk file manipulation 
 
@@ -648,7 +648,7 @@ basename("C:/path/to/file.txt")
 
 ```
 
-# Spatial classes
+# **Spatial classes**
 
 ## sp vector objects (historic class, being depreciated)
 
@@ -772,5 +772,216 @@ raster(r)
 
 ( r <- c(r,r,r) )
 stack(r)
+
+```
+
+# **Exercises**
+
+## Variance function
+
+### Translate variance equation to code
+
+$$\sigma{_x}^{2} = \sum_{i=1}^{n} (x_i - \bar{x})^2\quad$$
+
+```{r, eval=FALSE}
+
+x <- runif(100)
+
+# Let's break it down into pieces: 
+#  We need, square of the summed deviations from the mean
+
+# deviations from mean
+  dev <- x - mean(x) 
+
+# sum of deviations
+  sdev <- sum(dev)  
+
+# square of summed deviations  
+  svar <- sdev^2     
+
+# Now, put it together
+
+sum((x - mean(x))^2  
+  
+```
+
+### Write variance function 
+
+```{r, eval=FALSE}
+
+my.var <- function(x) 1/length(x) * sum((x - mean(x))^2)
+
+# Test against the R var function 
+
+var(x)
+my.var(x)
+
+# Why is it slightly different? population vs. 
+# sample statistic!
+
+```
+
+## Write function to reclassify a vector
+
+```{r, eval=FALSE}
+
+# create data
+y <- runif(100, 0, 100)
+
+reclass <- function(x, p) ifelse(x <= p, 1, 0)
+reclass(x, p = mean(x))
+
+# We can then add an "if" statement to ensure that 
+# the vector is numeric
+reclass <- function(x, p) {
+  if(!is.numeric(x)) stop ("x is not numeric")
+  ifelse(x <= p, 1, 0)
+}
+
+reclass(x, p = mean(x))
+
+# Check if statement
+reclass(as.character(x), p = mean(x) )
+
+```
+
+
+## Shannon's Entropy function (diversity)
+
+$$H =\sum_{i=1}^{n} (p_{i} \log(p_{i}) )$$
+
+### 1 - Proportion of species 
+
+Proportion of species i at plot j – We can use apply to get row sums and then sweep to divide all values by row sums 
+
+```{r, class.source = "fold-hide", eval=FALSE}
+
+total <- apply(spp@data[,2:ncol(spp)], MARGIN = 1, sum) 
+spp.prop <- sweep(spp@data[,2:ncol(spp)], MARGIN = 1, total, "/") 
+
+```
+
+### 2- Natural log of proportions 
+
+Natural log of proportion of species i at plot j – Here we will need a function that can be passed to apply
+
+```{r, class.source = "fold-hide", eval=FALSE}
+
+div <- function(x) { -1 * sum( x[x > 0] * log(x[x > 0]) ) }
+
+```
+
+### 3 - Multiplication of proportions and log  
+
+For multiplication of 1 and 2 – We can incorporate this step into the function developed for step #2 and then pass the function to apply
+
+```{r, class.source = "fold-hide", eval=FALSE}
+
+apply(spp.prop, MARGIN = 1, FUN = div )
+
+```
+
+### Function for Entropy
+
+Now, put the pieces together and write a function for entropy
+
+```{r, class.source = "fold-hide", eval=FALSE}
+
+# add data
+data(meuse)
+meuse <- st_as_sf(meuse, coords = c("x", "y"), crs = 28992, 
+                  agr = "constant")
+
+spp.df <- read.csv("http://s3.amazonaws.com/RTools/spp.plots.csv")
+  spp <- meuse[sample(1:nrow(meuse), nrow(spp.df)),]
+    spp <- cbind(spp, spp.df) 
+
+# Shannon’s Diversity Index function
+shannon <- function(x) {
+  s <- function(x) { -1 * sum( x[x > 0] * log(x[x > 0]) ) }
+  spp.sum <- apply(x, MARGIN = 1, sum)
+  spp.prop <- sweep(x, MARGIN = 1, spp.sum, "/")
+  apply(spp.prop, MARGIN = 1, FUN = s )
+}
+
+# Add results to data and plot
+names(spp)
+( diversity <- shannon( st_drop_geometry(spp[,13:ncol(spp)])) )
+  spp$H <- diversity
+
+ 
+# Bubble plot using ggplot2  
+library(ggplot2)   
+ggplot() +
+  geom_sf(
+    data = spp,
+    pch = 21,
+    aes(size = H, fill = H),
+    col = "grey20") +
+  scale_size(
+    range = c(1, 9),
+    guide = guide_legend(
+      direction = "horizontal",
+      nrow = 1,
+      label.position = "bottom")) +
+  scale_fill_gradientn(colours = hcl.colors(5, "RdBu",
+                                            rev = TRUE,
+                                            alpha = 0.4)) +
+  guides(fill = guide_legend(title = "")) +
+  labs(title = "Shannon Entropy (biodiversity)") +
+  theme_void() +
+  theme(legend.position = "bottom")
+                                          
+```  
+
+#  **Miscellaneous query and manipulation of sf objects**
+
+```{r, eval=FALSE}
+
+data(meuse)
+meuse <- st_as_sf(meuse, coords = c("x", "y"), crs = 28992, 
+                  agr = "constant")
+
+# percent of soil class 1
+length(meuse[meuse$soil == "1" ,]$soil) / length(meuse$soil)
+length(meuse[meuse$soil != "1" ,]$soil) / length(meuse$soil)
+
+    # or, more efficiently  
+    prop.table(table(meuse$soil))
+
+# mean of cadmium in soil class 1 
+mean(meuse[meuse$soil == "1" ,]$cadmium)
+
+# mean of cadmium for all soil classes
+tapply(meuse$cadmium, meuse$soil, mean) 
+
+# Conditional plot for soil class 1
+plot(st_geometry(meuse[meuse$soil == "1" ,]), pch=20)
+
+#### Split data into list object
+soil <- list()
+  for(i in unique(meuse$soil)) { soil[[i]] <- meuse[meuse$soil == i,] }
+
+    # or, directly with lapply 
+    soil <- lapply(unique(meuse$soil), function(i) {
+                   meuse[meuse$soil == i,] })
+
+# Plot each subset point list element
+par(mfrow=c(2,2))
+  lapply(soil, plot)
+
+##### Split data into new sp subset objects in global namespace 
+for(i in unique(meuse$soil)) { 
+    assign(paste("soil", i, sep="."), meuse[meuse$soil == i,])
+  }  
+
+ls() # list objects in global namespace
+
+# Plot soil subsets using "get" to call object from character variable
+par(mfrow=c(2,2))
+for(i in c("soil.1", "soil.2", "soil.3")) { plot(get(i), pch=20) }
+
+# delete objects
+remove(soil.1, soil.2, soil.3)
 
 ```

@@ -6,13 +6,13 @@ date: "5/16/2022"
 output:
   html_document: 
     toc: yes
-    keep_md: yes
+    keep_md: no
     code_folding: hide
 ---
 
 An introduction to density-based point process random forests models. Conceptually, a Poisson Point-process Model (PPM) uses point observations [X,Y] to fit an intensity process (surface) that is then used with matching covariates to estimate the Probability Density (PDF) or Intensity function. The intensity function is an estimate of the density following an assumption of a Poisson point process. We can emulate the PPM structure by simply estimating the intensity and then using random forests, rather than a linear model, to solve the regression equation. 
 
-I would note that MaxEnt is not a presence-only model per se but, generates a large number of regular samples to act as the null (background) with the know observsations embedded in the background sample. This is not dissimilar to a PPM, (Renner & Warton 2013 demostrated this equlivancy) but, MaxEnt does not rely on an intensity function, rather solving a probability distribution via maximized entropy. 
+I would note that MaxEnt is not a presence-only model per se but, generates a large number of regular samples to act as the null (background) with the know observations embedded in the background sample. This is not dissimilar to a PPM, (Renner & Warton 2013 demonstrated this equivalency) but, MaxEnt does not rely on an intensity function, rather solving a probability distribution via maximized entropy. 
 
 Add required libraries, download data for exercises (need to set a working directory)
 
@@ -22,7 +22,6 @@ invisible(lapply(c("sf", "spatialEco", "terra", "raster", "randomForest",
 		  require, character.only=TRUE))
 
 # set your working and data directories here
-setwd("C:/evans/spatialR/RandomForests")
 setwd("C:/evans/spatialR/RandomForests")
   data.dir = file.path(getwd(), "data")
     if(!dir.exists(file.path(getwd(), "results")))
@@ -36,7 +35,7 @@ download.file("https://spatialr.s3-us-west-2.amazonaws.com/day04.zip",
   
 ```
 
-# Data preparation
+# **Data preparation**
  
 ## Read shapefile vector and img rasters from disk
 
@@ -121,7 +120,7 @@ cl <- spatialEco::collinear(st_drop_geometry(spp.den[,2:ncol(spp.den)]))
 
 ```
 
-# Specify Poisson (density) random forests model
+# **Specify Poisson (density) random forests model**
 
 ## Apply a model selection procedure 
 
@@ -173,7 +172,7 @@ imp <- rf.fit$variable.importance
 
 ```
 
-# Validation
+# **Validation**
 
 Calculate Root Mean Square Error (RMSE) between observed and predicted sqrt(mean( (x - y)^2
 
@@ -184,7 +183,7 @@ rmse <- function(y, x) { sqrt(mean( (x - y)^2, na.rm=TRUE)) }
 
 ```
 
-# Spatial predictions
+# **Spatial predictions**
 
 ## Subset rasters 
 
@@ -229,7 +228,7 @@ my.col <- ifelse(spp.pa$Present == "1", "red", "blue")
 
 ```
 
-# Compare density and probability results  
+# **Compare density and probability results**  
 
 Examine (plot) binomial probabilities verses density estimate. What may be driving difference, aside from methods? Think about the nature of the data that went into each model and the Nth order spatial process in deriving the intensity process (eg., density bandwidth). 
 

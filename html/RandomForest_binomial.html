@@ -459,7 +459,12 @@ Binominal probabilistic models</h1>
 
 <div id="TOC">
 <ul>
-<li><a href="#data-preparation">Data preparation</a>
+<li><a href="#setup"><strong>Setup</strong></a>
+<ul>
+<li><a href="#add-required-libraries-and-set-working-environment">Add
+required libraries and set working environment</a></li>
+</ul></li>
+<li><a href="#data-preparation"><strong>Data preparation</strong></a>
 <ul>
 <li><a href="#read-shapefile-vector-and-img-rasters-from-disk">Read
 shapefile vector and img rasters from disk</a></li>
@@ -469,8 +474,8 @@ shapefile vector and img rasters from disk</a></li>
 collinearity and multi-collinearity</a></li>
 <li><a href="#create-data-withhold">Create data withhold</a></li>
 </ul></li>
-<li><a href="#specify-probabilistic-binomial-model">Specify
-probabilistic binomial model</a>
+<li><a href="#specify-probabilistic-binomial-model"><strong>Specify
+probabilistic binomial model</strong></a>
 <ul>
 <li><a href="#apply-a-model-selection-procedure">Apply a model selection
 procedure</a></li>
@@ -479,7 +484,7 @@ parameter significane</a></li>
 <li><a href="#fit-final-model">Fit final model</a></li>
 <li><a href="#derive-importance">Derive importance</a></li>
 </ul></li>
-<li><a href="#model-validation">Model validation</a>
+<li><a href="#model-validation"><strong>Model validation</strong></a>
 <ul>
 <li><a href="#confusion-matrix-based-statistics">Confusion matrix based
 statistics</a></li>
@@ -488,15 +493,16 @@ statistics</a></li>
 <li><a href="#sensitivity-test">Sensitivity test</a></li>
 <li><a href="#prediction-callibration">Prediction callibration</a></li>
 </ul></li>
-<li><a href="#spatial-predictions">Spatial predictions</a>
+<li><a href="#spatial-predictions"><strong>Spatial
+predictions</strong></a>
 <ul>
 <li><a href="#subset-rasters">Subset rasters</a></li>
 <li><a href="#create-prediction-raster">Create prediction
 raster</a></li>
 <li><a href="#spatial-uncertainty">Spatial uncertainty</a></li>
 </ul></li>
-<li><a href="#functional-relationships-and-inference">Functional
-relationships and inference</a>
+<li><a href="#functional-relationships-and-inference"><strong>Functional
+relationships and inference</strong></a>
 <ul>
 <li><a href="#partial-dependence-probability-plots">Partial dependence
 probability plots</a></li>
@@ -528,8 +534,10 @@ performance. Finaly, we will explore inferential methods using partial
 dependence plots to evaluate functional relationships and take a brief
 look at Shapley analysis for individual and aggregated
 relationships.</p>
-<p>Add required libraries, download data for exercises (need to set a
-working directory)</p>
+<div id="setup" class="section level1">
+<h1><strong>Setup</strong></h1>
+<div id="add-required-libraries-and-set-working-environment" class="section level2">
+<h2>Add required libraries and set working environment</h2>
 <pre class="r fold-show"><code>invisible(lapply(c(&quot;sf&quot;, &quot;spatialEco&quot;, &quot;terra&quot;, &quot;randomForest&quot;, 
                    &quot;rfUtilities&quot;, &quot;ggplot2&quot;, &quot;ranger&quot;, &quot;fastshap&quot;, 
                    &quot;pdp&quot;, &quot;ggbeeswarm&quot;), 
@@ -546,8 +554,10 @@ download.file(&quot;https://spatialr.s3-us-west-2.amazonaws.com/day04.zip&quot;,
               destfile=&quot;day04.zip&quot;, mode=&quot;wb&quot;)
   unzip(&quot;day04.zip&quot;)
     file.remove(&quot;day04.zip&quot;)</code></pre>
+</div>
+</div>
 <div id="data-preparation" class="section level1">
-<h1>Data preparation</h1>
+<h1><strong>Data preparation</strong></h1>
 <div id="read-shapefile-vector-and-img-rasters-from-disk" class="section level2">
 <h2>Read shapefile vector and img rasters from disk</h2>
 <p>Read species observations “spp.shp” to “spp” sf object and create a
@@ -618,7 +628,7 @@ plot(st_geometry(spp.train), pch=20)
 </div>
 </div>
 <div id="specify-probabilistic-binomial-model" class="section level1">
-<h1>Specify probabilistic binomial model</h1>
+<h1><strong>Specify probabilistic binomial model</strong></h1>
 <div id="apply-a-model-selection-procedure" class="section level2">
 <h2>Apply a model selection procedure</h2>
 <p>Create an initial random forests model object, with 501 Bootstrap
@@ -692,7 +702,7 @@ dotchart</p>
 </div>
 </div>
 <div id="model-validation" class="section level1">
-<h1>Model validation</h1>
+<h1><strong>Model validation</strong></h1>
 <div id="confusion-matrix-based-statistics" class="section level2">
 <h2>Confusion matrix based statistics</h2>
 <p>Create an obs.pred data.frame contaning observed response variable
@@ -785,7 +795,7 @@ plot(d1, type=&quot;n&quot;, xlim=c(0,1), ylim=c(min(d1$y,d0$y),max(d1$y,d0$y)),
 </div>
 </div>
 <div id="spatial-predictions" class="section level1">
-<h1>Spatial predictions</h1>
+<h1><strong>Spatial predictions</strong></h1>
 <div id="subset-rasters" class="section level2">
 <h2>Subset rasters</h2>
 <p>Subset raster stack to selected variables, remember to use double
@@ -856,7 +866,7 @@ Learn Res 15:1625-1651.</p>
 </div>
 </div>
 <div id="functional-relationships-and-inference" class="section level1">
-<h1>Functional relationships and inference</h1>
+<h1><strong>Functional relationships and inference</strong></h1>
 <div id="partial-dependence-probability-plots" class="section level2">
 <h2>Partial dependence probability plots</h2>
 <p>The partial dependence plot shows the marginal effect one or two

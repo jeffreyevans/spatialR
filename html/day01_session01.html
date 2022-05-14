@@ -459,8 +459,13 @@ introduction</h1>
 
 <div id="TOC">
 <ul>
-<li><a href="#reading-and-writing-of-spatial-classes">1.1.1 - Reading
-and writing of spatial classes</a>
+<li><a href="#setup"><strong>Setup</strong></a>
+<ul>
+<li><a href="#add-required-libraries-and-set-working-environment">Add
+required libraries and set working environment</a></li>
+</ul></li>
+<li><a href="#reading-and-writing-of-spatial-classes"><strong>1.1 -
+Reading and writing of spatial classes</strong></a>
 <ul>
 <li><a href="#read-shapefile-vector-from-disk">Read shapefile vector
 from disk</a></li>
@@ -471,8 +476,8 @@ from disk</a></li>
 <li><a href="#coersion-of-raster-data">Coersion of raster data</a></li>
 <li><a href="#write-raster-data">Write raster data</a></li>
 </ul></li>
-<li><a href="#indexing-and-query-of-spatial-vector-classes">1.1.2 -
-Indexing and query of spatial vector classes</a>
+<li><a href="#indexing-and-query-of-spatial-vector-classes"><strong>1.2
+- Indexing and query of spatial vector classes</strong></a>
 <ul>
 <li><a href="#create-point-vector">Create point vector</a></li>
 <li><a href="#subset-rows-of-point-vector">Subset rows of point
@@ -486,27 +491,28 @@ query</a></li>
 <li><a href="#distace-based-random-sample">Distace-based random
 sample</a></li>
 </ul></li>
-<li><a href="#functions">1.1.3 Functions</a>
+<li><a href="#functions"><strong>1.3 Functions</strong></a>
 <ul>
 <li><a href="#step-through-and-dissect-function">Step through and
 dissect function</a></li>
 <li><a href="#write-observed-mean-distance-function">Write observed mean
 distance function</a></li>
 </ul></li>
-<li><a href="#basic-plotting-of-spatial-objects">1.1.4 Basic plotting of
-spatial objects</a>
+<li><a href="#basic-plotting-of-spatial-objects"><strong>1.4 Basic
+plotting of spatial objects</strong></a>
 <ul>
 <li><a href="#plot-attribute-query">Plot attribute query</a></li>
 <li><a href="#plot-nominal-colors">Plot nominal colors</a></li>
 <li><a href="#plot-continious-colors">Plot continious colors</a></li>
-<li><a href="#section"></a></li>
 </ul></li>
 </ul>
 </div>
 
 <p>spatialR workshop R review</p>
-<p>Add required libraries, download data for exercises (need to set a
-working directory)</p>
+<div id="setup" class="section level1">
+<h1><strong>Setup</strong></h1>
+<div id="add-required-libraries-and-set-working-environment" class="section level2">
+<h2>Add required libraries and set working environment</h2>
 <pre class="r fold-show"><code>p = c(&quot;sp&quot;, &quot;raster&quot;, &quot;spdep&quot;, &quot;rgdal&quot;, &quot;rgeos&quot;,  
       &quot;spatialEco&quot;, &quot;sf&quot;, &quot;terra&quot;, &quot;spatstat&quot;, &quot;spatstat.geom&quot;)
   if(any(!unlist(lapply(p, requireNamespace, quietly=TRUE)))) { 
@@ -526,8 +532,10 @@ download.file(&quot;https://spatialr.s3-us-west-2.amazonaws.com/day01.zip&quot;,
               destfile=&quot;day01.zip&quot;, mode=&quot;wb&quot;)
   unzip(&quot;day01.zip&quot;)
   file.remove(&quot;day01.zip&quot;)</code></pre>
+</div>
+</div>
 <div id="reading-and-writing-of-spatial-classes" class="section level1">
-<h1>1.1.1 - Reading and writing of spatial classes</h1>
+<h1><strong>1.1 - Reading and writing of spatial classes</strong></h1>
 <div id="read-shapefile-vector-from-disk" class="section level2">
 <h2>Read shapefile vector from disk</h2>
 <p>Read the “birds” shapefile, (see st_read) and display the first few
@@ -535,7 +543,7 @@ rows of associated data. Hint; sf::st_read</p>
 <pre class="r"><code>( birds &lt;- sf::st_read(file.path(data.dir, &quot;birds.shp&quot;)) )
   str(birds)
 
-## for refrence, read sp object using rgdal
+## for reference, read sp object using rgdal
 # birds &lt;- rgdal::readOGR(file.path(getwd(), &quot;data&quot;), &quot;birds&quot;)  </code></pre>
 </div>
 <div id="subset-vector-data" class="section level2">
@@ -552,7 +560,7 @@ sf::st_read</p>
 <pre class="r"><code>sf::st_write(birds.sub, file.path(data.dir, &quot;birds_sub.shp&quot;))
 sf::st_read(file.path(data.dir, &quot;birds_sub.shp&quot;))
 
-## for refrence, for sp object using rgdal 
+## for reference, for sp object using rgdal 
 # writeOGR(birds.sub, file.path(getwd(), &quot;data&quot;), &quot;birds_sub&quot;, 
 #          driver=&quot;ESRI Shapefile&quot;, check_exists=TRUE, 
 #          overwrite_layer=TRUE)</code></pre>
@@ -600,7 +608,8 @@ writeRaster(r, file.path(data.dir, &quot;test.tif&quot;),
 </div>
 </div>
 <div id="indexing-and-query-of-spatial-vector-classes" class="section level1">
-<h1>1.1.2 - Indexing and query of spatial vector classes</h1>
+<h1><strong>1.2 - Indexing and query of spatial vector
+classes</strong></h1>
 <div id="create-point-vector" class="section level2">
 <h2>Create point vector</h2>
 <p>We will use the meuse dataset for all of these exercises, add the
@@ -692,7 +701,7 @@ plot(rs200, pch=20, col=&quot;red&quot;)
 </div>
 </div>
 <div id="functions" class="section level1">
-<h1>1.1.3 Functions</h1>
+<h1><strong>1.3 Functions</strong></h1>
 <div id="step-through-and-dissect-function" class="section level2">
 <h2>Step through and dissect function</h2>
 <p>Calculate the Nearest Neighbor Index (NNI), using spatialEco::nni
@@ -768,7 +777,7 @@ omd(meuse)</code></pre>
 </div>
 </div>
 <div id="basic-plotting-of-spatial-objects" class="section level1">
-<h1>1.1.4 Basic plotting of spatial objects</h1>
+<h1><strong>1.4 Basic plotting of spatial objects</strong></h1>
 <div id="plot-attribute-query" class="section level2">
 <h2>Plot attribute query</h2>
 <p>Plot only soil class 1, Then, Make a 4 panel plot window and plot all
@@ -820,9 +829,6 @@ meuse &lt;- st_as_sf(meuse, coords = c(&quot;x&quot;, &quot;y&quot;), crs = 2899
 bks &lt;- seq(min(meuse$cadmium), max(meuse$cadmium), 
                 by = diff(range(meuse$cadmium))/10) 
   plot(meuse[&quot;cadmium&quot;], breaks = bks, pch=20)</code></pre>
-</div>
-<div id="section" class="section level2">
-<h2></h2>
 </div>
 </div>
 

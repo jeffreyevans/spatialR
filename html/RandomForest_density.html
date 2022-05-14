@@ -459,7 +459,7 @@ estimating point-process models</h1>
 
 <div id="TOC">
 <ul>
-<li><a href="#data-preparation">Data preparation</a>
+<li><a href="#data-preparation"><strong>Data preparation</strong></a>
 <ul>
 <li><a href="#read-shapefile-vector-and-img-rasters-from-disk">Read
 shapefile vector and img rasters from disk</a></li>
@@ -469,23 +469,24 @@ process</a></li>
 <li><a href="#check-for-collinearity-and-multi-collinearity">Check for
 collinearity and multi-collinearity</a></li>
 </ul></li>
-<li><a href="#specify-poisson-density-random-forests-model">Specify
-Poisson (density) random forests model</a>
+<li><a href="#specify-poisson-density-random-forests-model"><strong>Specify
+Poisson (density) random forests model</strong></a>
 <ul>
 <li><a href="#apply-a-model-selection-procedure">Apply a model selection
 procedure</a></li>
 <li><a href="#fit-final-model">Fit final model</a></li>
 <li><a href="#derive-importance">Derive importance</a></li>
 </ul></li>
-<li><a href="#validation">Validation</a></li>
-<li><a href="#spatial-predictions">Spatial predictions</a>
+<li><a href="#validation"><strong>Validation</strong></a></li>
+<li><a href="#spatial-predictions"><strong>Spatial
+predictions</strong></a>
 <ul>
 <li><a href="#subset-rasters">Subset rasters</a></li>
 <li><a href="#create-prediction-raster">Create prediction
 raster</a></li>
 </ul></li>
-<li><a href="#compare-density-and-probability-results">Compare density
-and probability results</a></li>
+<li><a href="#compare-density-and-probability-results"><strong>Compare
+density and probability results</strong></a></li>
 </ul>
 </div>
 
@@ -500,9 +501,9 @@ using random forests, rather than a linear model, to solve the
 regression equation.</p>
 <p>I would note that MaxEnt is not a presence-only model per se but,
 generates a large number of regular samples to act as the null
-(background) with the know observsations embedded in the background
+(background) with the know observations embedded in the background
 sample. This is not dissimilar to a PPM, (Renner &amp; Warton 2013
-demostrated this equlivancy) but, MaxEnt does not rely on an intensity
+demonstrated this equivalency) but, MaxEnt does not rely on an intensity
 function, rather solving a probability distribution via maximized
 entropy.</p>
 <p>Add required libraries, download data for exercises (need to set a
@@ -512,7 +513,6 @@ working directory)</p>
           require, character.only=TRUE))
 
 # set your working and data directories here
-setwd(&quot;C:/evans/spatialR/RandomForests&quot;)
 setwd(&quot;C:/evans/spatialR/RandomForests&quot;)
   data.dir = file.path(getwd(), &quot;data&quot;)
     if(!dir.exists(file.path(getwd(), &quot;results&quot;)))
@@ -524,7 +524,7 @@ download.file(&quot;https://spatialr.s3-us-west-2.amazonaws.com/day04.zip&quot;,
   unzip(&quot;day04.zip&quot;)
     file.remove(&quot;day04.zip&quot;)</code></pre>
 <div id="data-preparation" class="section level1">
-<h1>Data preparation</h1>
+<h1><strong>Data preparation</strong></h1>
 <div id="read-shapefile-vector-and-img-rasters-from-disk" class="section level2">
 <h2>Read shapefile vector and img rasters from disk</h2>
 <p>Read species observations “spp_presence.shp” to “spp” sf object and
@@ -597,7 +597,7 @@ cl &lt;- spatialEco::collinear(st_drop_geometry(spp.den[,2:ncol(spp.den)]))
 </div>
 </div>
 <div id="specify-poisson-density-random-forests-model" class="section level1">
-<h1>Specify Poisson (density) random forests model</h1>
+<h1><strong>Specify Poisson (density) random forests model</strong></h1>
 <div id="apply-a-model-selection-procedure" class="section level2">
 <h2>Apply a model selection procedure</h2>
 <p>Create an initial random forests model object, with 501 Bootstrap
@@ -646,14 +646,14 @@ dotchart</p>
 </div>
 </div>
 <div id="validation" class="section level1">
-<h1>Validation</h1>
+<h1><strong>Validation</strong></h1>
 <p>Calculate Root Mean Square Error (RMSE) between observed and
 predicted sqrt(mean( (x - y)^2</p>
 <pre class="r"><code>rmse &lt;- function(y, x) { sqrt(mean( (x - y)^2, na.rm=TRUE)) }
   rmse(spp.den$y, predict(rf.fit,dat[,-1])$predictions)  </code></pre>
 </div>
 <div id="spatial-predictions" class="section level1">
-<h1>Spatial predictions</h1>
+<h1><strong>Spatial predictions</strong></h1>
 <div id="subset-rasters" class="section level2">
 <h2>Subset rasters</h2>
 <p>Subset raster stack to selected variables, remember to use double
@@ -696,7 +696,7 @@ my.col &lt;- ifelse(spp.pa$Present == &quot;1&quot;, &quot;red&quot;, &quot;blue
 </div>
 </div>
 <div id="compare-density-and-probability-results" class="section level1">
-<h1>Compare density and probability results</h1>
+<h1><strong>Compare density and probability results</strong></h1>
 <p>Examine (plot) binomial probabilities verses density estimate. What
 may be driving difference, aside from methods? Think about the nature of
 the data that went into each model and the Nth order spatial process in

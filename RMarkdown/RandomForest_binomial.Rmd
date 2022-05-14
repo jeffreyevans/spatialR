@@ -6,7 +6,7 @@ date: "5/16/2022"
 output:
   html_document: 
     toc: yes
-    keep_md: yes
+    keep_md: no
     code_folding: hide
 ---
 
@@ -14,7 +14,9 @@ An introduction to specifying binomial (probabilistic) random forests models. In
 
 In this exercise, we will leverage a spatial sample and raster data representing various hypothesized ecological processes associated with our species. We will employ a model selection procedure, evaluate the significance of the selected parameters, fit a final model, estimate the spatial uncertainty and perform model validation to evaluate fit and performance. Finaly, we will explore inferential methods using partial dependence plots to evaluate functional relationships and take a brief look at Shapley analysis for individual and aggregated relationships.    
 
-Add required libraries, download data for exercises (need to set a working directory)
+# **Setup**
+
+## Add required libraries and set working environment
 
 ```{r, class.source = "fold-show", eval=FALSE}
 invisible(lapply(c("sf", "spatialEco", "terra", "randomForest", 
@@ -36,7 +38,7 @@ download.file("https://spatialr.s3-us-west-2.amazonaws.com/day04.zip",
   
 ```
 
-# Data preparation
+# **Data preparation**
  
 ## Read shapefile vector and img rasters from disk
 
@@ -128,7 +130,7 @@ plot(st_geometry(spp.train), pch=20)
 
 ```
 
-# Specify probabilistic binomial model
+# **Specify probabilistic binomial model**
 
 ## Apply a model selection procedure 
 
@@ -206,7 +208,7 @@ imp <- rf.prob$variable.importance
 
 ```
 
-# Model validation
+# **Model validation**
 
 ## Confusion matrix based statistics 
 
@@ -305,7 +307,7 @@ plot(d1, type="n", xlim=c(0,1), ylim=c(min(d1$y,d0$y),max(d1$y,d0$y)),
     
 ```
 
-# Spatial predictions
+# **Spatial predictions**
 
 ## Subset rasters 
 
@@ -383,7 +385,7 @@ predict.se <- function(model, data, i=2) {
 ```
 
 
-# Functional relationships and inference
+# **Functional relationships and inference**
 
 ## Partial dependence probability plots
 
