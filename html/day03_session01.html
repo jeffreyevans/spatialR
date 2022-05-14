@@ -489,7 +489,7 @@ Spatial dependency - Point Pattern Analysis</strong></a>
 Spatial dependency - global autocorrelation</strong></a>
 <ul>
 <li><a href="#read-data-2">Read data</a></li>
-<li><a href="#spatial-weights-martix-wij">Spatial Weights Martix
+<li><a href="#spatial-weights-matrix-wij">Spatial Weights Matrix
 (Wij)</a></li>
 <li><a href="#calculate-morans-i-global-autocorrelation">Calculate
 Moran’s-I (global autocorrelation)</a></li>
@@ -518,8 +518,8 @@ correlation algebraic approximation</a></li>
 analysis</strong></a>
 <ul>
 <li><a href="#read-data-5">Read data</a></li>
-<li><a href="#subset-single-pixel-time-series-observsation">Subset
-single pixel time-series observsation</a></li>
+<li><a href="#subset-single-pixel-time-series-observation">Subset single
+pixel time-series observation</a></li>
 <li><a href="#imputing-missing-values">Imputing missing values</a></li>
 <li><a href="#smoothing-time-series">Smoothing time-series</a></li>
 <li><a href="#smoothing-time-series-confidence">Smoothing time-series
@@ -532,8 +532,8 @@ object</a></li>
 <li><a href="#raster-time-series-analysis"><strong>3.6 - Raster
 time-series analysis</strong></a>
 <ul>
-<li><a href="#temporal-statistical-aggretration">Temporal statistical
-aggretration</a></li>
+<li><a href="#temporal-statistical-aggregation">Temporal statistical
+aggregation</a></li>
 <li><a href="#rate-of-change">Rate of change</a></li>
 <li><a href="#mann-kendall">Mann-Kendall</a></li>
 <li><a href="#raster-time-series-trend-model">Raster time-series trend
@@ -785,8 +785,8 @@ object</p>
 
 # distinct(sdata)</code></pre>
 </div>
-<div id="spatial-weights-martix-wij" class="section level2">
-<h2>Spatial Weights Martix (Wij)</h2>
+<div id="spatial-weights-matrix-wij" class="section level2">
+<h2>Spatial Weights Matrix (Wij)</h2>
 <p>We first we need to specify a Wij matrix representing a hypothesis of
 spatial relationships (e., contingency, distance, weighted). The spdep
 library implements many well established methods for quantifying spatial
@@ -1049,8 +1049,8 @@ we will also create a date vector representing the image dates</p>
 dev.new(height=6, width=11)
   plot(lai[[c(1,50)]])</code></pre>
 </div>
-<div id="subset-single-pixel-time-series-observsation" class="section level2">
-<h2>Subset single pixel time-series observsation</h2>
+<div id="subset-single-pixel-time-series-observation" class="section level2">
+<h2>Subset single pixel time-series observation</h2>
 <p>Using x,y coordinates cbind(13028094, 146990) extract a pixel
 time-series from the lai stack</p>
 <p>You can also try plotting a single raster layer and then using
@@ -1150,8 +1150,8 @@ detrend &lt;- decompose(ts(x, start= c(2000, 01), frequency = 12))
 analysis to a raster time-series, treating each pixel as an independent
 serial measure. We can also apply formal models across the raster
 time-series.</p>
-<div id="temporal-statistical-aggretration" class="section level2">
-<h2>Temporal statistical aggretration</h2>
+<div id="temporal-statistical-aggregation" class="section level2">
+<h2>Temporal statistical aggregation</h2>
 <p>Create a raster time-series object and calculate yearly means, don’t
 forget that dates object that we created. The rts library provides
 functionality for deriving temporal aggregations. The resulting object

@@ -151,7 +151,7 @@ randomForest(x=dat[,-c(1,2)], y=dat[,"Present"], ntree = b)
 
 ```
 
-## Evaluate selected parameter significane 	
+## Evaluate selected parameter significance 	
 
 Now, we will the significance of the selected paramters using the Altmann et al. (2010) permutation test where; the distribution of the importance under the null hypothesis is of no association to the response.  
 
@@ -284,7 +284,7 @@ plot(occurrence.threshold(rf.fit, dat[,-1], class="1",
 
 ```
 
-## Prediction callibration 
+## Prediction calibration 
 
 We can perform a calibration of posterior probability to minimize log loss using an isotonic regression approach (Niculescu-Mizil & Caruana 2005). This is particuraly relevant if you are having tail-prediction issues. Hint; probability.calibration 
 
@@ -488,7 +488,7 @@ shap_group <- cbind(shap.df[,2], stack(shap.df[3:ncol(shap.df)]))
  
 ```
 
-## Shapley analysis - individual (observsation)
+## Shapley analysis - individual (observation)
 
 Create individual SHAP plots (select 4 random obs from "1" class)
 

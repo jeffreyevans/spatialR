@@ -47,7 +47,9 @@ download.file("https://spatialr.s3-us-west-2.amazonaws.com/day02.zip",
 
 ## Read data
 
-Read "plots.shp" and "soil.shp" in as sf objects. Plot resulting objects. Hint; st_read, plot, st_geometry  
+Read "plots.shp" and "soil.shp" in as sf objects. Plot resulting objects. 
+
+|    See; st_read, plot, st_geometry  
 
 ```{r, eval=FALSE}
 # Read data 
@@ -60,7 +62,11 @@ plot(st_geometry(soil))
 
 ```  
     
-## Buffer points to 200m Hint; st_buffer 
+## Buffer points
+
+Buffer the plots data to 200m 
+
+|    See; st_buffer 
  
 ```{r, eval=FALSE} 
 plots.buff <- st_buffer(plots, dist=200)
@@ -70,7 +76,9 @@ plots.buff <- st_buffer(plots, dist=200)
     
 ## Clip polygons 
 
-Intersect (clip) soil with buffers and relate back to points. Hint; gIntersection and intersect) 
+Intersect (clip) soil with buffers and relate back to points. 
+
+|    See; gIntersection and intersect) 
 
 ```{r, eval=FALSE}
 
@@ -81,7 +89,9 @@ plots.soil <- st_intersection(plots.buff, soil)
 
 ## Calculate spatial area fractions
 
-Calculate soil-type ("musym" attribute) area proportion for each plot. Hint; table, prop.table	
+Calculate soil-type ("musym" attribute) area proportion for each plot. 
+
+|    See; table, prop.table	
 
 ```{r, eval=FALSE}
 # Pull unique soil types
@@ -121,7 +131,9 @@ p <- lapply(unique(plots.soil$ID), function(i) {
 
 ## Point in polygon
 
-Point in polygon analysis to relate soil attributes to plots. Hint; point.in.poly  
+Point in polygon analysis to relate soil attributes to plots. 
+
+|    See; point.in.poly  
 
 ```{r, eval=FALSE}
 
@@ -133,7 +145,7 @@ soil.plots <- point.in.poly(plots, soil, sp=FALSE)
 
 ```
   
-## Spatial aggregration (dissolve)
+## Spatial aggregation (dissolve)
 
 Dissolve polygons using "NWBIR74" column, create column where < median is 0 else 1 then dissolve features by this column and plot     
 
@@ -156,7 +168,7 @@ diss <- rgeos::gUnaryUnion(as(polys, "Spatial"), id = polys$p)
 
 ```
 
-## Spatial aggregration (zonal)
+## Spatial aggregation (zonal)
 
 Work through this zonal function that calculates the proportion of covertypes around the periphery of each polygon and then calculates  Isolation by Distance (IBD). Please take the time to examine the output objects of each step, plot intermediate results and dissect the peripheral.zonal function. Please note; when you dissect a for loop you need to define the iterator so, in this case if it is defined (eg., j=1) then you can run the inside of the loop (omitting the for line and the end curly bracket. Don’t forget, to run the function you need to copy-and-paste the whole thing into R to "source" it.   
  
@@ -265,7 +277,9 @@ ppt.2001 <- rast(file.path(data.dir, "ppt2001.tif"))
 
 ## Global raster statistics
 
-Calculate summary statistics (global) for mean, sd and bakers choice. Hint; global, summary
+Calculate summary statistics (global) for mean, sd and bakers choice. 
+
+|    See; global, summary
 
 ```{r, eval=FALSE}
 
@@ -280,9 +294,9 @@ summary(ppt.jan)[5]
 
 ## Raster transformations 
 
-Row standardization is a common approach in getting data on the same scale while retaining the distribution. There are numerious other transformations that can be leveraged for various reasons so, this is something to have passing familiarity with.   
+Row standardization is a common approach in getting data on the same scale while retaining the distribution. There are numerious other transformations that can be leveraged for various reasons so, this is something to have passing familiarity with.  
 
-Row standardize (x / max(x)) "ppt.jan" then, "ppt.jan" and "ppt.may" Hint; global, max and standard math operations
+Row standardize (x / max(x)) "ppt.jan" then, "ppt.jan" and "ppt.may" See; global, max and standard math operations
 
 ```{r, eval=FALSE}
 
@@ -305,7 +319,7 @@ ppt.jan.std <- ppt.jan / max(global(c(ppt.jan, ppt.may), stat="max"))
 
 4. Calculate abs difference for may [5] between ppt.2000 & ppt.2001
 
-Hint; app, lapp, mean, median
+|    See; app, lapp, mean, median
 
 ```{r, eval=FALSE}
 
@@ -335,7 +349,9 @@ par(mfrow=c(2,2))
   
 ## Multi-band functions
 
-Calculate number of days with rain over median across all dates. Hint; app, median
+Calculate number of days with rain over median across all dates. 
+
+|    See; app, median
 
 ```{r, eval=FALSE}
 
@@ -359,7 +375,9 @@ plot(rain.freq, main="Frequency > median precipitation 2000")
 
 A focal window is defined as a matrix where 1 represents values and 0 non-values. A uniform valued NxN window can easily be defined using: matrix(1, nrow=n, ncol=n). And, yes you can use custom values (eg., Guassian) in the matrix to perform specialized operators. For example using matrix(1/9,nrow=3,ncol=3) to decompose the focal values will return the same result as calculating mean with a uniform matrix.   
 
-Calculate focal mean of "ppt.jan" within an 11x11 window, plot results. Hint; focal, matrix 
+Calculate focal mean of "ppt.jan" within an 11x11 window, plot results. 
+
+|    See; focal, matrix 
 
 ```{r, eval=FALSE}
 
@@ -374,7 +392,7 @@ ppt.mean11 <- focal(ppt.jan, w=matrix(1,nrow=11,ncol=11), fun=mean)
 
 It is possible to also write custom functions for local scale evaluation. With highly customized functions you can even calculate focal funtions on more than one raster. Honestly, the sky is the limit but, here is one example that derives the fractional deviation of the local from the global (starting to get into gradient landscape metrics). 
 
-Calculate percent of values <= global mean within an 11x11 window/ Hint; focal, global, matrix 
+Calculate percent of values <= global mean within an 11x11 window/ See; focal, global, matrix 
 
 ```{r, eval=FALSE}
 
@@ -389,7 +407,9 @@ ppt.break <- focal(ppt.jan, w=matrix(1,nrow=5,ncol=5),
 
 ## Reproject raster
 
-Reproject to UTM using "elev.tif" as reference raster. Hint; project, rast
+Reproject to UTM using "elev.tif" as reference raster. 
+
+|    See; project, rast
 
 ```{r, eval=FALSE}
 ( elev <- rast(file.path(data.dir, "elev.tif")) )
@@ -411,7 +431,7 @@ par(mfrow=c(2,1))
 
 ## Read data
 
-Read the "plots.shp" points and "landcover.tif" raster. Hint; st_read, rast
+Read the "plots.shp" points and "landcover.tif" raster. See; st_read, rast
 
 ```{r, eval=FALSE}
 
@@ -422,7 +442,9 @@ plots <- st_read(file.path(data.dir, "plots.shp"))
 
 ## Extract raster values for points
 
-Extract raster cell values (lc) for points (plots). Note; vector objects (ie., sf) must be terra vect class objects. Hint; extract and vect
+Extract raster cell values (lc) for points (plots). Note; vector objects (ie., sf) must be terra vect class objects. 
+
+|    See; extract and vect
 
 ```{r, eval=FALSE}
 
@@ -441,10 +463,10 @@ plots.buff <- st_buffer(plots, dist=200)
 
 ```
 
-## Aggregrate polygon raster values
+## Aggregate polygon raster values
 
 Unlike points, that have one value per point, polygons have any number of values that intersect each given polygon. As such, the data structure is a bit different. Historically, in the raster library, results were returned as a list object necessitating the use of lapply. In the terra library, results are returned as a data.frame with an ID column indicating the polygon index. If there were 10 raster cells intersecting a polygon then that polygon index will be replicated 10 times, with the associated raster values. You can use an iterator on the ID field to aggregate these values into a desired statistic.    
-Now write a function, to pass to tapply, that will calculate the proportion of value 23 and one for 41, 42 and 43. Add to data and play with plotting results. Hint; for, tapply, split, aggregrate  
+Now write a function, to pass to tapply, that will calculate the proportion of value 23 and one for 41, 42 and 43. Add to data and play with plotting results. See; for, tapply, split, aggregrate  
 
 ```{r, eval=FALSE}
 
@@ -469,7 +491,7 @@ plot(lc)
 
 ## Read data
 
-Read "plots.shap" and "" Calculating landscape metrics for a entire landscape
+Read "plots.shap" and "landcover.tif" Calculating landscape metrics for a entire landscape
 
 ```{r, eval=FALSE}
 
@@ -480,11 +502,11 @@ land.cover <- rast(file.path(data.dir, "landcover.tif"))
 
 ```
 
-## Reclassifing to forest/non-forest
+## Reclassifying to forest/non-forest
 
 Let's say that you are interested in forest/non-forest.  However, there are multiple forest classes (41,42, 43), you will need to reclassify as forest/non-forest (forest=41,42,43).  
 
-Hint: classify, writing a function (ifelse) the calling app or using terra's native method for ifelse, ifel
+|    See: classify, writing a function (ifelse) the calling app or using terra's native method for ifelse, ifel
 
 ```{r, eval=FALSE}
 
@@ -515,7 +537,7 @@ plot(forest)
 
 While forest at a cell may be important, you want to smooth your result and put the overall amount of forest in context. Calculate percent forest within 11x11 window. Create a function for a calculating percent and create a new raster that is pct.forest in a 11 X11 window 
 
-Hint: length of target value, focal  
+See: length of target value, focal  
 
 ```{r, eval=FALSE}
 
@@ -526,7 +548,9 @@ pct.forest <- focal(forest, w=matrix(1,nrow=11,ncol=11), fun=pct)
 
 ## Forest cores
 
-Next you wish to identify forest cores. Calculate 60 percent volume of forest percent to identify core areas, based on the above focal fractional forest results. Unfortunately, the function to return percent volume requires a raster class input so, you will have to coerce rast to raster (you can do it on the fly). Hint; raster.vol
+Next you wish to identify forest cores. Calculate 60 percent volume of forest percent to identify core areas, based on the above focal fractional forest results. Unfortunately, the function to return percent volume requires a raster class input so, you will have to coerce rast to raster (you can do it on the fly). 
+
+|    See; raster.vol
 
 ```{r, eval=FALSE}
 
@@ -542,9 +566,9 @@ par(mfrow=c(1,2))
 
 ## Landscape-level metrics
 
-Describe the landscape using landscape metrics and compare forest to forest cores. HINT: landscapemetrics, pland, contagion, proportion of like adjacency (many other available metrics, select those you think are most meaningful)
+Describe the landscape using landscape metrics and compare forest to forest cores. See: landscapemetrics, pland, contagion, proportion of like adjacency (many other available metrics, select those you think are most meaningful)
 
-Hint; lsm_c_pland, lsm_l_pladj, lsm_l_contag  
+See; lsm_c_pland, lsm_l_pladj, lsm_l_contag  
 
 ```{r, eval=FALSE}
 
@@ -564,7 +588,9 @@ Hint; lsm_c_pland, lsm_l_pladj, lsm_l_contag
 
 ## Sample-level metrics
 
-Calculating landscape metrics for sample locations is a powerful way to compute covariates. Calculate landscape metrics for plots for both forest and cores. Hint; sample_lsm,
+Calculating landscape metrics for sample locations is a powerful way to compute covariates. Calculate landscape metrics for plots for both forest and cores. 
+
+|    See; sample_lsm,
 
 ```{r, eval=FALSE}
 

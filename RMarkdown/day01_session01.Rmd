@@ -105,7 +105,7 @@ r <- rast(c(file.path(data.dir,"bouguer.img"),
    
 ```
 
-## Coersion of raster data
+## Coercion of raster data
 
 First, coerce r into a matrix/array. Ten coerce into a SpatialPixelsDataFrame. Unfortunately, terra does not provide this coercion but, the raster package does so, you have to coerce to a raster class object first. Hint; as.matrix, as, "SpatialPixelsDataFrame"  
 
@@ -225,7 +225,7 @@ plot(st_geometry(p))
      
 ```
 
-## Distace-based random sample 
+## Distance-based random sample 
 
 Draw a distance based random sample from a single observation drawn from meuse (sp) using; xy <- meuse[2,] Use 15-100 and 100-200 for distances with 50 random samples, plot results. Hint; sample.annulus  
 
@@ -377,7 +377,7 @@ plot(st_geometry(meuse), pch=19, col=my.col)
 
 ```
 
-## Plot continious colors 
+## Plot continuous colors 
 
 Using a continous attribute (eg., cadmium) in meuse, define breaks and plot using the breaks argument.   
 

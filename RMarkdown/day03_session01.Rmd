@@ -277,7 +277,7 @@ sdata <- read.csv(file.path(data.dir, "RALU_abundance.csv"))
 
 ```  
 
-## Spatial Weights Martix (Wij)
+## Spatial Weights Matrix (Wij)
 
 We first we need to specify a Wij matrix representing a hypothesis of spatial relationships (e., contingency, distance, weighted). The spdep library implements many well established methods for quantifying spatial depedency.  
 
@@ -561,7 +561,7 @@ dev.new(height=6, width=11)
 
 ```
 
-## Subset single pixel time-series observsation
+## Subset single pixel time-series observation
 
 Using x,y coordinates cbind(13028094, 146990) extract a pixel time-series from the lai stack 
 
@@ -678,7 +678,7 @@ detrend <- decompose(ts(x, start= c(2000, 01), frequency = 12))
 
 We can apply the correct componets of time-series exploratory analysis to a raster time-series, treating each pixel as an independent serial measure. We can also apply formal models across the raster time-series.     
 
-## Temporal statistical aggretration 
+## Temporal statistical aggregation 
 
 Create a raster time-series object and calculate yearly means, don't forget that dates object that we created. The rts library provides functionality for deriving temporal aggregations. The resulting object is a rts class and the actual raster data is in the @raster slot
 

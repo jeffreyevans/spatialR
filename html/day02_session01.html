@@ -467,15 +467,14 @@ required libraries and set working environment</a></li>
 <li><a href="#vector-analysis">2.1 - Vector analysis</a>
 <ul>
 <li><a href="#read-data">Read data</a></li>
-<li><a href="#buffer-points-to-200m-hint-st_buffer">Buffer points to
-200m Hint; st_buffer</a></li>
+<li><a href="#buffer-points">Buffer points</a></li>
 <li><a href="#clip-polygons">Clip polygons</a></li>
 <li><a href="#calculate-spatial-area-fractions">Calculate spatial area
 fractions</a></li>
 <li><a href="#point-in-polygon">Point in polygon</a></li>
-<li><a href="#spatial-aggregration-dissolve">Spatial aggregration
+<li><a href="#spatial-aggregation-dissolve">Spatial aggregation
 (dissolve)</a></li>
-<li><a href="#spatial-aggregration-zonal">Spatial aggregration
+<li><a href="#spatial-aggregation-zonal">Spatial aggregation
 (zonal)</a></li>
 </ul></li>
 <li><a href="#raster-data-analysis">2.2 Raster data analysis</a>
@@ -499,14 +498,14 @@ integration</a>
 for points</a></li>
 <li><a href="#extract-raster-values-for-polygons">Extract raster values
 for polygons</a></li>
-<li><a href="#aggregrate-polygon-raster-values">Aggregrate polygon
-raster values</a></li>
+<li><a href="#aggregate-polygon-raster-values">Aggregate polygon raster
+values</a></li>
 </ul></li>
 <li><a href="#quantifying-landscape-structure">2.4 Quantifying landscape
 structure</a>
 <ul>
 <li><a href="#read-data-2">Read data</a></li>
-<li><a href="#reclassifing-to-forestnon-forest">Reclassifing to
+<li><a href="#reclassifying-to-forestnon-forest">Reclassifying to
 forest/non-forest</a></li>
 <li><a href="#smooth-by-calculating-percent-forest">Smooth by
 calculating percent forest</a></li>
@@ -517,7 +516,9 @@ calculating percent forest</a></li>
 </ul>
 </div>
 
-<p>spatialR workshop R review</p>
+<p>An introduction to basic vector and raster analysis. We will also
+cover applying landscape metrics at the landscape and sample (plot)
+levels.</p>
 <div id="setup" class="section level1">
 <h1>Setup</h1>
 <div id="add-required-libraries-and-set-working-environment" class="section level2">
@@ -552,7 +553,8 @@ download.file(&quot;https://spatialr.s3-us-west-2.amazonaws.com/day02.zip&quot;,
 <div id="read-data" class="section level2">
 <h2>Read data</h2>
 <p>Read “plots.shp” and “soil.shp” in as sf objects. Plot resulting
-objects. Hint; st_read, plot, st_geometry</p>
+objects.</p>
+<div class="line-block">   See; st_read, plot, st_geometry</div>
 <pre class="r"><code># Read data 
 plots &lt;- st_read(file.path(data.dir, &quot;plots.shp&quot;))
   soil &lt;- st_read(file.path(data.dir, &quot;soil.shp&quot;))
@@ -561,23 +563,26 @@ plot(st_geometry(soil))
   points(st_coordinates(plots), pch=20, col=&quot;red&quot;)
   # plot(st_geometry(plots), pch=20, col=&quot;red&quot;, add=TRUE)</code></pre>
 </div>
-<div id="buffer-points-to-200m-hint-st_buffer" class="section level2">
-<h2>Buffer points to 200m Hint; st_buffer</h2>
+<div id="buffer-points" class="section level2">
+<h2>Buffer points</h2>
+<p>Buffer the plots data to 200m</p>
+<div class="line-block">   See; st_buffer</div>
 <pre class="r"><code>plots.buff &lt;- st_buffer(plots, dist=200)
   plot(st_geometry(plots.buff))
     plot(st_geometry(plots), pch=20, add=TRUE)</code></pre>
 </div>
 <div id="clip-polygons" class="section level2">
 <h2>Clip polygons</h2>
-<p>Intersect (clip) soil with buffers and relate back to points. Hint;
-gIntersection and intersect)</p>
+<p>Intersect (clip) soil with buffers and relate back to points.</p>
+<div class="line-block">   See; gIntersection and intersect)</div>
 <pre class="r"><code>plots.soil &lt;- st_intersection(plots.buff, soil) 
   plot(st_geometry(plots.soil))</code></pre>
 </div>
 <div id="calculate-spatial-area-fractions" class="section level2">
 <h2>Calculate spatial area fractions</h2>
 <p>Calculate soil-type (“musym” attribute) area proportion for each
-plot. Hint; table, prop.table</p>
+plot.</p>
+<div class="line-block">   See; table, prop.table</div>
 <pre class="r"><code># Pull unique soil types
 ( stype = sort(unique(plots.soil$musym)) )
 
@@ -613,16 +618,16 @@ p &lt;- lapply(unique(plots.soil$ID), function(i) {
 </div>
 <div id="point-in-polygon" class="section level2">
 <h2>Point in polygon</h2>
-<p>Point in polygon analysis to relate soil attributes to plots. Hint;
-point.in.poly</p>
+<p>Point in polygon analysis to relate soil attributes to plots.</p>
+<div class="line-block">   See; point.in.poly</div>
 <pre class="r"><code># Point in polygon (relate soil attributes to points)
 soil.plots &lt;- point.in.poly(plots, soil, sp=FALSE)
   head(soil)
   head(plots)  
   head(soil.plots)</code></pre>
 </div>
-<div id="spatial-aggregration-dissolve" class="section level2">
-<h2>Spatial aggregration (dissolve)</h2>
+<div id="spatial-aggregation-dissolve" class="section level2">
+<h2>Spatial aggregation (dissolve)</h2>
 <p>Dissolve polygons using “NWBIR74” column, create column where &lt;
 median is 0 else 1 then dissolve features by this column and plot</p>
 <pre class="r"><code># read data from sf package
@@ -640,8 +645,8 @@ plot(diss[&quot;p&quot;])
 diss &lt;- rgeos::gUnaryUnion(as(polys, &quot;Spatial&quot;), id = polys$p)
   plot(diss, col=c(&quot;red&quot;,&quot;green&quot;))</code></pre>
 </div>
-<div id="spatial-aggregration-zonal" class="section level2">
-<h2>Spatial aggregration (zonal)</h2>
+<div id="spatial-aggregation-zonal" class="section level2">
+<h2>Spatial aggregation (zonal)</h2>
 <p>Work through this zonal function that calculates the proportion of
 covertypes around the periphery of each polygon and then calculates
 Isolation by Distance (IBD). Please take the time to examine the output
@@ -751,8 +756,9 @@ ppt.2001 &lt;- rast(file.path(data.dir, &quot;ppt2001.tif&quot;))</code></pre>
 </div>
 <div id="global-raster-statistics" class="section level2">
 <h2>Global raster statistics</h2>
-<p>Calculate summary statistics (global) for mean, sd and bakers choice.
-Hint; global, summary</p>
+<p>Calculate summary statistics (global) for mean, sd and bakers
+choice.</p>
+<div class="line-block">   See; global, summary</div>
 <pre class="r"><code># Summary statistics (global)
 ( rmin &lt;- global(ppt.jan, stat=&quot;min&quot;) )
 ( rmax &lt;- global(ppt.jan, stat=&quot;max&quot;) )
@@ -767,7 +773,7 @@ scale while retaining the distribution. There are numerious other
 transformations that can be leveraged for various reasons so, this is
 something to have passing familiarity with.</p>
 <p>Row standardize (x / max(x)) “ppt.jan” then, “ppt.jan” and “ppt.may”
-Hint; global, max and standard math operations</p>
+See; global, max and standard math operations</p>
 <pre class="r"><code># Row standardization
 ppt.jan.std &lt;- ppt.jan / as.numeric(global(ppt.jan, stat=&quot;max&quot;))
 
@@ -785,7 +791,7 @@ ppt.2000</p></li>
 <li><p>Calculate abs difference for may [5] between ppt.2000 &amp;
 ppt.2001</p></li>
 </ol>
-<p>Hint; app, lapp, mean, median</p>
+<div class="line-block">   See; app, lapp, mean, median</div>
 <pre class="r"><code># 1. Returns mean between &gt;=2 raster
 # Difference usage between direct operator, 
 #   these two calls have the same result
@@ -810,8 +816,8 @@ par(mfrow=c(2,2))
 </div>
 <div id="multi-band-functions" class="section level2">
 <h2>Multi-band functions</h2>
-<p>Calculate number of days with rain over median across all dates.
-Hint; app, median</p>
+<p>Calculate number of days with rain over median across all dates.</p>
+<div class="line-block">   See; app, median</div>
 <pre class="r"><code>( m &lt;- global(ppt.2000, stat=median)[,1] )
 
 rain.fun &lt;- function(x, p = 23.4997) {
@@ -835,7 +841,8 @@ Guassian) in the matrix to perform specialized operators. For example
 using matrix(1/9,nrow=3,ncol=3) to decompose the focal values will
 return the same result as calculating mean with a uniform matrix.</p>
 <p>Calculate focal mean of “ppt.jan” within an 11x11 window, plot
-results. Hint; focal, matrix</p>
+results.</p>
+<div class="line-block">   See; focal, matrix</div>
 <pre class="r"><code>ppt.mean11 &lt;- focal(ppt.jan, w=matrix(1,nrow=11,ncol=11), fun=mean)
   par(mfrow=c(1,2)) 
     plot(ppt.mean11)
@@ -850,7 +857,7 @@ but, here is one example that derives the fractional deviation of the
 local from the global (starting to get into gradient landscape
 metrics).</p>
 <p>Calculate percent of values &lt;= global mean within an 11x11 window/
-Hint; focal, global, matrix</p>
+See; focal, global, matrix</p>
 <pre class="r"><code># Passing focal custom function
 pct.mean &lt;- function(x, p=22.6776) { length(x[x &gt;= p]) / length(x) }
 
@@ -860,8 +867,8 @@ ppt.break &lt;- focal(ppt.jan, w=matrix(1,nrow=5,ncol=5),
 </div>
 <div id="reproject-raster" class="section level2">
 <h2>Reproject raster</h2>
-<p>Reproject to UTM using “elev.tif” as reference raster. Hint; project,
-rast</p>
+<p>Reproject to UTM using “elev.tif” as reference raster.</p>
+<div class="line-block">   See; project, rast</div>
 <pre class="r"><code>( elev &lt;- rast(file.path(data.dir, &quot;elev.tif&quot;)) )
 ( ppt &lt;- rast(file.path(data.dir, &quot;ppt_geo.tif&quot;), lyrs=5) )
 
@@ -881,16 +888,16 @@ par(mfrow=c(2,1))
 <h1>2.3 - Raster/Vector integration</h1>
 <div id="read-data-1" class="section level2">
 <h2>Read data</h2>
-<p>Read the “plots.shp” points and “landcover.tif” raster. Hint;
-st_read, rast</p>
+<p>Read the “plots.shp” points and “landcover.tif” raster. See; st_read,
+rast</p>
 <pre class="r"><code>plots &lt;- st_read(file.path(data.dir, &quot;plots.shp&quot;))
   lc &lt;- rast(file.path(data.dir, &quot;landcover.tif&quot;)) </code></pre>
 </div>
 <div id="extract-raster-values-for-points" class="section level2">
 <h2>Extract raster values for points</h2>
 <p>Extract raster cell values (lc) for points (plots). Note; vector
-objects (ie., sf) must be terra vect class objects. Hint; extract and
-vect</p>
+objects (ie., sf) must be terra vect class objects.</p>
+<div class="line-block">   See; extract and vect</div>
 <pre class="r"><code>head( v &lt;- extract(lc, vect(plots)) ) </code></pre>
 </div>
 <div id="extract-raster-values-for-polygons" class="section level2">
@@ -900,8 +907,8 @@ values. What class is the object?</p>
 <pre class="r"><code>plots.buff &lt;- st_buffer(plots, dist=200)
   ( r.vals &lt;- extract(lc, vect(plots.buff)) )   </code></pre>
 </div>
-<div id="aggregrate-polygon-raster-values" class="section level2">
-<h2>Aggregrate polygon raster values</h2>
+<div id="aggregate-polygon-raster-values" class="section level2">
+<h2>Aggregate polygon raster values</h2>
 <p>Unlike points, that have one value per point, polygons have any
 number of values that intersect each given polygon. As such, the data
 structure is a bit different. Historically, in the raster library,
@@ -913,7 +920,7 @@ times, with the associated raster values. You can use an iterator on the
 ID field to aggregate these values into a desired statistic.<br />
 Now write a function, to pass to tapply, that will calculate the
 proportion of value 23 and one for 41, 42 and 43. Add to data and play
-with plotting results. Hint; for, tapply, split, aggregrate</p>
+with plotting results. See; for, tapply, split, aggregrate</p>
 <pre class="r"><code>pct &lt;- function(x, p = 23) { length( x[x == p] ) / length(x) }
   tapply(r.vals[,2], r.vals$ID, FUN=pct)
  
@@ -934,20 +941,20 @@ plot(lc)
 <h1>2.4 Quantifying landscape structure</h1>
 <div id="read-data-2" class="section level2">
 <h2>Read data</h2>
-<p>Read “plots.shap” and “” Calculating landscape metrics for a entire
-landscape</p>
+<p>Read “plots.shap” and “landcover.tif” Calculating landscape metrics
+for a entire landscape</p>
 <pre class="r"><code>plots &lt;- st_read(file.path(data.dir, &quot;plots.shp&quot;)) #read in plot data
 land.cover &lt;- rast(file.path(data.dir, &quot;landcover.tif&quot;)) 
   plot(land.cover)
     plot(plots, pch=20, add=TRUE)</code></pre>
 </div>
-<div id="reclassifing-to-forestnon-forest" class="section level2">
-<h2>Reclassifing to forest/non-forest</h2>
+<div id="reclassifying-to-forestnon-forest" class="section level2">
+<h2>Reclassifying to forest/non-forest</h2>
 <p>Let’s say that you are interested in forest/non-forest. However,
 there are multiple forest classes (41,42, 43), you will need to
 reclassify as forest/non-forest (forest=41,42,43).</p>
-<p>Hint: classify, writing a function (ifelse) the calling app or using
-terra’s native method for ifelse, ifel</p>
+<div class="line-block">   See: classify, writing a function (ifelse)
+the calling app or using terra’s native method for ifelse, ifel</div>
 <pre class="r"><code># three reclassify solution for forest/nonforest
 m &lt;- c(0,40.8, 0,40.9,43.1,1,43.9,91,0)
 reclass &lt;- matrix(m, ncol=3, byrow=TRUE)
@@ -976,7 +983,7 @@ result and put the overall amount of forest in context. Calculate
 percent forest within 11x11 window. Create a function for a calculating
 percent and create a new raster that is pct.forest in a 11 X11
 window</p>
-<p>Hint: length of target value, focal</p>
+<p>See: length of target value, focal</p>
 <pre class="r"><code>pct &lt;- function(x) { round( (length(x[x == 1]) / length(x)), 4) } 
 pct.forest &lt;- focal(forest, w=matrix(1,nrow=11,ncol=11), fun=pct)</code></pre>
 </div>
@@ -986,7 +993,8 @@ pct.forest &lt;- focal(forest, w=matrix(1,nrow=11,ncol=11), fun=pct)</code></pre
 of forest percent to identify core areas, based on the above focal
 fractional forest results. Unfortunately, the function to return percent
 volume requires a raster class input so, you will have to coerce rast to
-raster (you can do it on the fly). Hint; raster.vol</p>
+raster (you can do it on the fly).</p>
+<div class="line-block">   See; raster.vol</div>
 <pre class="r"><code>cores &lt;- raster.vol(raster(pct.forest), p=0.60)
   cores[is.na(cores)] &lt;- 0 #replace non-core areas (NA) with 0
     cores &lt;- mask(rast(cores), forest)
@@ -998,10 +1006,10 @@ par(mfrow=c(1,2))
 <div id="landscape-level-metrics" class="section level2">
 <h2>Landscape-level metrics</h2>
 <p>Describe the landscape using landscape metrics and compare forest to
-forest cores. HINT: landscapemetrics, pland, contagion, proportion of
+forest cores. See: landscapemetrics, pland, contagion, proportion of
 like adjacency (many other available metrics, select those you think are
 most meaningful)</p>
-<p>Hint; lsm_c_pland, lsm_l_pladj, lsm_l_contag</p>
+<p>See; lsm_c_pland, lsm_l_pladj, lsm_l_contag</p>
 <pre class="r"><code># Percent landscape
 ( forest.pland &lt;- lsm_c_pland(forest, directions=8) )
 ( cores.pland &lt;- lsm_c_pland(cores, directions=8) )
@@ -1018,7 +1026,8 @@ most meaningful)</p>
 <h2>Sample-level metrics</h2>
 <p>Calculating landscape metrics for sample locations is a powerful way
 to compute covariates. Calculate landscape metrics for plots for both
-forest and cores. Hint; sample_lsm,</p>
+forest and cores.</p>
+<div class="line-block">   See; sample_lsm,</div>
 <pre class="r"><code># Print available metrics 
 am &lt;- as.data.frame(list_lsm())
 

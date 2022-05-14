@@ -230,7 +230,7 @@ dist.graph$from.to <- paste(dist.graph$i, dist.graph$j, sep=".")
 
 ```
 
-# **Spatial model data prepration**
+# **Spatial model data preparation**
 
 ##  Read raster data using terra
 
@@ -610,7 +610,7 @@ cat("RMSE of habitat", rmse(habitat.p, gd), "\n")
 
 ```
 
-##  Aggregrate estimates and plot 
+##  Aggregate estimates and plot 
 
 We can aggregrate estimates back to the edges and nodes. An intercative map can be created using the tmap package 
 

@@ -479,8 +479,8 @@ probabilistic binomial model</strong></a>
 <ul>
 <li><a href="#apply-a-model-selection-procedure">Apply a model selection
 procedure</a></li>
-<li><a href="#evaluate-selected-parameter-significane">Evaluate selected
-parameter significane</a></li>
+<li><a href="#evaluate-selected-parameter-significance">Evaluate
+selected parameter significance</a></li>
 <li><a href="#fit-final-model">Fit final model</a></li>
 <li><a href="#derive-importance">Derive importance</a></li>
 </ul></li>
@@ -491,7 +491,7 @@ statistics</a></li>
 <li><a href="#log-loss">Log Loss</a></li>
 <li><a href="#cross-validation">cross-validation</a></li>
 <li><a href="#sensitivity-test">Sensitivity test</a></li>
-<li><a href="#prediction-callibration">Prediction callibration</a></li>
+<li><a href="#prediction-calibration">Prediction calibration</a></li>
 </ul></li>
 <li><a href="#spatial-predictions"><strong>Spatial
 predictions</strong></a>
@@ -508,8 +508,8 @@ relationships and inference</strong></a>
 probability plots</a></li>
 <li><a href="#shapley-analysis---aggregated">Shapley analysis -
 aggregated</a></li>
-<li><a href="#shapley-analysis---individual-observsation">Shapley
-analysis - individual (observsation)</a></li>
+<li><a href="#shapley-analysis---individual-observation">Shapley
+analysis - individual (observation)</a></li>
 </ul></li>
 </ul>
 </div>
@@ -648,8 +648,8 @@ randomForest(x=dat[,-c(1,2)], y=dat[,&quot;Present&quot;], ntree = b)
                           y=dat[,&quot;Present&quot;], 
                           imp.scale=&quot;mir&quot;, ntree=b) )</code></pre>
 </div>
-<div id="evaluate-selected-parameter-significane" class="section level2">
-<h2>Evaluate selected parameter significane</h2>
+<div id="evaluate-selected-parameter-significance" class="section level2">
+<h2>Evaluate selected parameter significance</h2>
 <p>Now, we will the significance of the selected paramters using the
 Altmann et al. (2010) permutation test where; the distribution of the
 importance under the null hypothesis is of no association to the
@@ -773,8 +773,8 @@ presence-absence. Acta Oecologica 31(3):361-369</p>
                      p = seq(0.1, 0.7, 0.02),
                      type = &quot;kappa&quot;))   </code></pre>
 </div>
-<div id="prediction-callibration" class="section level2">
-<h2>Prediction callibration</h2>
+<div id="prediction-calibration" class="section level2">
+<h2>Prediction calibration</h2>
 <p>We can perform a calibration of posterior probability to minimize log
 loss using an isotonic regression approach (Niculescu-Mizil &amp;
 Caruana 2005). This is particuraly relevant if you are having
@@ -964,8 +964,8 @@ shap_group &lt;- cbind(shap.df[,2], stack(shap.df[3:ncol(shap.df)]))
       coord_flip() +
         scale_colour_gradient(low = &quot;cyan&quot;, high = &quot;red&quot;, na.value = NA) )</code></pre>
 </div>
-<div id="shapley-analysis---individual-observsation" class="section level2">
-<h2>Shapley analysis - individual (observsation)</h2>
+<div id="shapley-analysis---individual-observation" class="section level2">
+<h2>Shapley analysis - individual (observation)</h2>
 <p>Create individual SHAP plots (select 4 random obs from “1” class)</p>
 <pre class="r"><code>idx=which(dat$Present == &quot;1&quot;)
 grid.arrange(

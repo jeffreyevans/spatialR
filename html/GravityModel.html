@@ -483,8 +483,8 @@ site locations</a></li>
 with genetic distance.</a></li>
 </ul></li>
 </ul></li>
-<li><a href="#spatial-model-data-prepration"><strong>Spatial model data
-prepration</strong></a>
+<li><a href="#spatial-model-data-preparation"><strong>Spatial model data
+preparation</strong></a>
 <ul>
 <li><a href="#read-raster-data-using-terra">Read raster data using
 terra</a></li>
@@ -516,7 +516,7 @@ models.</a></li>
 <li><a href="#fit-final-models">Fit final model(s)</a></li>
 <li><a href="#back-predict-global_fit-model">Back predict global_fit
 model</a></li>
-<li><a href="#aggregrate-estimates-and-plot">Aggregrate estimates and
+<li><a href="#aggregate-estimates-and-plot">Aggregate estimates and
 plot</a></li>
 </ul></li>
 </ul>
@@ -720,8 +720,8 @@ dist.graph$from.to &lt;- paste(dist.graph$i, dist.graph$j, sep=&quot;.&quot;)
 </div>
 </div>
 </div>
-<div id="spatial-model-data-prepration" class="section level1">
-<h1><strong>Spatial model data prepration</strong></h1>
+<div id="spatial-model-data-preparation" class="section level1">
+<h1><strong>Spatial model data preparation</strong></h1>
 <div id="read-raster-data-using-terra" class="section level2">
 <h2>Read raster data using terra</h2>
 <div class="line-block">   See: list.files, rast</div>
@@ -1044,8 +1044,8 @@ habitat.p &lt;- predict(habitat_fit, y = &quot;GDIST&quot;, x = h,
 cat(&quot;RMSE of global&quot;, rmse(global.p, gd), &quot;\n&quot;)
 cat(&quot;RMSE of habitat&quot;, rmse(habitat.p, gd), &quot;\n&quot;)</code></pre>
 </div>
-<div id="aggregrate-estimates-and-plot" class="section level2">
-<h2>Aggregrate estimates and plot</h2>
+<div id="aggregate-estimates-and-plot" class="section level2">
+<h2>Aggregate estimates and plot</h2>
 <p>We can aggregrate estimates back to the edges and nodes. An
 intercative map can be created using the tmap package</p>
 <div class="line-block">   See: tapply</div>
