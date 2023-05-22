@@ -6,7 +6,7 @@ date: "5/16/2022"
 output:
   html_document: 
     toc: yes
-    keep_md: no
+    keep_md: yes
     code_folding: show
 ---
 

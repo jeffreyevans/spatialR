@@ -516,21 +516,16 @@ entropy.</p>
 <h1><strong>Setup</strong></h1>
 <div id="add-required-libraries-and-set-working-environment" class="section level2">
 <h2>Add required libraries and set working environment</h2>
-<pre class="r fold-show"><code>invisible(lapply(c(&quot;sf&quot;, &quot;spatialEco&quot;, &quot;terra&quot;, &quot;raster&quot;, &quot;randomForest&quot;, 
-                   &quot;rfUtilities&quot;, &quot;ggplot2&quot;, &quot;ranger&quot;), 
-          require, character.only=TRUE))
+<pre class="r fold-show"><code>invisible(lapply(c(&quot;sf&quot;, &quot;spatialEco&quot;, &quot;terra&quot;, &quot;raster&quot;, 
+                   &quot;randomForest&quot;,&quot;rfUtilities&quot;, &quot;ggplot2&quot;,  
+                       &quot;ranger&quot;), require, character.only=TRUE))
 
 # set your working and data directories here
-setwd(&quot;C:/evans/spatialR/RandomForests&quot;)
+setwd(&quot;C:/spatialR/RandomForests&quot;)
   data.dir = file.path(getwd(), &quot;data&quot;)
     if(!dir.exists(file.path(getwd(), &quot;results&quot;)))
       dir.create(file.path(getwd(), &quot;results&quot;)) 
-    results.dir = file.path(getwd(), &quot;results&quot;)
-    
-download.file(&quot;https://spatialr.s3-us-west-2.amazonaws.com/day04.zip&quot;, 
-              destfile=&quot;day04.zip&quot;, mode=&quot;wb&quot;)
-  unzip(&quot;day04.zip&quot;)
-    file.remove(&quot;day04.zip&quot;)</code></pre>
+    results.dir = file.path(getwd(), &quot;results&quot;)</code></pre>
 </div>
 </div>
 <div id="data-preparation" class="section level1">
@@ -571,17 +566,33 @@ values to resulting points.</p>
 
 # Subsample intensity point data
 n = round( (nrow(den.pts) * p) / 2, 0)
-  if(length(which(den.pts$y &gt;= p))  &lt; n |
-     length(which(den.pts$y &lt; p))  &lt; n )
-    message(&quot;Not enough samples at this threshold&quot;)
+ ( balance &lt;- prop.table(table(ifelse(den.pts$y &gt;= p, 1, 0))) )
 
-  spp.den &lt;- rbind(
-    den.pts[sample(which(den.pts$y &gt;= p),n),],
-    den.pts[sample(which(den.pts$y &lt; p),n),])
+cts &lt;- table(ifelse(den.pts$y &gt;= p, 1, 0))
+suppressWarnings(
+  msg &lt;- warning(&quot;Not enough samples at this threshold,
+  taking population&quot;))
+  if(cts[1]  &lt; n) {
+    cat(msg, &quot;\n&quot;)
+      ns &lt;- cts[1]
+      s1 &lt;- den.pts[sample(which(den.pts$y &lt; p),ns),]
+  } else if(cts[1]  &gt;= n){
+    s1 &lt;- den.pts[sample(which(den.pts$y &lt; p),n),] 
+  }    
+ if(cts[2]  &lt; n) {
+    cat(msg, &quot;\n&quot;)
+      ns &lt;- cts[2]
+      s2 &lt;- den.pts[sample(which(den.pts$y &gt;= p),ns),]
+  } else if(cts[2]  &gt;= n){
+    s2 &lt;- den.pts[sample(which(den.pts$y &gt;= p),n),] 
+  }    
+spp.den &lt;- rbind(s1, s2)
 
 # Assign raster values
 e &lt;- extract(xvars, vect(spp.den))
-  spp.den &lt;- cbind(spp.den, e[,-1])  </code></pre>
+  spp.den &lt;- cbind(spp.den, e[,-1])  
+
+plot(spp.den[&quot;map&quot;], pch=20)  </code></pre>
 </div>
 <div id="check-for-collinearity-and-multi-collinearity" class="section level2">
 <h2>Check for collinearity and multi-collinearity</h2>
@@ -720,11 +731,14 @@ Global verses local spatial estimates?</p>
 probs &lt;- rast(file.path(results.dir, &quot;rf_probs.tif&quot;))
 
 # Plot probability and density estimates
-par(mfrow=c(2,1))
-  plot(spp.den.est)
+par(mfrow=c(3,1))
+  plot(spp.den.est, main=&quot;density estimate&quot;)
       plot(st_geometry(spp.pa), pch=20, cex=0.75, 
        col=my.col, add=TRUE)
-  plot(probs)
+  plot(crop(probs,spp.den.est), main=&quot;subset prob estimate&quot;)
+      plot(st_geometry(spp.pa), pch=20, cex=0.75, 
+       col=my.col, add=TRUE)      
+  plot(probs, main=&quot;full prob estimate&quot;)
       plot(st_geometry(spp.pa), pch=20, cex=0.75, 
        col=my.col, add=TRUE)
   

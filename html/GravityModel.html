@@ -569,20 +569,15 @@ other exercises (Murphy et al. 2010).</p>
   }
 
 # set your working directory here
-setwd(wd &lt;- &quot;C:/evans/GITS/Gravity&quot;)
+setwd(wd &lt;- &quot;C:/spatialR/graph&quot;)
+  data.dir &lt;- file.path(getwd(), &quot;data&quot;)
 
 # indicates UTM 11 NAD83 projection
 prj = 32611 
 
 # Some needed functions
 back.transform &lt;- function(y) exp(y + 0.5 * stats::var(y))
-rmse &lt;- function(p, o){ sqrt(mean((p - o)^2)) }
-
-# Download data
-d = &quot;https://spatialr.s3.us-west-2.amazonaws.com/Gravity/data.zip&quot;
-download.file(d, destfile=&quot;data.zip&quot;, mode=&quot;wb&quot;)
-  unzip(&quot;data.zip&quot;)
-    file.remove(&quot;data.zip&quot;)</code></pre>
+rmse &lt;- function(p, o){ sqrt(mean((p - o)^2)) }</code></pre>
 </div>
 </div>
 <div id="wetland-complex-data-preparation" class="section level1">

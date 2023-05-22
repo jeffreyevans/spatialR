@@ -547,16 +547,11 @@ relationships.</p>
           require, character.only=TRUE))
 
 # set your working and data directories here
-setwd(&quot;C:/evans/spatialR/RandomForests&quot;)
+setwd(&quot;C:/spatialR/RandomForests&quot;)
   data.dir = file.path(getwd(), &quot;data&quot;)
     if(!dir.exists(file.path(getwd(), &quot;results&quot;)))
       dir.create(file.path(getwd(), &quot;results&quot;)) 
-    results.dir = file.path(getwd(), &quot;results&quot;)
-  
-download.file(&quot;https://spatialr.s3-us-west-2.amazonaws.com/day04.zip&quot;, 
-              destfile=&quot;day04.zip&quot;, mode=&quot;wb&quot;)
-  unzip(&quot;day04.zip&quot;)
-    file.remove(&quot;day04.zip&quot;)</code></pre>
+    results.dir = file.path(getwd(), &quot;results&quot;)</code></pre>
 </div>
 </div>
 <div id="data-preparation" class="section level1">
@@ -623,8 +618,8 @@ idx &lt;- c(sample(which(spp$Present == &quot;0&quot;), n/2),
          sample(which(spp$Present == &quot;1&quot;), n/2))
 
 # split withhold and train
-spp.withold &lt;- spp[rs,]
-spp.train &lt;- spp[-rs,]
+spp.withold &lt;- spp[idx,]
+spp.train &lt;- spp[-idx,]
 
 plot(st_geometry(spp.train), pch=20)
   plot(st_geometry(spp.withold), pch=20, col=&quot;red&quot;, add=TRUE)</code></pre>
@@ -826,7 +821,7 @@ predict.randomForest</p>
     return(p)             
 }
 sdm &lt;- predict(xvars, rf.prob, fun=predict.prob)
-  writeRaster(sdm, file.path(resluts.dir, &quot;rf_probs.tif&quot;),
+  writeRaster(sdm, file.path(results.dir, &quot;rf_probs.tif&quot;),
               overwrite=TRUE)
 
 dev.new(height=8,width=11.5)
@@ -905,7 +900,7 @@ ice.map &lt;- pdp::partial(rf.prob, pred.var = &quot;map&quot;, plot = TRUE, ice
       print(ice.map + ggtitle(&quot;Individual Conditional Expectation for map&quot;))
 
 # Bivariate Partial dependency plots
-pp.bv &lt;- pdp::partial(rf.prob, pred.var = c(&quot;cti&quot;, &quot;strmdist&quot;), 
+pp.bv &lt;- pdp::partial(rf.prob, pred.var = c(&quot;map&quot;, &quot;strmdist&quot;), 
                       grid.resolution = 40, which.class=2, prob = TRUE, 
                       train = dat[,-1])
     plotPartial(pp.bv, levelplot = FALSE, zlab = &quot;occupancy&quot;, drape = TRUE,
@@ -926,12 +921,12 @@ shap &lt;- fastshap::explain(rf.prob, X = dat[,-c(1,2)], pred_wrapper = pfun,
                           adjust=TRUE, nsim = 50)
 
 # Feature dependency
-prob &lt;- autoplot(shap, type = &quot;dependence&quot;, feature = &quot;cti&quot;, X = dat, 
+prob &lt;- autoplot(shap, type = &quot;dependence&quot;, feature = &quot;map&quot;, X = dat, 
                  alpha = 0.5, color_by = &quot;p&quot;, smooth = TRUE, 
                    smooth_color = &quot;black&quot;) +  
                      geom_smooth() +
                        scale_colour_gradient(low = &quot;cyan&quot;, high = &quot;red&quot;, na.value = NA)
-  print(prob + ggtitle(&quot;Shapley dependency for cti&quot;))
+  print(prob + ggtitle(&quot;Shapley dependency for map&quot;))
   
 classes &lt;- unique(as.character(dat$Present))
   shap.df &lt;- data.frame(class = as.character(dat$Present), shap)
@@ -970,12 +965,13 @@ shap_group &lt;- cbind(shap.df[,2], stack(shap.df[3:ncol(shap.df)]))
 <div id="shapley-analysis---individual-observation" class="section level2">
 <h2>Shapley analysis - individual (observation)</h2>
 <p>Create individual SHAP plots (select 4 random obs from “1” class)</p>
-<pre class="r"><code>idx=which(dat$Present == &quot;1&quot;)
+<pre class="r"><code>idx=sample(which(dat$Present == &quot;1&quot;), 4)
+cat(&quot;Individual SHAP values for obs:&quot;, rownames(dat[idx,]), &quot;\n&quot;)
 grid.arrange(
-  autoplot(shap, type = &quot;contribution&quot;, row_num = sample(idx,1)),
-  autoplot(shap, type = &quot;contribution&quot;, row_num = sample(idx,1)),
-  autoplot(shap, type = &quot;contribution&quot;, row_num = sample(idx,1)),
-  autoplot(shap, type = &quot;contribution&quot;, row_num = sample(idx,1)),
+  autoplot(shap, type = &quot;contribution&quot;, row_num = idx[1]),
+  autoplot(shap, type = &quot;contribution&quot;, row_num = idx[2]),
+  autoplot(shap, type = &quot;contribution&quot;, row_num = idx[3]),
+  autoplot(shap, type = &quot;contribution&quot;, row_num = idx[4]),
 ncol=2, nrow = 2)</code></pre>
 </div>
 </div>

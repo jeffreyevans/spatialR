@@ -7,7 +7,7 @@ date: "5/18/2022"
 output:
   html_document: 
     toc: yes
-    keep_md: no
+    keep_md: yes
     code_folding: hide
 ---
 
@@ -45,7 +45,8 @@ p <- c("raster", "rgdal", "igraph", "sp", "GeNetIt", "spatialEco",
   }
 
 # set your working directory here
-setwd(wd <- "C:/evans/GITS/Gravity")
+setwd(wd <- "C:/spatialR/graph")
+  data.dir <- file.path(getwd(), "data")
 
 # indicates UTM 11 NAD83 projection
 prj = 32611 
@@ -53,12 +54,6 @@ prj = 32611
 # Some needed functions
 back.transform <- function(y) exp(y + 0.5 * stats::var(y))
 rmse <- function(p, o){ sqrt(mean((p - o)^2)) }
-
-# Download data
-d = "https://spatialr.s3.us-west-2.amazonaws.com/Gravity/data.zip"
-download.file(d, destfile="data.zip", mode="wb")
-  unzip("data.zip")
-    file.remove("data.zip")
 
 ```
 

@@ -7,7 +7,7 @@ date: "5/18/2022"
 output:
   html_document: 
     toc: yes
-    keep_md: no
+    keep_md: yes
     code_folding: hide
 ---
 
@@ -22,22 +22,17 @@ I would note that MaxEnt is not a presence-only model per se but, generates a la
 ## Add required libraries and set working environment
 
 ```{r, class.source = "fold-show", eval=FALSE}
-invisible(lapply(c("sf", "spatialEco", "terra", "raster", "randomForest", 
-                   "rfUtilities", "ggplot2", "ranger"), 
-		  require, character.only=TRUE))
+invisible(lapply(c("sf", "spatialEco", "terra", "raster", 
+                   "randomForest","rfUtilities", "ggplot2",  
+		               "ranger"), require, character.only=TRUE))
 
 # set your working and data directories here
-setwd("C:/evans/spatialR/RandomForests")
+setwd("C:/spatialR/RandomForests")
   data.dir = file.path(getwd(), "data")
     if(!dir.exists(file.path(getwd(), "results")))
       dir.create(file.path(getwd(), "results")) 
     results.dir = file.path(getwd(), "results")
     
-download.file("https://spatialr.s3-us-west-2.amazonaws.com/day04.zip", 
-              destfile="day04.zip", mode="wb")
-  unzip("day04.zip")
-    file.remove("day04.zip")
-  
 ```
 
 # **Data preparation**
@@ -84,18 +79,34 @@ p = 0.40 # presence threshold of intensity process
 
 # Subsample intensity point data
 n = round( (nrow(den.pts) * p) / 2, 0)
-  if(length(which(den.pts$y >= p))  < n |
-     length(which(den.pts$y < p))  < n )
-    message("Not enough samples at this threshold")
+ ( balance <- prop.table(table(ifelse(den.pts$y >= p, 1, 0))) )
 
-  spp.den <- rbind(
-    den.pts[sample(which(den.pts$y >= p),n),],
-    den.pts[sample(which(den.pts$y < p),n),])
+cts <- table(ifelse(den.pts$y >= p, 1, 0))
+suppressWarnings(
+  msg <- warning("Not enough samples at this threshold,
+  taking population"))
+  if(cts[1]  < n) {
+    cat(msg, "\n")
+      ns <- cts[1]
+      s1 <- den.pts[sample(which(den.pts$y < p),ns),]
+  } else if(cts[1]  >= n){
+    s1 <- den.pts[sample(which(den.pts$y < p),n),] 
+  }    
+ if(cts[2]  < n) {
+    cat(msg, "\n")
+      ns <- cts[2]
+      s2 <- den.pts[sample(which(den.pts$y >= p),ns),]
+  } else if(cts[2]  >= n){
+    s2 <- den.pts[sample(which(den.pts$y >= p),n),] 
+  }    
+spp.den <- rbind(s1, s2)
 
 # Assign raster values
 e <- extract(xvars, vect(spp.den))
   spp.den <- cbind(spp.den, e[,-1])  
 
+plot(spp.den["map"], pch=20)  
+  
 ```
 
 ## Check for collinearity and multi-collinearity
@@ -245,11 +256,14 @@ Estimate the intensity process using then look at resulting 1st and 2nd order sp
 probs <- rast(file.path(results.dir, "rf_probs.tif"))
 
 # Plot probability and density estimates
-par(mfrow=c(2,1))
-  plot(spp.den.est)
+par(mfrow=c(3,1))
+  plot(spp.den.est, main="density estimate")
       plot(st_geometry(spp.pa), pch=20, cex=0.75, 
        col=my.col, add=TRUE)
-  plot(probs)
+  plot(crop(probs,spp.den.est), main="subset prob estimate")
+      plot(st_geometry(spp.pa), pch=20, cex=0.75, 
+       col=my.col, add=TRUE)      
+  plot(probs, main="full prob estimate")
       plot(st_geometry(spp.pa), pch=20, cex=0.75, 
        col=my.col, add=TRUE)
   

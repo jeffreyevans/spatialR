@@ -1,0 +1,49 @@
+session01/data
+  birds.shp
+  bouguer.img
+  elev.img
+  isograv.img
+  magnetic.img
+
+session02/data
+  plots.shp
+  soil.shp
+  wetlands.shp
+  landtype.tif
+  ppt2000.tif
+  ppt2001.tif
+  elev.tif
+  ppt_geo.tif
+  landcover.tif
+
+session03/data
+  plots.shp
+  Wetlands.csv
+  RALU_abundance.csv
+  ralu.lm.shp
+  lai.tif
+
+randomForests/data
+  graph/data
+  crv3.img
+  crv27.img
+  diss3.img
+  diss27.img
+  elev.img
+  ffp.img
+  hli.img
+  map.img
+  mat.img
+  scosa.img
+  spost3.img
+  spost27.img
+  srr3.img
+  srr27.img
+  ssina.img
+  sdist.img
+  tri3.img
+  tri27.img
+  spp.shp
+  spp_absence.shp
+  spp_presence.shp
+

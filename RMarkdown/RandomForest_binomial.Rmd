@@ -7,7 +7,7 @@ date: "5/18/2022"
 output:
   html_document: 
     toc: yes
-    keep_md: no
+    keep_md: yes
     code_folding: hide
 ---
 
@@ -28,16 +28,11 @@ invisible(lapply(c("sf", "spatialEco", "terra", "randomForest",
 		  require, character.only=TRUE))
 
 # set your working and data directories here
-setwd("C:/evans/spatialR/RandomForests")
+setwd("C:/spatialR/RandomForests")
   data.dir = file.path(getwd(), "data")
     if(!dir.exists(file.path(getwd(), "results")))
       dir.create(file.path(getwd(), "results")) 
     results.dir = file.path(getwd(), "results")
-  
-download.file("https://spatialr.s3-us-west-2.amazonaws.com/day04.zip", 
-              destfile="day04.zip", mode="wb")
-  unzip("day04.zip")
-    file.remove("day04.zip")
   
 ```
 
@@ -125,8 +120,8 @@ idx <- c(sample(which(spp$Present == "0"), n/2),
          sample(which(spp$Present == "1"), n/2))
 
 # split withhold and train
-spp.withold <- spp[rs,]
-spp.train <- spp[-rs,]
+spp.withold <- spp[idx,]
+spp.train <- spp[-idx,]
 
 plot(st_geometry(spp.train), pch=20)
   plot(st_geometry(spp.withold), pch=20, col="red", add=TRUE)
@@ -340,7 +335,7 @@ predict.prob <- function(model, data, i=2) {
 	return(p)			  
 }
 sdm <- predict(xvars, rf.prob, fun=predict.prob)
-  writeRaster(sdm, file.path(resluts.dir, "rf_probs.tif"),
+  writeRaster(sdm, file.path(results.dir, "rf_probs.tif"),
               overwrite=TRUE)
 
 dev.new(height=8,width=11.5)
@@ -422,7 +417,7 @@ ice.map <- pdp::partial(rf.prob, pred.var = "map", plot = TRUE, ice=TRUE,
       print(ice.map + ggtitle("Individual Conditional Expectation for map"))
 
 # Bivariate Partial dependency plots
-pp.bv <- pdp::partial(rf.prob, pred.var = c("cti", "strmdist"), 
+pp.bv <- pdp::partial(rf.prob, pred.var = c("map", "strmdist"), 
                       grid.resolution = 40, which.class=2, prob = TRUE, 
 					  train = dat[,-1])
 	plotPartial(pp.bv, levelplot = FALSE, zlab = "occupancy", drape = TRUE,
@@ -448,12 +443,12 @@ shap <- fastshap::explain(rf.prob, X = dat[,-c(1,2)], pred_wrapper = pfun,
                           adjust=TRUE, nsim = 50)
 
 # Feature dependency
-prob <- autoplot(shap, type = "dependence", feature = "cti", X = dat, 
+prob <- autoplot(shap, type = "dependence", feature = "map", X = dat, 
                  alpha = 0.5, color_by = "p", smooth = TRUE, 
 				   smooth_color = "black") +  
                      geom_smooth() +
 				       scale_colour_gradient(low = "cyan", high = "red", na.value = NA)
-  print(prob + ggtitle("Shapley dependency for cti"))
+  print(prob + ggtitle("Shapley dependency for map"))
   
 classes <- unique(as.character(dat$Present))
   shap.df <- data.frame(class = as.character(dat$Present), shap)
@@ -497,12 +492,13 @@ Create individual SHAP plots (select 4 random obs from "1" class)
 
 ```{r, eval=FALSE}
 
-idx=which(dat$Present == "1")
+idx=sample(which(dat$Present == "1"), 4)
+cat("Individual SHAP values for obs:", rownames(dat[idx,]), "\n")
 grid.arrange(
-  autoplot(shap, type = "contribution", row_num = sample(idx,1)),
-  autoplot(shap, type = "contribution", row_num = sample(idx,1)),
-  autoplot(shap, type = "contribution", row_num = sample(idx,1)),
-  autoplot(shap, type = "contribution", row_num = sample(idx,1)),
+  autoplot(shap, type = "contribution", row_num = idx[1]),
+  autoplot(shap, type = "contribution", row_num = idx[2]),
+  autoplot(shap, type = "contribution", row_num = idx[3]),
+  autoplot(shap, type = "contribution", row_num = idx[4]),
 ncol=2, nrow = 2)
 
 ```
