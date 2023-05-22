@@ -19,8 +19,8 @@ One seemingly limiting factor to full migration of spatial analysis in R is abil
 
 ## Add required libraries and set working environment
 
-```{r, class.source = "fold-show", eval=FALSE}
 
+```{.r .fold-show}
 invisible(lapply(c("sp", "terra", "spdep", "spatialEco", "sf", "terra", 
       "raster", "spatstat", "spatstat.geom", "dplyr", "devtools",
 	    "landscapemetrics"), require, character.only=TRUE))
@@ -28,7 +28,6 @@ invisible(lapply(c("sp", "terra", "spdep", "spatialEco", "sf", "terra",
 # set your working and data directories here
 setwd("C:/spatialR/session02") 
   data.dir <- file.path(getwd(), "data")
-
 ```
 
 # 2.1 - Vector analysis 
@@ -39,7 +38,8 @@ Read "plots.shp" and "soil.shp" in as sf objects. Plot resulting objects.
 
 |    See; st_read, plot, st_geometry  
 
-```{r, eval=FALSE}
+
+```r
 # Read data 
 plots <- st_read(file.path(data.dir, "plots.shp"))
   soil <- st_read(file.path(data.dir, "soil.shp"))
@@ -47,8 +47,7 @@ plots <- st_read(file.path(data.dir, "plots.shp"))
 plot(st_geometry(soil))
   points(st_coordinates(plots), pch=20, col="red")
   # plot(st_geometry(plots), pch=20, col="red", add=TRUE)
-
-```  
+```
     
 ## Buffer points
 
@@ -56,7 +55,8 @@ Buffer the plots data to 200m
 
 |    See; st_buffer 
  
-```{r, eval=FALSE} 
+
+```r
 plots.buff <- st_buffer(plots, dist=200)
   plot(st_geometry(plots.buff))
     plot(st_geometry(plots), pch=20, add=TRUE)
@@ -68,11 +68,10 @@ Intersect (clip) soil with buffers and relate back to points.
 
 |    See; gIntersection and intersect) 
 
-```{r, eval=FALSE}
 
+```r
 plots.soil <- st_intersection(plots.buff, soil) 
   plot(st_geometry(plots.soil))
-
 ```
 
 ## Calculate spatial area fractions
@@ -81,7 +80,8 @@ Calculate soil-type ("musym" attribute) area proportion for each plot.
 
 |    See; table, prop.table	
 
-```{r, eval=FALSE}
+
+```r
 # Pull unique soil types
 ( stype = sort(unique(plots.soil$musym)) )
 
@@ -114,7 +114,6 @@ p <- lapply(unique(plots.soil$ID), function(i) {
   p <- plyr::ldply(p, rbind)
     p[is.na(p)] <- round(0,4)
       str(p)
-
 ```
 
 ## Point in polygon
@@ -123,22 +122,21 @@ Point in polygon analysis to relate soil attributes to plots.
 
 |    See; point.in.poly  
 
-```{r, eval=FALSE}
 
+```r
 # Point in polygon (relate soil attributes to points)
 soil.plots <- sf::st_intersection(plots, soil)
   head(soil)
   head(plots)  
   head(soil.plots)
-
 ```
   
 ## Spatial aggregation (dissolve)
 
 Dissolve polygons using "NWBIR74" column, create column where < median is 0 else 1 then dissolve features by this column and plot     
 
-```{r, eval=FALSE}
 
+```r
 # read data from sf package
 polys <- st_read(system.file("shape/nc.shp", package="sf"))
   polys$p <- ifelse(polys$NWBIR74 < quantile(polys$NWBIR74, p=0.5), 0 ,1)
@@ -149,14 +147,14 @@ diss <- polys %>%
     summarise(m = max(p)) %>% 
       st_cast()
 plot(diss["p"])
-  
 ```
 
 ## Spatial aggregation (zonal)
 
 Work through this zonal function that calculates the proportion of covertypes around the periphery of each polygon and then calculates  Isolation by Distance (IBD). Please take the time to examine the output objects of each step, plot intermediate results and dissect the peripheral.zonal function. Please note; when you dissect a for loop you need to define the iterator so, in this case if it is defined (eg., j=1) then you can run the inside of the loop (omitting the for line and the end curly bracket. Don’t forget, to run the function you need to copy-and-paste the whole thing into R to "source" it.   
  
-```{r, eval=FALSE} 
+
+```r
 # Read shapefile "wetlands" and raster "landtype.tif" in data.dir
 ( wetlands <- st_read(file.path(data.dir, "wetlands.shp")) )
   ( wetlands <- wetlands[sample(1:nrow(wetlands),10),] )
@@ -241,8 +239,7 @@ plot(st_geometry(wetlands), col=as.character(my.col), border = NA)
   box()
   legend("bottomleft", legend=levels(l), 
          fill=levels(my.col))  
-
-```  
+```
 
 # 2.2 Raster data analysis
 
@@ -250,13 +247,12 @@ plot(st_geometry(wetlands), col=as.character(my.col), border = NA)
 
 Read bands 1 and 5 from from "ppt2000.tif" as single band objects,  all bands from  "ppt2000.tif" and "ppt2001.tif" (2 single band and 2 multi band objects).
 
-```{r, eval=FALSE}
 
+```r
 ppt.jan <- rast(file.path(data.dir, "ppt2000.tif"), lyrs=1) 
 ppt.may <- rast(file.path(data.dir, "ppt2000.tif"), lyrs=5)
 ppt.2000 <- rast(file.path(data.dir, "ppt2000.tif")) 
 ppt.2001 <- rast(file.path(data.dir, "ppt2001.tif"))
-
 ```
 
 ## Global raster statistics
@@ -265,15 +261,14 @@ Calculate summary statistics (global) for mean, sd and bakers choice.
 
 |    See; global, summary
 
-```{r, eval=FALSE}
 
+```r
 # Summary statistics (global)
 ( rmin <- global(ppt.jan, stat="min") )
 ( rmax <- global(ppt.jan, stat="max") )
 ( rmean <- global(ppt.jan, stat="mean") )
 summary(ppt.jan)
 summary(ppt.jan)[5]
-
 ```
 
 ## Raster transformations 
@@ -282,16 +277,15 @@ Row standardization is a common approach in getting data on the same scale while
 
 Row standardize (x / max(x)) "ppt.jan" then, "ppt.jan" and "ppt.may" See; global, max and standard math operations
 
-```{r, eval=FALSE}
 
+```r
 # Row standardization
 ppt.jan.std <- ppt.jan / as.numeric(global(ppt.jan, stat="max"))
 
 # Row standardization using global max values across months
 ppt.jan.std <- ppt.jan / max(global(c(ppt.jan, ppt.may), stat="max"))
   summary(ppt.jan.std)
-
-```  
+```
 
 ## Multi-band statistics
 
@@ -305,8 +299,8 @@ ppt.jan.std <- ppt.jan / max(global(c(ppt.jan, ppt.may), stat="max"))
 
 |    See; app, lapp, mean, median
 
-```{r, eval=FALSE}
 
+```r
 # 1. Returns mean between >=2 raster
 # Difference usage between direct operator, 
 #   these two calls have the same result
@@ -328,7 +322,6 @@ par(mfrow=c(2,2))
   plot(med.2000)
   plot(gs.med.2000)
   plot(adif.ppt)
-
 ```
   
 ## Multi-band functions
@@ -337,8 +330,8 @@ Calculate number of days with rain over median across all dates.
 
 |    See; app, median
 
-```{r, eval=FALSE}
 
+```r
 ( m <- global(ppt.2000, stat=median)[,1] )
 
 rain.fun <- function(x, p = 23.4997) {
@@ -352,7 +345,6 @@ rain.fun <- function(x, p = 23.4997) {
 rain.freq <- app(ppt.2000, fun=rain.fun, p=m) 
 
 plot(rain.freq, main="Frequency > median precipitation 2000")  
-
 ```
 
 ## Focal statistics
@@ -363,13 +355,12 @@ Calculate focal mean of "ppt.jan" within an 11x11 window, plot results.
 
 |    See; focal, matrix 
 
-```{r, eval=FALSE}
 
+```r
 ppt.mean11 <- focal(ppt.jan, w=matrix(1,nrow=11,ncol=11), fun=mean)
   par(mfrow=c(1,2)) 
     plot(ppt.mean11)
     plot(ppt.jan)
-
 ```
 
 ## Focal functions
@@ -378,15 +369,14 @@ It is possible to also write custom functions for local scale evaluation. With h
 
 Calculate percent of values <= global mean within an 11x11 window/ See; focal, global, matrix 
 
-```{r, eval=FALSE}
 
+```r
 # Passing focal custom function
 pct.mean <- function(x, p=22.6776) { length(x[x >= p]) / length(x) }
 
 ( p.mean = global(ppt.jan, stat="mean")[,1] )
 ppt.break <- focal(ppt.jan, w=matrix(1,nrow=5,ncol=5), 
                    fun=pct.mean, p=p.mean) 
-
 ```
 
 ## Reproject raster
@@ -395,7 +385,8 @@ Reproject to UTM using "elev.tif" as reference raster.
 
 |    See; project, rast
 
-```{r, eval=FALSE}
+
+```r
 ( elev <- rast(file.path(data.dir, "elev.tif")) )
 ( ppt <- rast(file.path(data.dir, "ppt_geo.tif"), lyrs=5) )
 
@@ -417,11 +408,10 @@ par(mfrow=c(2,1))
 
 Read the "plots.shp" points and "landcover.tif" raster. See; st_read, rast
 
-```{r, eval=FALSE}
 
+```r
 plots <- st_read(file.path(data.dir, "plots.shp"))
   lc <- rast(file.path(data.dir, "landcover.tif")) 
-
 ```
 
 ## Extract raster values for points
@@ -430,21 +420,19 @@ Extract raster cell values (lc) for points (plots). Note; vector objects (ie., s
 
 |    See; extract and vect
 
-```{r, eval=FALSE}
 
+```r
 head( v <- extract(lc, vect(plots)) ) 
-
 ```
 
 ## Extract raster values for polygons
 
 Buffer the plots to 200m and then extract the "lc" raster cell values. What class is the object? What is the ID column representing? How can we operate on it to get meaningful statistical summaries.   
 
-```{r, eval=FALSE}	 
 
+```r
 plots.buff <- st_buffer(plots, dist=200)
   ( r.vals <- extract(lc, vect(plots.buff)) )   
-
 ```
 
 ## Aggregate polygon raster values
@@ -452,8 +440,8 @@ plots.buff <- st_buffer(plots, dist=200)
 Unlike points, that have one value per point, polygons have any number of values that intersect each given polygon. As such, the data structure is a bit different. Historically, in the raster library, results were returned as a list object necessitating the use of lapply. In the terra library, results are returned as a data.frame with an ID column indicating the polygon index. If there were 10 raster cells intersecting a polygon then that polygon index will be replicated 10 times, with the associated raster values. You can use an iterator on the ID field to aggregate these values into a desired statistic.    
 Now write a function, to pass to tapply, that will calculate the proportion of value 23 and one for 41, 42 and 43. Add to data and play with plotting results. See; for, tapply, split, aggregrate  
 
-```{r, eval=FALSE}
 
+```r
 pct <- function(x, p = 23) { length( x[x == p] ) / length(x) }
   tapply(r.vals[,2], r.vals$ID, FUN=pct)
  
@@ -468,7 +456,6 @@ plot(lc)
   plot(st_geometry(plots), pch=20, col="black", add=TRUE)
   plot(st_geometry(plots[plots$pct.forest >= 0.25 ,]), pch=20,
          cex=2, col="red", add=TRUE)
-
 ```
 
 # 2.4 Quantifying landscape structure
@@ -477,13 +464,12 @@ plot(lc)
 
 Read "plots.shap" and "landcover.tif" Calculating landscape metrics for a entire landscape
 
-```{r, eval=FALSE}
 
+```r
 plots <- st_read(file.path(data.dir, "plots.shp")) #read in plot data
 land.cover <- rast(file.path(data.dir, "landcover.tif")) 
   plot(land.cover)
     plot(plots, pch=20, add=TRUE)
-
 ```
 
 ## Reclassifying to forest/non-forest
@@ -492,8 +478,8 @@ Let's say that you are interested in forest/non-forest.  However, there are mult
 
 |    See: classify, writing a function (ifelse) the calling app or using terra's native method for ifelse, ifel
 
-```{r, eval=FALSE}
 
+```r
 # Three different approaches are presented, please pick one and create
 # a forest/non-forest raster "forest)
 
@@ -517,7 +503,6 @@ forest <- ifel(land.cover == 41, 1,
 
 plot(forest)
   plot(plots, pch=20, add=TRUE)
-
 ```
 
 ## Smooth by calculating percent forest
@@ -526,11 +511,10 @@ While forest at a cell may be important, you want to smooth your result and put 
 
 See: length of target value, focal  
 
-```{r, eval=FALSE}
 
+```r
 pct <- function(x) { round( (length(x[x == 1]) / length(x)), 4) } 
 pct.forest <- focal(forest, w=matrix(1,nrow=11,ncol=11), fun=pct)
-
 ```
 
 ## Forest cores
@@ -539,8 +523,8 @@ Next you wish to identify forest cores. Calculate 60 percent volume of forest pe
 
 |    See; raster.vol
 
-```{r, eval=FALSE}
 
+```r
 cores <- raster.vol(pct.forest, p=0.60)
   cores[is.na(cores)] <- 0 #replace non-core areas (NA) with 0
     cores <- mask(cores, forest)
@@ -548,7 +532,6 @@ cores <- raster.vol(pct.forest, p=0.60)
 par(mfrow=c(1,2))
   plot(pct.forest)  
     plot(cores)
-
 ```
 
 ## Landscape-level metrics
@@ -557,8 +540,8 @@ Describe the landscape using landscape metrics and compare forest to forest core
 
 See; lsm_c_pland, lsm_l_pladj, lsm_l_contag  
 
-```{r, eval=FALSE}
 
+```r
 # Percent landscape
 ( forest.pland <- lsm_c_pland(forest, directions=8) )
 ( cores.pland <- lsm_c_pland(cores, directions=8) )
@@ -570,7 +553,6 @@ See; lsm_c_pland, lsm_l_pladj, lsm_l_contag
 # proportion of like adjacencies 
 ( forest.plaj <- lsm_l_pladj(forest)$value )
 ( core.plaj <- lsm_l_pladj(cores)$value )
-
 ```
 
 ## Sample-level metrics
@@ -579,8 +561,8 @@ Calculating landscape metrics for sample locations is a powerful way to compute 
 
 |    See; sample_lsm,
 
-```{r, eval=FALSE}
 
+```r
 # Print available metrics 
 am <- as.data.frame(list_lsm())
 
@@ -622,5 +604,4 @@ contag <- mcores[which(mcores$metric %in% "contag"),]$value
 # Plot core 
 plot(cores, legend=FALSE)
   plot(plots["core_contag"], pch=20, cex=2, add=TRUE)
-
 ```

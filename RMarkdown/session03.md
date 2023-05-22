@@ -19,8 +19,8 @@ We will build foundation of more advanced spatial modeling by introducing proxim
 
 ## Add required libraries and set working environment
 
-```{r, class.source = "fold-show", eval=FALSE}
 
+```{.r .fold-show}
 invisible(lapply(c("sp", "terra", "spdep", "spatialEco", "sf", "terra", 
       "raster", "spatstat", "spatstat.geom", "spatstat.core", "rts",
 	    "dplyr", "forecast", "RANN", "rgeoda"), require, character.only=TRUE))
@@ -28,7 +28,6 @@ invisible(lapply(c("sp", "terra", "spdep", "spatialEco", "sf", "terra",
 # set your working and data directories here
 setwd("C:/spatialR/session03") 
   data.dir <- file.path(getwd(), "data")
-
 ```
 
 # **3.1 - Distance and proximity**
@@ -37,33 +36,34 @@ setwd("C:/spatialR/session03")
 
 Read "plots.shp" in as sf objects. Plot resulting objects. See; st_read, plot, st_geometry  
 
-```{r, eval=FALSE}
+
+```r
 # Read data 
 
 plots <- st_read(file.path(data.dir, "plots.shp"))
   plots$plot.id <- paste("plot", plots$ID, sep=".")
-
-```  
+```
     
 ## Create distance matrix
 
 Calculate a distance matrix on the "plots" point object. See; st_distance, dist
 
-```{r, eval=FALSE}
+
+```r
 # dist matrix
 dmat <- units::drop_units(st_distance(plots))
   diag(dmat) <- NA  # set 0 diag to NA
     rownames(dmat) <- plots$plot.id
     colnames(dmat) <- plots$plot.id
 head(dmat)
-
 ```
 
 ## Distance matrix - nearest neighbors
 
 See if you can use the distance matrix to find each obs nearest neighbor
 
-```{r, eval=FALSE}
+
+```r
 # Iterate through each row and select the minimum distance neighbor
 samples <- data.frame(plot.id=plots$plot.id, kNN=NA, dist=NA)
   for(j in 1:nrow(dmat)) {
@@ -88,8 +88,7 @@ plots <- merge(plots, samples, by="plot.id")
 plot(st_geometry(plots), pch=20)
   plot(st_geometry(plots.knn), pch=20, col="red", cex=2, add=TRUE)
     box()
-
-```    
+```
       
 ## Distance matrix - conditional nearest neighbors
 
@@ -97,8 +96,8 @@ Deriving k nearest neighbors is a very good example of the numerous ways you can
 
 Bound the distances, in the distance matrix, considered before finding the nearest neighbor. Here you could set a distance bandwidth (range) in the same way the minimum distance was set. Set the bandwidth to 1000, 5000 then find the 1st nearest neighbor. See; apply,  which.min 
 
-```{r, eval=FALSE}
 
+```r
 # 1. Bound the distance matrix to represent a bandwidth then, 
 #    find the 1st nearest neighbor
 
@@ -109,7 +108,6 @@ dmat[dmat > max.dist] <- NA
 
 nn <- apply(dmat, MARGIN=1, which.min)
   ( kNN.ids <- colnames(dmat)[nn] )
-
 ```
 
 ## Graph structures - nearest neighbors
@@ -118,8 +116,8 @@ We can use a graph structure to efficiently represent a [Wij]d matrix. This is t
 
 Find the 1st nearest neighbor using a graph structure. See; spdep, knearneigh, knn2nb, dnearneigh 
 
-```{r, eval=FALSE}
 
+```r
 # Proximity K nearest neighbors using knearneigh and knn2nb
 
 plots.knn <- knearneigh(st_coordinates(plots), k=4)
@@ -162,7 +160,6 @@ nn <- RANN::nn2(st_coordinates(meuse), st_coordinates(pts), k=2)$nn.idx
     plot(st_geometry(meuse[nn[,1],]), pch=20, col="red", add=TRUE)
     plot(st_geometry(meuse[nn[,2],]), pch=20, col="blue", add=TRUE)
       box()
-  
 ```
 
 # **3.2 Spatial dependency - Point Pattern Analysis**
@@ -175,10 +172,9 @@ For this exercise, we have a point locations of wetlands located in in the Bigho
 
 ## read data
 
-```{r, eval=FALSE}
 
+```r
 wetland <- read.csv(file.path(data.dir, "Wetlands.csv"), header=TRUE)
- 
 ```
 
 ## Create spatstat object
@@ -187,15 +183,14 @@ Create a ppp object from wetland csv file. The file includes all wetlands. RALU 
 
 |   See: owin and ppp
 
-```{r, eval=FALSE}
 
+```r
 window <- owin(xrange=c(min(wetland$X),max(wetland$X)), 
                yrange=c(min(wetland$Y),max(wetland$Y)))
 
 #*** window is min/max of x and Y
 wetland.ppp <- ppp(wetland$X, wetland$Y, window=window, marks=wetland$RALU)
   class(wetland.ppp)
-
 ```
 
 ## Identify duplicates
@@ -204,10 +199,9 @@ Not all data are perfect. This dataset include duplicate points that are likely 
 
 |  See: unique
 
-```{r, eval=FALSE}
 
+```r
 wetland.ppp <- unique(wetland.ppp)
-
 ```
 
 ## Geits G(r) statistic
@@ -216,10 +210,9 @@ Are wetlands homogeneous? Calculate Nearest Neighbor Distance (G)
 
 |   See: Gest
 
-```{r, eval=FALSE}
 
+```r
 plot(Gest(wetland.ppp))
-
 ```
 
 **G(r) results**
@@ -237,14 +230,13 @@ What do data following a CSR process look like in a Ripley's K of same size as d
 
 |   See: rpoispp, Kest
 
-```{r, eval=FALSE}
 
+```r
 random.wet <- rpoispp(length(wetland[,1]))
   plot(random.wet)          # spatially random "wetland" synthetic data
   plot(Kest(wetland.ppp))   # Ripley's K on observed process    
   plot(Kest(random.wet))    # Ripley's K on synthetic data
-
-```  
+```
   
 # **3.3 Spatial dependency - global autocorrelation**
 
@@ -254,15 +246,14 @@ What if you wish to know if observations of species abundance are spatially auto
 
 Read the "RALU_abundance.csv" data and coerce into a sf POINT object 
 
-```{r, eval=FALSE}
 
+```r
 sdata <- read.csv(file.path(data.dir, "RALU_abundance.csv"))
   sdata <- st_as_sf(sdata, coords = c("X", "Y"), 
                     crs = 26911, agr = "constant")
 
 # distinct(sdata)
-
-```  
+```
 
 ## Spatial Weights Matrix (Wij)
 
@@ -272,8 +263,8 @@ First, plot the Probability Density Function (PDF) of "abundance" to examine the
 
 |   See: density, knearneigh and knn2nb, nbdists, max, dnearneigh, nb2listw with style = "W" (for weights)
 
-```{r, eval=FALSE}
 
+```r
 plot(density(sdata$abundance))
 
 ( nm <- knn2nb(knearneigh(sdata)) )
@@ -290,7 +281,6 @@ nb <- dnearneigh(sdata, 0, max.dist)
 
 # Then, create Wij spatial weight matrix
 ( sweight <- nb2listw(nb, style="W") )
-
 ```
 
 ##  Calculate Moran's-I (global autocorrelation)
@@ -303,8 +293,8 @@ Calculate Moran's I for the abundance variable. Note; abundance data are an occu
 
 |    See: using weights (Wij) matrix "sweight", moran.test, moran.mc
 
-```{r, eval=FALSE}
 
+```r
 # Moran's-I (global autocorrelation)
 ( abund.I <- moran(sdata$abundance, sweight, length(nb), Szero(sweight)) )
 
@@ -317,7 +307,6 @@ moran.test(sdata$abundance, nb2listw(nb, style="W"))
 mean(Iperm$res[1:nsim])
 var(Iperm$res[1:nsim])
 summary(Iperm$res[1:nsim])
-
 ```
 
 ##  Calculate Geary's-C (global autocorrelation)
@@ -328,8 +317,8 @@ Interesting side note; the Geary's-C can be decomposed into semivariance used in
 
 |    See: geary, geary.mc, what are the expectations? 
 
-```{r, eval=FALSE}
 
+```r
 geary(sdata$abundance, sweight, length(nb), length(nb)-1, Szero(sweight))
 
 nsim <- 999
@@ -341,7 +330,6 @@ cperm <- geary.mc(sdata$abundance, nb2listw(nb),
 mean(cperm$res)
 var(cperm$res)
 summary(cperm$res)
-
 ```
 
 ##  Calculate Getis-Ord (global autocorrelation)
@@ -352,13 +340,12 @@ Calculate Getis-Ord for abundance, you will need to transform your Wij matrix to
 
 |   See: globalG.test
 
-```{r, eval=FALSE}
 
+```r
 bweights <- nb2listw(nb, style="B")
 ( globalG <- globalG.test(sdata$abundance, bweights,  
                           alternative="greater", 
 						              adjust.n=TRUE) )
-
 ```
 
 # **3.4 Spatial dependency - model assumptions**
@@ -367,8 +354,8 @@ Assessing impacts of autocorrelation on linear model assumptions such as iid and
 
 ## Read data
 
-```{r, eval=FALSE}
 
+```r
 # read data to build the objects for a slightly different set of data
 ralu.lm <- st_read(file.path(data.dir, "ralu.lm.shp"))
   
@@ -379,7 +366,6 @@ ralu.lm <- st_read(file.path(data.dir, "ralu.lm.shp"))
   # Build Wij using distance, not proximity (kNN)
   nb.ralu <- dnearneigh(ralu.lm, 0, max.dist)
     sweight.ralu <- nb2listw(nb.ralu, style="W")
-
 ```
 
 ## Create linear model
@@ -388,12 +374,11 @@ Create a linear model explaining abundance using the formula "abundance ~ Elev +
 
 |   See: lm
 
-```{r, eval=FALSE}
 
+```r
 summary( froga.lm <- lm(abundance ~ Elev + pH + Depth + Area + Dforest, 
                         data= ralu.lm) )
   plot(froga.lm, las = 1)    
-
 ```
 
 ## Moran's-I on regression residuals 
@@ -402,8 +387,8 @@ Using the Lagrange spatial dependence test test if there is an effect on the reg
 
 |    See: lm.morantest; lm.LMtests, moran.test, residuals
  
-```{r, eval=FALSE} 
 
+```r
 # option 1 - lm.LMtests, Lagrange spatial dependence test on residual error
 ( ralu.lagrange <- lm.LMtests(residuals(froga.lm), nb2listw(nb.ralu)) )
 
@@ -413,7 +398,6 @@ Using the Lagrange spatial dependence test test if there is an effect on the reg
 # Option 3 - moran.test, moran's I directly on residuals
 ( ralu.moran.res <- moran.test(residuals(froga.lm), 
                       nb2listw(nb.ralu, style="W")) )
-
 ```
 
 # **3.4 Spatial dependency - local autocorrelation**
@@ -422,12 +406,11 @@ Historically, local autocorrelation has been used to indicate spatial outliers a
 
 ## read data
 
-```{r, eval=FALSE}
 
+```r
 sdata <- read.csv(file.path(data.dir, "RALU_abundance.csv"))
   sdata <- st_as_sf(sdata, coords = c("X", "Y"), 
                     crs = 26911, agr = "constant")
-
 ```
 
 ## Local-G
@@ -436,8 +419,8 @@ Calculate the local-G measure(s) of local autocorrelation and plot them.
 
 |    See: localG, localmoran (and weight matrix), crossCorrelation 
 
-```{r, eval=FALSE}
 
+```r
 # adding 1 is a rough fix for empty neighbors 
 nm <- knn2nb(knearneigh(sdata)) 
 max.dist <- max(unlist(nbdists(nm, sdata))) + 1 
@@ -469,7 +452,6 @@ plot(sdata["G"], main="Getis-Ord Local G*", pch=20)
 #      I$HotSpots <- as.factor(I$HotSpots)  
 #        plot(I["HotSpots"], xlab="Local Moran's-I Hot Spots", 
 #            col=c("blue","red") )  
-
 ```
 
 Here is where I get taken behind the barn and shot. After all these functions for deriving Wij and complex syntax for autocorrelation statistics now, the easy way using the GEODA API "rgeoda". However, there are many good reasons for being familiar with the spdep functions 
@@ -481,8 +463,8 @@ Calculate the local Moran's (LISA) using the traditional Anselin (1995) approach
 Anselin, L. 1995. Local indicators of spatial association, 
   Geographical Analysis, 27:93–115
 
-```{r, eval=FALSE}
 
+```r
 # Create Queen contiguity, also see distance_weights, knn_weights 
 # and  kernel_weights for alternate Wij options
 w <- queen_weights(sdata)
@@ -505,7 +487,6 @@ plot(st_geometry(sdata), pch=20,
 	 box()
   title(main = "Local Moran Map of abundance")
   legend('bottomleft', legend = lisa_labels, pch=c(20), col = lisa_colors)
-
 ```
 
 ## Cross correlation algebraic approximation 
@@ -516,8 +497,8 @@ Chen., Y. (2015) A New Methodology of Spatial Cross-Correlation Analysis.
   PLoS One 10(5):e0126158. doi:10.1371/journal.pone.0126158 
 
 Create local autocorrelation object "I" using "sdata" and the crossCorrelation function 
-```{r, eval=FALSE}
 
+```r
 ( I <- crossCorrelation(sdata$abundance, 
                         coords = st_coordinates(sdata), 
                         clust = TRUE, k=99) )
@@ -527,7 +508,6 @@ sdata$lisa <- I$SCI[,"lsci.xy"]
   sdata$lisa.clust <- as.factor(I$cluster)
       plot(sdata["lisa"], pch=20)
       plot(sdata["lisa.clust"], pch=20)	  
-
 ```
 
 # **3.5 - Time-series analysis**
@@ -536,15 +516,14 @@ sdata$lisa <- I$SCI[,"lsci.xy"]
 
 Add LAI raster object, using "lai.tif", contaning 71 monthly layers, we will also create a date vector representing the image dates	
 
-```{r, eval=FALSE}
 
+```r
 ( lai <- rast(file.path(data.dir, "lai.tif")) )
   ( dates <- date_seq("2000/01/01", "2005-12-01", step="month") )
 
 # plot 1st and 50th rasters
 dev.new(height=6, width=11)
   plot(lai[[c(1,50)]])
-
 ```
 
 ## Subset single pixel time-series observation
@@ -553,24 +532,22 @@ Using x,y coordinates cbind(13028094, 146990) extract a pixel time-series from t
 
 You can also try plotting a single raster layer and then using click() to get different coordinates printed to screen see, cellFromXY  
 
-```{r, eval=FALSE}
 
+```r
 ( x <- as.numeric(lai[cellFromXY(lai, cbind(13028094, 146990))]) )
-
 ```
 
 ## Imputing missing values
 
 An important pre-processing set for time-series analysis is to address missing values. This can be done with an imputation approach using a local local polynomial regression. Add a few NA's into the time-series vector (copy to a new object first) and then apply an imputation. See; impute.loess with smooth = FALSE (will only modify NA's) 
 
-```{r, eval=FALSE}
 
+```r
 xna <- x
   xna[c(20, 30, 50)] <- NA
 
 print(xna)  
 impute.loess(xna, s = 0.4, smooth = FALSE)
-
 ```
 
 ## Smoothing time-series
@@ -583,39 +560,35 @@ Savitzky, A., and Golay, M.J.E. (1964). Smoothing and Differentiation
   of Data by Simplified Least Squares Procedures. Analytical 
   Chemistry. 36(8):1627-39 
 
-```{r, eval=FALSE}
 
+```r
 x.smooth <- impute.loess(x, s = 0.4, smooth = TRUE)
   dev.new(height=6, width=14)
     plot(dates, x, type="l")
       lines(dates, x.smooth, col="red")
     legend("topleft", legend=c("raw", "smoothed"), 
            lty=c(1,1), col=c("black","red"))  
-
 ```
 
 ## Smoothing time-series (confidence)
 
 Evaluate confidence of fit via permutation test using the same smoothing parameter ("s" and "span" arguments) as above. See; loess.boot 
 
-```{r, eval=FALSE}
 
+```r
 sb <- loess.boot(1:length(x), x, nreps=99, 
                  confidence=0.90, span=0.40)
   dev.new(height=6, width=14)
     plot(sb)
-
 ```
 
 ## Create time-series class object
 
 Create a ts (time-series) object from our lai time-series vector. These object types are a real pain and I try to avoid them whenever possible however, there are some convenient functions that require a ts class. 
 
-```{r, eval=FALSE}
 
+```r
 x.ts <- ts(x.smooth, start= c(2000, 01), frequency = 12)
-
-
 ```
 
 ## Specify trend model
@@ -624,8 +597,8 @@ Specify trend regression model without any autoregressive (AR) terms
 
 |    See; ts, forecast, tslm  
 
-```{r, eval=FALSE}
 
+```r
 fit <- forecast::tslm(x.ts ~ trend)
   trend <- forecast::forecast(fit, h=length(x), level=0)
 
@@ -633,7 +606,6 @@ fit <- forecast::tslm(x.ts ~ trend)
   dev.new(height=6, width=14)
     plot(dates, x, type="l", main="LAI time-series, no correction")
       lines(dates, trend$fitted, lwd = 2)
-
 ```
 
 ## Periodicity 
@@ -644,8 +616,8 @@ now you can see that we are getting somewhere in representing a more accurate tr
 
 |    See; decompose, tslm, forecast  
 
-```{r, eval=FALSE}
 
+```r
 # decomposed trend and seasonal components
 detrend <- decompose(ts(x, start= c(2000, 01), frequency = 12))
   fit.dt <- forecast::tslm(detrend$trend ~ trend)
@@ -657,7 +629,6 @@ detrend <- decompose(ts(x, start= c(2000, 01), frequency = 12))
   dev.new(height=6, width=14)
     plot(detrend$trend, type="l", main="LAI detrended time-series")
       lines(trend.dt$fitted, lwd = 2)
-
 ```
 
 # **3.6 - Raster time-series analysis**
@@ -670,14 +641,13 @@ Create a raster time-series object and calculate yearly means, don't forget that
 
 |    See; rts, apply.yearly 
 
-```{r, eval=FALSE}
 
+```r
 # dates <- date_seq("2000/01/01", "2005-12-01", step="month") 
 
 lai.ts <- rts(lai, dates)
   means <- apply.yearly(lai.ts, mean)@raster
 plot(means)
-
 ```
 
 ## Rate of change
@@ -686,7 +656,8 @@ Calculate a simple delta as well as rate of change between two rasters and plot.
 
 |    See; lapp
 
-```{r, eval=FALSE}
+
+```r
 chg <- means[[1]] - means[[6]]
   roc <- lapp(means[[c(1,6)]], fun=function(x, y) { (x - y) / x })
 
@@ -694,7 +665,6 @@ chg <- means[[1]] - means[[6]]
     par(mfrow=c(2,1))
       plot(chg, main="delta")
 	  plot(roc, main="rate of change")
-
 ```
 
 ## Mann-Kendall 
@@ -705,12 +675,11 @@ Calculate the Kendall Tau temporal correlation and Theil-Sen Slope and plot.
 
 |    See; raster.kendall
 
-```{r, eval=FALSE}
 
+```r
 k <- raster.kendall(means, tau = TRUE)
   dev.new(height=6, width=11)
     plot(k)
-
 ```
 
 ## Raster time-series trend model
@@ -719,8 +688,8 @@ Now, let's put a few pieces together. Here is an approach for putting a modeling
 
 Apply the detrended regression to our raster time-series to get a spatial estimate of the detrended slope. Below is a function for returning slope of time-series detrended regression.
 
-```{r, eval=FALSE}
 
+```r
 ts.trend <- function(y, d=c(2000, 01)) {
   y <- na.omit(y)
   if(length(y) >= 12) { 
@@ -741,5 +710,4 @@ dev.new(height=11, width=8)
   par(mfcol=c(2,1))
     plot(slp, main="detrended slope")
     plot(k[[1]], main="Kendall slope")
-
 ```
